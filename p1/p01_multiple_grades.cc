@@ -1,3 +1,19 @@
+// Universidad de La Laguna
+// Escuela Superior de Ingeniería y Tecnología
+// Grado en Ingeniería Informática
+// Asignatura: Computabilidad y Algoritmia
+// Curso: 2º
+// Práctica 1: Contenedores asociativos
+// Autor: Francesco Marelli
+// Correo: alu0101161730@ull.edu.es
+// Fecha: 13/09/2023
+// Archivo cya-P01-multiple-grades.cc: programa cliente.
+// Contiene la función main del proyecto que lee un fichero de texto con las notas de los alumnos 
+//y crea un fichero de texto con todas las notas formateadas
+// Referencias:
+// Enlaces de interés
+// Historial de revisiones
+// 13/09/2023 - Creación (primera versión) del código
 #include <iostream>
 #include <fstream>
 #include <map>
