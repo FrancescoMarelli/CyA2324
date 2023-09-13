@@ -1,3 +1,4 @@
+// Copyright (C) 2023 Francesco Marelli
 // Universidad de La Laguna
 // Escuela Superior de Ingeniería y Tecnología
 // Grado en Ingeniería Informática
@@ -8,8 +9,8 @@
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 13/09/2023
 // Archivo cya-P01-multiple-grades.cc: programa cliente.
-// Contiene la función main del proyecto que lee un fichero de texto con las notas de los alumnos 
-//y crea un fichero de texto con todas las notas formateadas
+// Contiene el main que lee un fichero de texto con las notas de los alumnos
+// y crea un fichero de texto con todas las notas formateadas
 // Referencias:
 // Enlaces de interés
 // Historial de revisiones
@@ -27,13 +28,16 @@ int main(int argc, char* argv[]) {
         std::cerr << "Uso: " << argv[0] << " <grades.txt>" << std::endl;
         return 1;
     }
-    if(std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h") {
+    if (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h") {
         Usage();
     }
 
-    std::multimap<std::string, float> allGrades; // Utilizamos multimap para permitir múltiples notas por alumno
+
+    // Utilizamos multimap para permitir múltiples notas por alumno
+    std::multimap<std::string, float> allGrades;
     std::string name;
     float grade;
+
 
     // Abre el archivo para lectura
     std::ifstream file(argv[1]);
@@ -44,19 +48,19 @@ int main(int argc, char* argv[]) {
     }
 
     while (file >> name >> grade) {
-        if ((grade >= 0) && (grade <= 10)) { // Validar que la nota esté en el rango válido
-            allGrades.insert(std::make_pair(name, grade)); // Almacenar todas las notas
+        if ((grade >= 0) && (grade <= 10)) {
+            allGrades.insert(std::make_pair(name, grade));
         } else {
             std::cerr << "Error: " << name << " tiene una nota no válida." << std::endl;
         }
     }
-
-    // Cierra el archivo
     file.close();
 
-    // Imprime el resultado en un fichero nuevo con el siguiente formato : alu0101018: 8.4 3 4 
+
+    // Imprime el resultado en un fichero nuevo con el siguiente formato :
+    // alu0101018: 8.4 3 4
     std::ofstream output("all_grades.txt");
-    for(auto it = allGrades.begin(); it != allGrades.end();) {
+    for (auto it = allGrades.begin(); it != allGrades.end();) {
         output << it->first << ": ";
 
         std::ostringstream gradeList;
