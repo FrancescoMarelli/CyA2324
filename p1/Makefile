@@ -6,7 +6,6 @@ p01_multiple_grades: p01_multiple_grades.cc
 	
 clean:
 	rm -f *.o p01_single_grades p01_multiple_grades
-	
 
 run_single:
 	./p01_single_grades grades.txt
