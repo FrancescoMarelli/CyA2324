@@ -64,9 +64,9 @@ void print(std::multimap<std::string, float> allGrades) {
 }
 
 void interactive(Students students) {
-    std::string answ = "si";
+    std::string answ = "s";
     
-    while (answ == "si" || answ == "Si" || answ == "SI" || answ == "sI") {
+    while (answ == "s" || answ == "S") {
         std::cout << "----------------------------------------" << std::endl;
         std::cout << "Desea introducir una nueva nota? (s/n): ";
         std::string answer;
@@ -80,8 +80,10 @@ void interactive(Students students) {
             std::cin >> grade;
             students.addStudent(name, grade);
             print(students.getAllGrades());
+        } else if (answer == "n") {
+            break;
         } else {
-            answ = "no";
+            std::cout << "Error: respuesta no válida. s o n " << std::endl;
         }
     }
     
