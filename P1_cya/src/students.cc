@@ -8,27 +8,29 @@
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 13/09/2023
-// Archivo cya-P01-single-grades.cc: programa cliente.
-// Contiene el main del programa
 #include "../lib/students.h"
 
 #include <regex>
 #include <limits>
 
-
+/**
+ * @brief Filter the students' grades to get the highest grade of each student.
+ * 
+ * @return std::map<std::string, float> 
+ */
 std::map<std::string, float> Students::getHighGrades() {
     std::map<std::string, float> highGrades;
     std::string name;
     float grade;
 
-    for(auto it = students_.begin(); it != students_.end(); it++) {
+    for (auto it = students_.begin(); it != students_.end(); it++) {
         name = it->first;
         grade = it->second;
 
-        if(highGrades.find(name) == highGrades.end()) {
+        if (highGrades.find(name) == highGrades.end()) {
              highGrades.insert(std::pair<std::string, float>(name, grade));
         } else {
-            if(grade > highGrades[name]) {
+            if (grade > highGrades[name]) {
                 highGrades[name] = grade;
             }
         }
@@ -36,28 +38,39 @@ std::map<std::string, float> Students::getHighGrades() {
     return highGrades;
 }
 
+/**
+ * @brief Filter the students' grades to get all the grades of each student.
+ * 
+ * @return std::multimap<std::string, float> 
+ */
 std::multimap<std::string, float> Students::getAllGrades() {
     std::multimap<std::string, float> allGrades;
     std::string name;
     float grade;
 
-    for(auto it = students_.begin(); it != students_.end(); it++) {
+    for (auto it = students_.begin(); it != students_.end(); it++) {
         name = it->first;
         grade = it->second;
 
-        if(allGrades.find(name) == allGrades.end()) {
+        if (allGrades.find(name) == allGrades.end()) {
             allGrades.insert(std::pair<std::string, float>(name, grade));
         } else {
             allGrades.insert(std::pair<std::string, float>(name, grade));
         }
     }
-    
+
     return allGrades;
 }
 
+/**
+ * @brief Add a student to the students' list interacting with the user.
+ * 
+ * @param name 
+ * @param grade 
+ */
 void Students::addStudent(std::string name, float grade) {
      std::regex namePattern("alu\\d{10}");
-     if(std::regex_match(name, namePattern)) {
+     if (std::regex_match(name, namePattern)) {
          if (std::cin.fail()) {
              std::cout << "Error: Se introdujo un carácter en lugar de una nota numérica." << std::endl;
              std::cin.clear();

@@ -8,13 +8,17 @@
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 13/09/2023
-// Archivo cya-P01-single-grades.cc: programa cliente.
-// Contiene el main del programa
 #include "../lib/fileManager.h"
 
 #include <fstream>
 #include <regex>
 
+/**
+ * @brief Construct a new File Manager:: File Manager object reading 
+ * the students' grades from a file.
+ * 
+ * @return std::multimap<std::string, float> 
+ */
 std::multimap<std::string, float> FileManager::getStudents() {
     std::multimap<std::string, float> students;
     std::ifstream file(file_name_);
@@ -25,7 +29,7 @@ std::multimap<std::string, float> FileManager::getStudents() {
 
     if (!file.is_open()) {
         std::cout << "Error: No se pudo abrir el archivo " << file_name_ << std::endl;
-        return students;  // Devuelve un mapa vacío en caso de error de apertura
+        return students;  // Devuelve un map vacío en caso de error de apertura
     }
 
     while (std::getline(file, line)) {

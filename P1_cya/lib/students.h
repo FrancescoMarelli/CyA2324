@@ -8,24 +8,23 @@
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 13/09/2023
-// Archivo cya-P01-single-grades.cc: programa cliente.
-// Contiene el main del programa
 #include <iostream>
 #include <map>
+#include <string>
 
 #pragma once
 
 class Students {
-    private:
+ private:
     std::multimap<std::string, float> students_;
 
-    public:
+ public:
     Students(std::multimap<std::string, float> students) {setStudents(students);}
     ~Students() {}
 
     std::multimap<std::string, float> getStudents() { return students_; }
     void setStudents(std::multimap<std::string, float> students) { students_ = students; }
-    
+
     std::map<std::string, float> getHighGrades();
     std::multimap<std::string, float> getAllGrades();
 
