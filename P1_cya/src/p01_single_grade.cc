@@ -26,10 +26,8 @@ int main(int argc, char* argv[]) {
         Help();
         return 1;
     }
-
     FileManager file(argv[1]);
     std::multimap<std::string, float> rawStudents = file.getStudents();
-
     Students students(rawStudents);
     std::map<std::string, float> highGradesOnly = students.getHighGrades();
     print(highGradesOnly);
@@ -79,16 +77,26 @@ void interactive(Students students) {
             std::cout << "Introduzca el nombre del alumno: ";
             std::string name;
             std::cin >> name;
+
             std::cout << "Introduzca la nota del alumno: ";
-            float grade;
-            std::cin >> grade;
-            students.addStudent(name, grade);
-            print(students.getHighGrades());
-        } else if (answer == "n") {
+            std::string gradeStr; // Leemos la entrada como una cadena
+            std::cin >> gradeStr;
+
+            try {
+                float grade = std::stof(gradeStr); // Intentamos convertir la cadena en un número de coma flotante
+                students.addStudent(name, grade);
+                print(students.getHighGrades());
+            } catch (const std::invalid_argument&) {
+                std::cout << "Error: No se proporcionó una nota numérica válida para " << name << "." << std::endl;
+            } catch (const std::out_of_range&) {
+                std::cout << "Error: La nota proporcionada para " << name << " está fuera de rango." << std::endl;
+            }
+        } else if (answer == "n" || answer == "N")  {
             break;
         } else {
             std::cout << "Error: respuesta no válida. s o n " << std::endl;
         }
     }
 }
+
 
