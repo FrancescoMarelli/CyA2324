@@ -39,14 +39,14 @@ int main(int argc, char* argv[]) {
  * 
  */
 void Help() {
-        std::cout << "Este programa calcula la nota más alta de cada alumno." << std::endl;
-        std::cout << "El fichero de entrada debe tener el siguiente formato:" << std::endl;
-        std::cout << "Identificador Nota :" << std::endl;
-        std::cout << "alu0101xxxxx 9.5" << std::endl;
-        std::cout << std::endl;
-        std::cout << "Uso: ./p01_single_grades <grades.txt>" << std::endl;
-        std::cout << "Donde <grades.txt> es el fichero de entrada." << std::endl;
-        std::cout << std::endl;
+    std::cout << "Este programa calcula la nota más alta de cada alumno." << std::endl;
+    std::cout << "El fichero de entrada debe tener el siguiente formato:" << std::endl;
+    std::cout << "Identificador Nota :" << std::endl;
+    std::cout << "alu0101xxxxx 9.5" << std::endl;
+    std::cout << std::endl;
+    std::cout << "Uso: ./p01_single_grades <grades.txt>" << std::endl;
+    std::cout << "Donde <grades.txt> es el fichero de entrada." << std::endl;
+    std::cout << std::endl;
 }
 
 /**
@@ -79,11 +79,11 @@ void interactive(Students students) {
             std::cin >> name;
 
             std::cout << "Introduzca la nota del alumno: ";
-            std::string gradeStr; // Leemos la entrada como una cadena
+            std::string gradeStr;  // Leemos la entrada como una cadena
             std::cin >> gradeStr;
 
             try {
-                float grade = std::stof(gradeStr); // Intentamos convertir la cadena en un número de coma flotante
+                float grade = std::stof(gradeStr);  // Convertimos la cadena a float
                 students.addStudent(name, grade);
                 print(students.getHighGrades());
             } catch (const std::invalid_argument&) {
