@@ -43,6 +43,7 @@ std::map<std::string, float> Students::getHighGrades() {
  * 
  * @return std::multimap<std::string, float> 
  */
+/*
 std::multimap<std::string, float> Students::getAllGrades() {
     std::multimap<std::string, float> allGrades;
     std::string name;
@@ -55,7 +56,7 @@ std::multimap<std::string, float> Students::getAllGrades() {
     }
 
     return allGrades;
-}
+}*/
 
 /**
  * @brief Add a student to the students' list interacting with the user.
