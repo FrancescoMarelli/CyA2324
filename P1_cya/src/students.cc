@@ -51,12 +51,7 @@ std::multimap<std::string, float> Students::getAllGrades() {
     for (auto it = students_.begin(); it != students_.end(); it++) {
         name = it->first;
         grade = it->second;
-
-        if (allGrades.find(name) == allGrades.end()) {
-            allGrades.insert(std::pair<std::string, float>(name, grade));
-        } else {
-            allGrades.insert(std::pair<std::string, float>(name, grade));
-        }
+        allGrades.insert(std::pair<std::string, float>(name, grade));
     }
 
     return allGrades;

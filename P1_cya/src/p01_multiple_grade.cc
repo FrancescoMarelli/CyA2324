@@ -19,11 +19,18 @@ void interactive(Students students);
 
 int main(int argc, char* argv[]) {
     if (argc != 2) {
-        std::cout << "Error: ./p01_single_grade grades.txt" << std::endl;
+        std::cout << "Error: ./p01_multiple_grade grades.txt" << std::endl;
         return 1;
     }
     if (std::string(argv[1]) == "--help" || std::string(argv[1]) == "-h") {
         Help();
+        return 1;
+    }
+
+
+    // Si fichero no es de tipo txt
+    if (std::string(argv[1]).substr(std::string(argv[1]).find_last_of(".") + 1) != "txt") {
+        std::cout << "Error: El fichero debe ser de tipo txt" << std::endl;
         return 1;
     }
 
@@ -44,7 +51,7 @@ void Help() {
     std::cout << "Identificador Nota :" << std::endl;
     std::cout << "alu0101xxxxx 9.5" << std::endl;
     std::cout << std::endl;
-    std::cout << "Uso: ./p01_single_grades <grades.txt>" << std::endl;
+    std::cout << "Uso: ./p01_multiple_grades grades.txt" << std::endl;
     std::cout << "Donde <grades.txt> es el fichero de entrada." << std::endl;
     std::cout << std::endl;
 }

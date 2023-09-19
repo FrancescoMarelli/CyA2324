@@ -19,14 +19,14 @@ class Students {
     std::multimap<std::string, float> students_;
 
  public:
-    Students(std::multimap<std::string, float> students) {setStudents(students);}
+    Students(std::multimap<std::string, float> students) { setStudents(students); }
     ~Students() {}
 
     std::multimap<std::string, float> getStudents() { return students_; }
     void setStudents(std::multimap<std::string, float> students) { students_ = students; }
+   
+    std::map<std::string, float> getHighGrades();  // Método para obtener la nota más alta de cada alumno
+    std::multimap<std::string, float> getAllGrades();  // Método para obtener todas las notas de cada alumno
 
-    std::map<std::string, float> getHighGrades();
-    std::multimap<std::string, float> getAllGrades();
-
-    void addStudent(std::string name, float grade);
+    void addStudent(std::string name, float grade);  // Método para añadir un alumno interactivamente
 };

@@ -26,6 +26,13 @@ int main(int argc, char* argv[]) {
         Help();
         return 1;
     }
+
+    // Si fichero no es de tipo txt
+    if (std::string(argv[1]).substr(std::string(argv[1]).find_last_of(".") + 1) != "txt") {
+        std::cout << "Error: El fichero debe ser de tipo txt" << std::endl;
+        return 1;
+    }
+
     FileManager file(argv[1]);
     std::multimap<std::string, float> rawStudents = file.getStudents();
     Students students(rawStudents);
@@ -44,7 +51,7 @@ void Help() {
     std::cout << "Identificador Nota :" << std::endl;
     std::cout << "alu0101xxxxx 9.5" << std::endl;
     std::cout << std::endl;
-    std::cout << "Uso: ./p01_single_grades <grades.txt>" << std::endl;
+    std::cout << "Uso: ./p01_single_grades grades.txt" << std::endl;
     std::cout << "Donde <grades.txt> es el fichero de entrada." << std::endl;
     std::cout << std::endl;
 }
