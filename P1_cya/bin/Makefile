@@ -16,6 +16,5 @@ fileManager.o: ../src/fileManager.cc ../lib/fileManager.h
 students.o : ../src/students.cc ../lib/students.h
 	g++ -std=c++14 -g -Wall -c ../src/students.cc
 
-
 clean: 
 	rm -f *.o p01_multiple_grade p01_single_grade
