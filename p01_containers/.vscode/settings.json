@@ -48,5 +48,6 @@
         "cstring": "cpp",
         "ctime": "cpp",
         "regex": "cpp"
-    }
+    },
+    "C_Cpp.errorSquiggles": "disabled"
 }
