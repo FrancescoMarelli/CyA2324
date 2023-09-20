@@ -12,6 +12,7 @@
 
 #include <regex>
 #include <limits>
+#include <set>
 
 /**
  * @brief Filter the students' grades to get the highest grade of each student.
@@ -43,20 +44,25 @@ std::map<std::string, float> Students::getHighGrades() {
  * 
  * @return std::multimap<std::string, float> 
  */
-/*
 std::multimap<std::string, float> Students::getAllGrades() {
     std::multimap<std::string, float> allGrades;
+    std::set<std::pair<std::string, float>> allGradesSorted;
     std::string name;
     float grade;
 
     for (auto it = students_.begin(); it != students_.end(); it++) {
         name = it->first;
         grade = it->second;
-        allGrades.insert(std::pair<std::string, float>(name, grade));
+        allGradesSorted.insert(std::make_pair(name, grade));
+    }
+
+    // Copiamos los elementos del set  ordenado en el multimap ordenado
+    for (auto it = allGradesSorted.begin(); it != allGradesSorted.end(); it++) {
+        allGrades.insert(*it);
     }
 
     return allGrades;
-}*/
+}
 
 /**
  * @brief Add a student to the students' list interacting with the user.

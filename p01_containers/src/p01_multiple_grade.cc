@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
     FileManager file(argv[1]);
     std::multimap<std::string, float> rawStudents = file.getStudents();
     Students students(rawStudents);
-    print(rawStudents);
+    print(students.getAllGrades());
     interactive(students);
 }
 
@@ -92,7 +92,6 @@ void interactive(Students students) {
             std::cout << "Introduzca el nombre del alumno: ";
             std::string name;
             std::cin >> name;
-
             std::cout << "Introduzca la nota del alumno: ";
             std::string gradeStr;  // Leemos la entrada como una cadena
             std::cin >> gradeStr;
@@ -100,7 +99,7 @@ void interactive(Students students) {
             try {
                 float grade = std::stof(gradeStr);  // Convertimos la cadena a float
                 students.addStudent(name, grade);
-                print(students.getStudents());
+                print(students.getAllGrades());
             } catch (const std::invalid_argument&) {
                 std::cout << "Error: No se proporcionó una nota numérica válida para " << name << "." << std::endl;
             } catch (const std::out_of_range&) {
