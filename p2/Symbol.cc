@@ -18,7 +18,7 @@
  * @return std::ostream& 
  */
 std::ostream &operator<<(std::ostream &os, const Symbol &symbol) {
-    os << symbol.symbol_ << " ,";
+    os << symbol.symbol_;
     return os;
 }
 
@@ -30,9 +30,10 @@ std::ostream &operator<<(std::ostream &os, const Symbol &symbol) {
  * @return std::istream& 
  */
 std::istream &operator>>(std::istream &is, const Symbol &symbol) {
-    is >> symbol.symbol_;
+    is >> symbol;
     return is;
 }
+
 
 /**
  * @brief 

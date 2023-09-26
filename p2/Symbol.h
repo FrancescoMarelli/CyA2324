@@ -15,14 +15,14 @@
 #pragma once
 
 class Symbol {
-    private:
+ private:
     std::string symbol_;
 
-    public:
-    Symbol(const std::string symbol) {setSymbol(symbol); }
-    ~Symbol(){}
+ public:
+   explicit Symbol(const std::string symbol) { setSymbol(symbol); }
+   ~Symbol() {}
 
-    void setSymbol(std::string symbol) {symbol_ = symbol;}
+    void setSymbol(std::string symbol) { symbol_ = symbol; }
     std::string getSymbol() const { return symbol_; }
 
     friend std::ostream &operator<<(std::ostream &os, const Symbol &symbol);

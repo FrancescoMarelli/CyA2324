@@ -10,6 +10,9 @@
 // Fecha: 22/09/2023
 #include <iostream>
 #include <vector>
+#include <set>
+#include <string>
+
 #include "Symbol.h"
 #include "Alphabet.h"
 
@@ -18,28 +21,30 @@
 const std::string kEpsilon = "&";
 
 class String {
-    private:
+ private:
     std::vector<Symbol> string_;
     unsigned size_;
 
-    public:
-    String(std::vector<Symbol>& string): string_(string) { size_ = string.size(); }
-    String(const std::string& line);
-    String(const String& string);
+ public:
+    explicit String(std::vector<Symbol> &string) : string_(string) { size_ = string.size(); }
+    explicit String(const std::string &line);
+    String(const String &string);
     String() {}
-    ~String(){}
+    ~String() {}
 
-    std::vector<Symbol> getSymbol(){ return string_;}
+    std::vector<Symbol> getSymbol() { return string_; }
     const Symbol getSymbol(int i) const { return string_[i]; }
     void setSymbol(std::vector<Symbol> symbol);
     unsigned size() const { return string_.size(); }
-    unsigned length() const;  //  opcode 2
 
-    std::set<Symbol> extractAlphabet();  //  opcode 1
+    std::set<Symbol> extractAlphabet();                //  opcode 1
+    unsigned extractLength() const;                    //  opcode 2
     String inverse(String string, Alphabet alphabet);  //  opcode 3
-    std::set<String> extractPrefixes();   //  opcode 4
-    bool checkString(String string, Alphabet alphabet);
+    std::set<String> extractPrefixes();                //  opcode 4
+    std::set<String> extractSuffixes();                //  opcode 5
+    bool checkString(Alphabet alphabet);
 
     friend std::ostream &operator<<(std::ostream &os, const String &string);
-    bool operator==(const String& other);
+    bool operator==(const String &other);
+    bool operator<(const String &other) const;
 };

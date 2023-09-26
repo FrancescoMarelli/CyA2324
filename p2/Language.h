@@ -8,6 +8,7 @@
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 22/09/2023
+#pragma once
 
 #include <iostream>
 #include <set>
@@ -15,18 +16,14 @@
 #include "String.h"
 
 class Language {
-    private:
-     std::set<String> language_;
+ private:
+    std::set<String> language_;
 
-    public:
-        Language(std::set<String> language) { setLanguage(language); }
-        Language() {}
-        ~Language(){}
-    
-        void setLanguage(std::set<String> language) { language_ = language; }
-        std::set<String> getLanguage() const { return language_; }
-        void addString(String string) { language_.insert(string); }
-    
-        bool operator=(const Language& other) const;
-        void write(std::ostream &os) const;
+ public:
+    explicit Language(std::set<String> language);
+    ~Language() {}
+    std::set<String> getLanguage() const { return language_;}
+
+    friend std::ostream &operator<<(std::ostream &os, const Language &language);
+    void write(std::ostream& os) const;
 };

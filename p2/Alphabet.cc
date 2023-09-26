@@ -8,16 +8,52 @@
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 22/09/2023
-
 #include "Alphabet.h"
 
 void Alphabet::write(std::ostream &os) const {
-  os << "{";
-  for (const Symbol &symbol : alphabet_) {
-    os << symbol;
-  }
-  os << "}";
+    if (alphabet_.size() == 0) {
+        os << "";
+        return;
+    }
+    os << "{";
+    if (alphabet_.size() > 1) {
+        for (auto it = alphabet_.begin(); it != alphabet_.end(); it++) {
+            if (it != alphabet_.begin() && it != alphabet_.end()) {
+                os << ", ";
+            }
+           os << *it;
+        }
+    }
+    os << "}" << std::endl;
 }
+
+
+/**
+ * @brief 
+ * 
+ * @param os 
+ * @param alphabet 
+ * @return std::ostream& 
+ */
+std::ostream &operator<<(std::ostream &os, const Alphabet &alphabet) {
+    alphabet.write(os);
+    return os;
+}
+
+
+bool Alphabet::operator=(const Alphabet& other) const {
+    if (alphabet_.size() != other.getAlphabet().size()) {
+        return false;
+    }
+    for (auto it = alphabet_.begin(); it != alphabet_.end(); it++) {
+        if (other.getAlphabet().find(*it) == other.getAlphabet().end()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+
 
 
 
