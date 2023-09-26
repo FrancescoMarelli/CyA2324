@@ -35,6 +35,8 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+
+    //  Comprobación de los ficheros de entrada y salida
     std::ifstream filein(argv[1]);
 
     if (!filein.is_open()) {
@@ -49,6 +51,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+
+    // Comprobación del opcode
     if (!std::isdigit(argv[3][0])) {
         std::cout << "Error, el opcode debe ser un número" << std::endl;
         return 1;
@@ -68,6 +72,14 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param opcode 
+ * @param filein 
+ * @param fileout 
+ */
 void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout) {
     switch (opcode) {
         case 1:
@@ -89,26 +101,6 @@ void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout)
             std::cout << "Error en el opcode" << std::endl;
             exit(1);
     }
-}
-
-void Help() {
-    std::cout << "---------------------------------------------------------------------" << std::endl;
-    std::cout << "Este programa es un programa que opera sobre cadenas." << std::endl;
-    std::cout << "Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
-    std::cout << "'./p02_strings filein.txt fileout.txt opcode'." << std::endl;
-    std::cout << std::endl;
-    std::cout << "De esta forma se elije cada operación que se desea realizar y los " << std::endl;
-    std::cout << "ficheros de entrada y de salida de las operaciones." << std::endl;
-    std::cout << std::endl;
-    std::cout << "El formato de los ficheros de entrada va a ser: " << std::endl;
-    std::cout << "abbbca" << std::endl;
-    std::cout << "donde 'abbbca' es una cadena arbitraria de las que podremos calcularle:" << std::endl;
-    std::cout << "1. Alfabeto" << std::endl;
-    std::cout << "2. Longitud" << std::endl;
-    std::cout << "3. Inversa" << std::endl;
-    std::cout << "4. Prefijo" << std::endl;
-    std::cout << "5. Sufijo" << std::endl;
-    std::cout << "-----------------------------------------------------------------------" << std::endl;
 }
 
 
@@ -193,4 +185,29 @@ void SuffixOperation(std::ifstream& filein, std::ofstream& fileout) {
         language.write(fileout);
     }
 }
+
+/**
+ * @brief 
+ * 
+ */
+void Help() {
+    std::cout << "---------------------------------------------------------------------" << std::endl;
+    std::cout << "Este programa es un programa que opera sobre cadenas." << std::endl;
+    std::cout << "Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
+    std::cout << "'./p02_strings filein.txt fileout.txt opcode'." << std::endl;
+    std::cout << std::endl;
+    std::cout << "De esta forma se elije cada operación que se desea realizar y los " << std::endl;
+    std::cout << "ficheros de entrada y de salida de las operaciones." << std::endl;
+    std::cout << std::endl;
+    std::cout << "El formato de los ficheros de entrada va a ser: " << std::endl;
+    std::cout << "abbbca" << std::endl;
+    std::cout << "donde 'abbbca' es una cadena arbitraria de las que podremos calcularle:" << std::endl;
+    std::cout << "1. Alfabeto" << std::endl;
+    std::cout << "2. Longitud" << std::endl;
+    std::cout << "3. Inversa" << std::endl;
+    std::cout << "4. Prefijo" << std::endl;
+    std::cout << "5. Sufijo" << std::endl;
+    std::cout << "-----------------------------------------------------------------------" << std::endl;
+}
+
 
