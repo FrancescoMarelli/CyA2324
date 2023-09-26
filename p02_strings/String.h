@@ -45,6 +45,7 @@ class String {
     bool checkString(Alphabet alphabet);
 
     friend std::ostream &operator<<(std::ostream &os, const String &string);
+    void write(std::ostream& os) const;
     bool operator==(const String &other);
     bool operator<(const String &other) const;
 };

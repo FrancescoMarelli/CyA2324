@@ -9,12 +9,20 @@
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 22/09/2023
 #include <iostream>
+#include <fstream>
+#include <set>
 #include "Symbol.h"
 #include "String.h"
 #include "Alphabet.h"
 #include "Language.h"
 
 void Help();
+void AlphabetOperation(std::ifstream& filein, std::ofstream& fileout);
+void LengthOperation(std::ifstream& filein, std::ofstream& fileout);
+void InverseOperation(std::ifstream& filein, std::ofstream& fileout);
+void PrefixOperation(std::ifstream& filein, std::ofstream& fileout);
+void SuffixOperation(std::ifstream& filein, std::ofstream& fileout);
+void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout);
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
@@ -24,12 +32,7 @@ int main(int argc, char* argv[]) {
     }
     if (std::string(argv[1]) == "--help" || std::string(argv[1]) == "--h") {
         Help();
-    }
-
-    int opcode = std::stoi(argv[3]);
-    if (opcode < 1 || opcode > 5) {
-        std::cout << "Error en el opcode, el rango es 1-5" << std::endl;
-        return 1;
+        return 0;
     }
 
     std::ifstream filein(argv[1]);
@@ -46,68 +49,46 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    const int kAlphabet = 1;
-    const int kLength = 2;
-    const int kInverse = 3;
-    const int kPrefix = 4;
-    const int kSuffix = 5;
-    switch (opcode) {
-        case kAlphabet: {
-            std::string line;
-            while (getline(filein, line)) {
-                String string(line);
-                Alphabet alphabet(string.extractAlphabet());
-                alphabet.write(fileout);
-            }
-            break;
-        }
-        case kLength: {
-            std::string line;
-            while (getline(filein, line)) {
-                String string(line);
-                fileout << string.extractLength() << std::endl;
-            }
-            break;
-        }
-        case kInverse: {
-            std::string line;
-            while (getline(filein, line)) {
-                String string(line);
-                Alphabet alphabet(string.extractAlphabet());
-                fileout << string.inverse(string, alphabet) << std::endl;
-            }
-            break;
-        }
-        case kPrefix: {
-            std::string line;
-            while (getline(filein, line)) {
-                String string(line);
-                Alphabet alphabet(string.extractAlphabet());
-                std::set<String> prefixes = string.extractPrefixes();
-                Language language(prefixes);
-                language.write(fileout);
-            }
-            break;
-        }
-        case kSuffix: {
-            std::string line;
-            while (getline(filein, line)) {
-                String string(line);
-                Alphabet alphabet(string.extractAlphabet());
-                std::set<String> suffixes = string.extractSuffixes();
-                Language language(suffixes);
-                language.write(fileout);
-            }
-            break;
-        }
-        break;
-        default: {
-            std::cout << "Error en el opcode" << std::endl;
-            return 1;
-        }
+    if (!std::isdigit(argv[3][0])) {
+        std::cout << "Error, el opcode debe ser un número" << std::endl;
+        return 1;
     }
+    int opcode = std::stoi(argv[3]);
+    if (opcode < 1 || opcode > 5) {
+        std::cout << "Error en el opcode, el rango es 1-5" << std::endl;
+        return 1;
+    }
+
+
+    // Método que realiza la operación deseada
+    PerformOperation(opcode, filein, fileout);
+
     filein.close();
     fileout.close();
+    return 0;
+}
+
+void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout) {
+    switch (opcode) {
+        case 1:
+            AlphabetOperation(filein, fileout);
+            break;
+        case 2:
+            LengthOperation(filein, fileout);
+            break;
+        case 3:
+            InverseOperation(filein, fileout);
+            break;
+        case 4:
+            PrefixOperation(filein, fileout);
+            break;
+        case 5:
+            SuffixOperation(filein, fileout);
+            break;
+        default:
+            std::cout << "Error en el opcode" << std::endl;
+            exit(1);
+    }
 }
 
 void Help() {
@@ -129,3 +110,87 @@ void Help() {
     std::cout << "5. Sufijo" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
 }
+
+
+/**
+ * @brief 
+ * 
+ * @param filein 
+ * @param fileout 
+ */
+void AlphabetOperation(std::ifstream& filein, std::ofstream& fileout) {
+    std::string line;
+    while (getline(filein, line)) {
+        String string(line);
+        Alphabet alphabet(string.extractAlphabet());
+        alphabet.write(fileout);
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param filein 
+ * @param fileout 
+ */
+void LengthOperation(std::ifstream& filein, std::ofstream& fileout) {
+    std::string line;
+    while (getline(filein, line)) {
+        String string(line);
+        fileout << string.extractLength() << std::endl;
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param filein 
+ * @param fileout 
+ */
+void InverseOperation(std::ifstream& filein, std::ofstream& fileout) {
+    std::string line;
+    while (getline(filein, line)) {
+        String string(line);
+        Alphabet alphabet(string.extractAlphabet());
+        string.inverse(string, alphabet).write(fileout);
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param filein 
+ * @param fileout 
+ */
+void PrefixOperation(std::ifstream& filein, std::ofstream& fileout) {
+    std::string line;
+    while (getline(filein, line)) {
+        String string(line);
+        Alphabet alphabet(string.extractAlphabet());
+        std::set<String> prefixes = string.extractPrefixes();
+        Language language(prefixes);
+        language.write(fileout);
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param filein 
+ * @param fileout 
+ */
+void SuffixOperation(std::ifstream& filein, std::ofstream& fileout) {
+    std::string line;
+    while (getline(filein, line)) {
+        String string(line);
+        Alphabet alphabet(string.extractAlphabet());
+        std::set<String> suffixes = string.extractSuffixes();
+        Language language(suffixes);
+        language.write(fileout);
+    }
+}
+

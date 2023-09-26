@@ -32,7 +32,7 @@ String::String(const String& string) {
     for (int i = 0; i < string.size_; ++i) {
         string_.push_back(string.getSymbol(i));
     }
-    size_ = string_.size();
+    size_ = string.size_;
 }
 
 
@@ -48,6 +48,18 @@ void String::setSymbol(std::vector<Symbol> string) {
     }
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param os 
+ */
+void String::write(std::ostream& os) const {
+    for (int i = 0; i < size_; ++i) {
+        os << string_[i].getSymbol();
+    }
+    os << std::endl;
+}
 
 /**
  * @brief 
@@ -111,9 +123,6 @@ std::set<Symbol> String::extractAlphabet() {
  * @return unsigned 
  */
 unsigned String::extractLength() const {
-    if (size_ == 0) {
-        return 0;
-    }
     // Si contiene la cadena vacia es 0
     if (string_[0] == Symbol(kEpsilon)) {
         return 0;
