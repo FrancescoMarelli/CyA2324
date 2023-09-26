@@ -43,7 +43,16 @@
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
+<<<<<<< HEAD
+        "typeinfo": "cpp",
+        "bitset": "cpp",
+        "cstring": "cpp",
+        "ctime": "cpp",
+        "regex": "cpp"
+    }
+=======
         "typeinfo": "cpp"
     },
     "C_Cpp.errorSquiggles": "disabled"
+>>>>>>> 03e6cd1b6dac70b8e1ebb843e50dfc6f5f1f2ec5
 }

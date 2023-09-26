@@ -1,3 +1,97 @@
+<<<<<<< HEAD:P1/src/students.cc
+// Copyright (C) 2023 Francesco Marelli
+// Universidad de La Laguna
+// Escuela Superior de Ingeniería y Tecnología
+// Grado en Ingeniería Informática
+// Asignatura: Computabilidad y Algoritmia
+// Curso: 2º
+// Práctica 1: Contenedores asociativos
+// Autor: Francesco Marelli
+// Correo: alu0101161730@ull.edu.es
+// Fecha: 13/09/2023
+#include "../lib/students.h"
+
+#include <regex>
+#include <limits>
+#include <set>
+
+
+/**
+ * @brief Filter the students' grades to get the highest grade of each student.
+ * 
+ * @return std::map<std::string, float> 
+ */
+std::map<std::string, float> Students::getHighGrades() {
+    std::map<std::string, float> highGrades;
+    std::string name;
+    float grade;
+
+    for (auto it = students_.begin(); it != students_.end(); it++) {
+        name = it->first;
+        grade = it->second;
+
+        if (highGrades.find(name) == highGrades.end()) {  // Si no existe el alumno en el map
+             highGrades.insert(std::pair<std::string, float>(name, grade));  // Inserta el alumno
+        } else {  // Si existe el alumno en el map
+            if (grade > highGrades[name]) {  // Comparo nota
+                highGrades[name] = grade;
+            }
+        }
+    }
+    return highGrades;
+}
+
+/**
+ * @brief Filter the students' grades to get all the grades of each student from lower to higher.
+ * 
+ * @return std::multimap<std::string, float> 
+ */
+std::multimap<std::string, float> Students::getAllGrades() {
+    std::multimap<std::string, float> allGrades;
+    std::set<std::pair<std::string, float>, std::less<std::pair<std::string, float>>> allGradesSorted; // Comparador std::greater() para ordenar de mayor a menor
+
+    std::string name;
+    float grade;
+
+    for (auto it = students_.begin(); it != students_.end(); it++) {
+        name = it->first;
+        grade = it->second;
+
+        // Insertamos el elemento en un set ordenado
+        allGradesSorted.insert(std::make_pair(name, grade));
+    }
+
+    // Copiamos los elementos del set  ordenado en el multimap ordenado
+    for (auto it = allGradesSorted.begin(); it != allGradesSorted.end(); it++) {
+        allGrades.insert(*it);
+    }
+
+    return allGrades;
+}
+
+
+/**
+ * @brief Add a student to the students' list interacting with the user.
+ * 
+ * @param name 
+ * @param grade 
+ */
+void Students::addStudent(std::string name, float grade) {
+    std::regex namePattern("alu\\d{10}");
+    if (std::regex_match(name, namePattern)) {
+        if (grade >= 0 && grade <= 10) {
+            students_.insert(std::pair<std::string, float>(name, grade));
+        } else {
+            std::cout << "Error: " << name << " tiene una nota incorrecta." << std::endl;
+        }
+    } else {
+        std::cout << "Error: " << name << " tiene un formato de identificador de alumno incorrecto." << std::endl;
+    }
+}
+
+
+
+=======
 // Copyright (C) 2023 Francesco Marelli
 // Universidad de La Laguna
 // Escuela Superior de Ingeniería y Tecnología
@@ -85,3 +179,4 @@ void Students::addStudent(std::string name, float grade) {
 
 
 
+>>>>>>> 03e6cd1b6dac70b8e1ebb843e50dfc6f5f1f2ec5:p01_containers/src/students.cc
