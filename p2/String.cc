@@ -82,6 +82,7 @@ bool String::checkString(String string, Alphabet alphabet) {
     return true;
 }
 
+
 /**
  * @brief 
  * 
