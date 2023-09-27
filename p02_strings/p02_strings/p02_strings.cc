@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    //  Comprobación de los ficheros de entrada y salida
+    //  Check input and output files
     std::ifstream filein(argv[1]);
 
     if (!filein.is_open()) {
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    // Comprobación del opcode
+    // Check opcode
     if (!std::isdigit(argv[3][0])) {
         std::cout << "Error, el opcode debe ser un número" << std::endl;
         return 1;
@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
     }
 
 
-    // Método que realiza la operación deseada
+    // Mehtod to perform the operation
     PerformOperation(opcode, filein, fileout);
 
     filein.close();
@@ -74,7 +74,7 @@ int main(int argc, char* argv[]) {
 
 
 /**
- * @brief 
+ * @brief Function which switch the operation to perform
  * 
  * @param opcode 
  * @param filein 
@@ -105,7 +105,7 @@ void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout)
 
 
 /**
- * @brief 
+ * @brief Function which perform the alphabet operation
  * 
  * @param filein 
  * @param fileout 
@@ -121,7 +121,7 @@ void AlphabetOperation(std::ifstream& filein, std::ofstream& fileout) {
 
 
 /**
- * @brief 
+ * @brief Function which perform the length operation
  * 
  * @param filein 
  * @param fileout 
@@ -136,7 +136,7 @@ void LengthOperation(std::ifstream& filein, std::ofstream& fileout) {
 
 
 /**
- * @brief 
+ * @brief Function which perform the inverse operation
  * 
  * @param filein 
  * @param fileout 
@@ -152,7 +152,7 @@ void InverseOperation(std::ifstream& filein, std::ofstream& fileout) {
 
 
 /**
- * @brief 
+ * @brief Function which perform the prefix operation
  * 
  * @param filein 
  * @param fileout 
@@ -170,7 +170,7 @@ void PrefixOperation(std::ifstream& filein, std::ofstream& fileout) {
 
 
 /**
- * @brief 
+ * @brief Function which perform the suffix operation
  * 
  * @param filein 
  * @param fileout 
@@ -187,7 +187,7 @@ void SuffixOperation(std::ifstream& filein, std::ofstream& fileout) {
 }
 
 /**
- * @brief 
+ * @brief Help function
  * 
  */
 void Help() {

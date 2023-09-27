@@ -25,24 +25,22 @@ Language::Language(std::set<String> language) {
 }
 
 /**
- * @brief 
+ * @brief Formatted Extraction operator for Language
  * 
  * @param os 
  * @param language 
  * @return std::ostream& 
  */
 std::ostream &operator<<(std::ostream &os, const Language &language) {
-    os << "{";
     for (const String &string : language.getLanguage()) {
-        os << string << " ,";
+        os << string;
     }
-    os << "}";
     return os;
 }
 
 
 /**
- * @brief 
+ * @brief Formatted Write method for Language
  * 
  * @param os 
  */

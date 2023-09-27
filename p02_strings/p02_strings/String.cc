@@ -12,6 +12,7 @@
 
 /**
  * @brief Construct a new String:: String object
+ * through a std::string
  * 
  * @param line 
  */
@@ -25,6 +26,7 @@ String::String(const std::string& line) {
 
 /**
  * @brief Construct a new String:: String object
+ * through a String(vector of symbols)
  * 
  * @param string 
  */
@@ -38,7 +40,7 @@ String::String(const String& string) {
 
 
 /**
- * @brief 
+ * @brief Setter for the string
  * 
  * @param string 
  */
@@ -50,7 +52,7 @@ void String::setSymbol(std::vector<Symbol> string) {
 
 
 /**
- * @brief 
+ * @brief Write method for String
  * 
  * @param os 
  */
@@ -62,7 +64,7 @@ void String::write(std::ostream& os) const {
 }
 
 /**
- * @brief 
+ * @brief Extractor operator for String
  * 
  * @param os 
  * @param string 
@@ -77,7 +79,7 @@ std::ostream &operator<<(std::ostream &os, const String &string) {
 
 
 /**
- * @brief 
+ * @brief Method that check if a string is in an alphabet
  * 
  * @param alphabet 
  * @return true 
@@ -96,7 +98,8 @@ bool String::checkString(Alphabet alphabet) {
 
 
 /**
- * @brief 
+ * @brief Method of function 1 that build the alphabet
+ * from a string 
  * 
  * @return Alphabet 
  */
@@ -118,7 +121,7 @@ std::set<Symbol> String::extractAlphabet() {
 
 
 /**
- * @brief 
+ * @brief Method of function 2 that extract the length of a string
  * 
  * @return unsigned 
  */
@@ -133,7 +136,7 @@ unsigned String::extractLength() const {
 
 
 /**
- * @brief 
+ * @brief  Method of function 3 that invert a string
  * 
  * @param string 
  * @param alphabet 
@@ -150,17 +153,16 @@ String String::inverse(String string, Alphabet alphabet) {
   }
 
 
-  // Invierte el vector 'inverse' sin los simbolos vacios
+  // Invert the string without empty symbols
   std::reverse(inverse.begin(), inverse.end());
     return String(inverse);
   } else {
-    std::cout << "La cadena " << string << " no pertenece al alfabeto " << std::endl;
-    return String("");
+    return String(kEpsilon);
   }
 }
 
 /**
- * @brief 
+ * @brief Method of function 4 that extract the prefixes of a string
  * 
  * @return std::set<String> 
  */
@@ -176,7 +178,7 @@ std::set<String> String::extractPrefixes() {
 
 
 /**
- * @brief 
+ * @brief Method of function 5 that extract the suffixes of a string
  * 
  * @return std::set<String> 
  */
@@ -192,7 +194,8 @@ std::set<String> String::extractSuffixes() {
 
 
 /**
- * @brief 
+ * @brief Less Operator of string that compare two strings
+ * size, and order
  * 
  * @param other 
  * @return true 

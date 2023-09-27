@@ -11,7 +11,7 @@
 #include "Symbol.h"
 
 /**
- * @brief 
+ * @brief Extraction operator for Symbol
  * 
  * @param os 
  * @param symbol 
@@ -23,7 +23,7 @@ std::ostream &operator<<(std::ostream &os, const Symbol &symbol) {
 }
 
 /**
- * @brief 
+ * @brief Insertion operator for Symbol
  * 
  * @param is 
  * @param symbol 
@@ -36,7 +36,7 @@ std::istream &operator>>(std::istream &is, const Symbol &symbol) {
 
 
 /**
- * @brief 
+ * @brief == Operator for Symbol
  * 
  * @param symbol 
  * @return true 
@@ -46,10 +46,25 @@ bool Symbol::operator==(const Symbol& symbol) const {
     return this->getSymbol() == symbol.getSymbol();
 }
 
+/**
+ * @brief != Operator for Symbol
+ * 
+ * @param symbol 
+ * @return true 
+ * @return false 
+ */
 bool Symbol::operator!=(const Symbol& symbol) const {
     return this->getSymbol() != symbol.getSymbol();
 }
 
+
+/**
+ * @brief < Operator for Symbol
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
 bool Symbol::operator<(const Symbol& other) const {
     return getSymbol() < other.getSymbol();
 }

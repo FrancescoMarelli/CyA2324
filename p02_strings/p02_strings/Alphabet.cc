@@ -10,6 +10,12 @@
 // Fecha: 22/09/2023
 #include "Alphabet.h"
 
+
+/**
+ * @brief Write method for Alphabet
+ * 
+ * @param line 
+ */
 void Alphabet::write(std::ostream &os) const {
     if (alphabet_.size() == 0) {
         os << "";
@@ -29,7 +35,7 @@ void Alphabet::write(std::ostream &os) const {
 
 
 /**
- * @brief 
+ * @brief Extractor operator for Alphabet
  * 
  * @param os 
  * @param alphabet 
@@ -41,6 +47,12 @@ std::ostream &operator<<(std::ostream &os, const Alphabet &alphabet) {
 }
 
 
+/**
+ * @brief Asignation Operator for Alphabet
+ * 
+ * @param other
+ * @return true
+*/
 bool Alphabet::operator=(const Alphabet& other) const {
     if (alphabet_.size() != other.getAlphabet().size()) {
         return false;
