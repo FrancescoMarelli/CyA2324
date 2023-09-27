@@ -22,11 +22,12 @@ void LengthOperation(std::ifstream& filein, std::ofstream& fileout);
 void InverseOperation(std::ifstream& filein, std::ofstream& fileout);
 void PrefixOperation(std::ifstream& filein, std::ofstream& fileout);
 void SuffixOperation(std::ifstream& filein, std::ofstream& fileout);
+void prefixSuffixOperation(std::ifstream& filein, std::ofstream& fileout);
 void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout);
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {
-        std::cout << "Modo de empleo: ./p02_strings filein.txt filoeout.txt opcode" << std::endl;
+        std::cout << "Modo de empleo: ./p02_strings filein.txt fileout.txt opcode" << std::endl;
         std::cout << "'./p02_strings --help' para más información" << std::endl;
         return 1;
     }
@@ -34,7 +35,6 @@ int main(int argc, char* argv[]) {
         Help();
         return 0;
     }
-
 
     //  Check input and output files
     std::ifstream filein(argv[1]);
@@ -58,8 +58,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     int opcode = std::stoi(argv[3]);
-    if (opcode < 1 || opcode > 5) {
-        std::cout << "Error en el opcode, el rango es 1-5" << std::endl;
+    if (opcode < 1 || opcode > 6) {
+        std::cout << "Error en el opcode, el rango es 1-6" << std::endl;
         return 1;
     }
 
@@ -96,6 +96,9 @@ void PerformOperation(int opcode, std::ifstream& filein, std::ofstream& fileout)
             break;
         case 5:
             SuffixOperation(filein, fileout);
+            break;
+        case 6:
+            prefixSuffixOperation(filein, fileout);
             break;
         default:
             std::cout << "Error en el opcode" << std::endl;
@@ -186,6 +189,21 @@ void SuffixOperation(std::ifstream& filein, std::ofstream& fileout) {
     }
 }
 
+
+/**
+ * @brief Function which perform the substring operation
+*/
+void prefixSuffixOperation(std::ifstream& filein, std::ofstream& fileout) {
+    std::string line;
+    while (getline(filein, line)) {
+        String string(line);
+        Alphabet alphabet(string.extractAlphabet());
+        std::set<String> prefSuff = string.prefixSuffix();
+        Language language(prefSuff);
+        language.write(fileout);
+    }
+}
+
 /**
  * @brief Help function
  * 
@@ -207,6 +225,7 @@ void Help() {
     std::cout << "3. Inversa" << std::endl;
     std::cout << "4. Prefijo" << std::endl;
     std::cout << "5. Sufijo" << std::endl;
+    std::cout << "6. Subcadena" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
 }
 

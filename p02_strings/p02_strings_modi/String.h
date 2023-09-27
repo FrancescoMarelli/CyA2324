@@ -43,10 +43,12 @@ class String {
     String inverse(String string, Alphabet alphabet);  //  opcode 3
     std::set<String> extractPrefixes();                //  opcode 4
     std::set<String> extractSuffixes();                //  opcode 5
-    std::set<String> extractSubstrings();              //  opcode 6
+    std::set<String> prefixSuffix();                   //  opcode 6
 
     friend std::ostream &operator<<(std::ostream &os, const String &string);
     void write(std::ostream& os) const;
     bool operator==(const String &other);
     bool operator<(const String &other) const;
+    String operator+(const String &other) const;
 };
+

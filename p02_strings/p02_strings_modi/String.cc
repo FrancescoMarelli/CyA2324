@@ -87,9 +87,9 @@ std::ostream &operator<<(std::ostream &os, const String &string) {
  */
 bool String::checkString(Alphabet alphabet) {
     // comprueba que string este en alphabet
-    std::set<Symbol> alphabet_ = alphabet.getAlphabet();
+    std::set<Symbol> alpha = alphabet.getAlphabet();
     for (int i = 0; i < size_; ++i) {
-        if (alphabet_.find(string_[i]) == alphabet_.end()) {
+        if (alpha.find(string_[i]) == alpha.end()) {
             return false;
         }
     }
@@ -219,6 +219,20 @@ bool String::operator<(const String& other) const {
 }
 
 
-std::set<String> String::extractSubstrings() {
-    
+/**
+ * @brief Method that extract the substrings of a string
+ * that are both prefix and suffix
+ * 
+ * @return std::set<String> 
+ */
+std::set<String> String::prefixSuffix() {
+    std::set<String> prefixesString = extractPrefixes();
+    std::set<String> suffixesString = extractSuffixes();
+    std::set<String> substrings;
+    for (const String& prefix : prefixesString) {
+        if (suffixesString.find(prefix) != suffixesString.end()) {
+            substrings.insert(prefix);
+        }
+    }
+    return substrings;
 }
