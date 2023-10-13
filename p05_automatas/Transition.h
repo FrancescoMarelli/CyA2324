@@ -33,5 +33,7 @@ class Transition {
     void setSymbol(Symbol symbol) { symbol_ = symbol;}
     void setStateOrigin(State stateOrigin) { stateOrigin_ = stateOrigin;}
     void setStateDestiny(State stateDestiny) { stateDestiny_ = stateDestiny;}
+    bool operator<(const Transition& other) const;
+    void setTransition(Symbol, State, State);
 };
 

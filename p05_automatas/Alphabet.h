@@ -23,6 +23,7 @@ class Alphabet {
 
  public:
     explicit Alphabet(std::set<Symbol> alphabet) { setAlphabet(alphabet); }
+    Alphabet(const Alphabet& other) { alphabet_ = other.getAlphabet(); }
     Alphabet() {}
     ~Alphabet() {}
 

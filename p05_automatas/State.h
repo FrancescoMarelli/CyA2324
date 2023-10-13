@@ -17,19 +17,20 @@ class State {
  private:
     std::string label_;
     bool isFinal_;
-    bool isStarting_;
 
  public:
-    State(std::string&, bool&, bool&);
+    State(std::string&, const bool&);
     State() {}
     ~State() {}
 
     void setLabel(std::string label) { label_ = label; }
     void setIsFinal(bool isFinal) { isFinal_ = isFinal; }
-    void setIsStarting(bool isStarting) { isStarting_ = isStarting; }
 
     std::string getLabel() const { return label_; }
     bool getIsFinal() const { return isFinal_; }
-    bool getIsStarting() const { return isStarting_; }
+    bool operator==(const State& other) const;
+    bool operator<(const State& other) const;
+
+    friend std::istream &operator>>(std::istream &is, State &state);
 };
 

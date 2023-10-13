@@ -10,6 +10,7 @@
 // Fecha: 12/10/2023
 #include <iostream>
 #include "Automaton.h"
+#include "Language.h"
 
 void Help();
 
@@ -44,6 +45,7 @@ int main(int argc, char* argv[]) {
     }
     Automaton automaton;
     automaton.reader(fileFa);
+
 
     fileFa.close();
     fileStrings.close();

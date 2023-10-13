@@ -16,11 +16,44 @@
  * 
  * @param label 
  * @param isFinal 
- * @param isStarting 
  */
-State::State(std::string& label, bool& isFinal, bool& isStarting) {
+State::State(std::string& label, const bool& isFinal) {
   label_ = label;
   isFinal_ = isFinal;
-  isStarting_ = isStarting;
 }
 
+/**
+ * @brief 
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
+bool State::operator==(const State& other) const {
+  return label_ == other.getLabel() && isFinal_ == other.getIsFinal();
+}
+
+/**
+ * @brief 
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
+bool State::operator<(const State& other) const {
+  return label_ < other.getLabel();
+}
+
+/**
+ * @brief 
+ * 
+ * @param is 
+ * @param state 
+ * @return std::istream& 
+ */
+std::istream &operator>>(std::istream &is, State &state) {
+  std::string label;
+  is >> label;
+  state.setLabel(label);
+  return is;
+}

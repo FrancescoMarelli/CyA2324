@@ -21,6 +21,7 @@ class Language {
 
  public:
     explicit Language(std::set<String> language);
+    Language() {}
     ~Language() {}
     std::set<String> getLanguage() const { return language_;}
 
