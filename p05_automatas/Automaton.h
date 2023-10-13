@@ -11,7 +11,7 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include <map>
+#include <istream>
 
 #include "Alphabet.h"
 #include "State.h"
@@ -32,5 +32,6 @@ class Automaton {
     Automaton() {}
     ~Automaton() {}
 
+    void reader(std::ifstream&);
     Language operate();
 };

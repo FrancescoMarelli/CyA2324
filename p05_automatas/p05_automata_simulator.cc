@@ -9,12 +9,12 @@
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
 #include <iostream>
-#include "Automata.h"
+#include "Automaton.h"
 
 void Help();
 
 int main(int argc, char* argv[]) {
-    if (argc != 4) {
+    if (argc != 3) {
         std::cout << "Modo de empleo: ./p05_automata_simulation input.dfa input.txt" << std::endl;
         std::cout << "'./p05_automata_simulation --help' para más información" << std::endl;
         return 1;
@@ -37,17 +37,19 @@ int main(int argc, char* argv[]) {
         std::cout << "Error al abrir el fichero de entrada de las cadenas" << std::endl;
         return 1;
     }
-
     std::ofstream fileout("output.txt");
-
     if (!fileout.is_open()) {
         std::cout << "Error al abrir el fichero de salida" << std::endl;
         return 1;
     }
+    Automaton automaton;
+    automaton.reader(fileFa);
 
     fileFa.close();
     fileStrings.close();
     fileout.close();
+
+
     return 0;
 }
 
