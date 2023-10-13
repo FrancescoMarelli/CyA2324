@@ -207,6 +207,7 @@ void Help() {
     std::cout << "3. Inversa" << std::endl;
     std::cout << "4. Prefijo" << std::endl;
     std::cout << "5. Sufijo" << std::endl;
+    std::cout << "Si se usa la cadena vacía, se representará con un '&' en el fichero" << std::endl;
     std::cout << "-----------------------------------------------------------------------" << std::endl;
 }
 
