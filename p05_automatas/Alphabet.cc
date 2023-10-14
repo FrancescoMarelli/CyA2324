@@ -54,6 +54,19 @@ bool Alphabet::operator=(const Alphabet& other) const {
 }
 
 
+/**
+ * @brief 
+ * 
+ * @param symbol 
+ */
+void Alphabet::addSymbol(Symbol symbol) { 
+    if (symbol.getSymbol() != "&") {
+        alphabet_.insert(symbol);
+    } else {
+        std::cout << "Error: el symbolo & no puede formar un alfabeto." << std::endl;
+    }
+}
+
 
 
 

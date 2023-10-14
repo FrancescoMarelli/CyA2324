@@ -46,7 +46,6 @@ int main(int argc, char* argv[]) {
     Automaton automaton;
     automaton.reader(fileFa);
 
-
     fileFa.close();
     fileStrings.close();
     fileout.close();

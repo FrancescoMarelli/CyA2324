@@ -20,6 +20,7 @@ class State {
 
  public:
     State(std::string&, const bool&);
+    State(std::string& label) : label_(label) {}
     State() {}
     ~State() {}
 
@@ -30,6 +31,7 @@ class State {
     bool getIsFinal() const { return isFinal_; }
     bool operator==(const State& other) const;
     bool operator<(const State& other) const;
+    bool operator!=(const State& other) const;
 
     friend std::istream &operator>>(std::istream &is, State &state);
 };

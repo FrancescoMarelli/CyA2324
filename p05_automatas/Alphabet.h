@@ -29,7 +29,7 @@ class Alphabet {
 
     void setAlphabet(std::set<Symbol> alphabet) { alphabet_ = alphabet; }
     std::set<Symbol> getAlphabet() const { return alphabet_; }
-    void addSymbol(Symbol symbol) { alphabet_.insert(symbol); }
+    void addSymbol(Symbol symbol);
 
     bool operator=(const Alphabet& other) const;
 

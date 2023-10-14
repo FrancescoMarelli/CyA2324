@@ -24,8 +24,7 @@ class Automaton {
  private:
     Alphabet alphabet_;
     std::set<State> stateSet_;
-    std::set<State> finalState_;
-    State starting_;
+    State startingState_;
     int howManyStates_;
     std::set<Transition> transition_;
 
@@ -34,12 +33,22 @@ class Automaton {
     ~Automaton() {}
     void setAlphabet(Alphabet alphabet) { alphabet_ = alphabet; }
     Alphabet getAlphabet() { return alphabet_; }
-    void setStatesCount(int howManyStates) { howManyStates_ = howManyStates; }
-    void addStates(State state) { stateSet_.insert(state); }
-    void setStartingState(State starting) { starting_ = starting; }
-    void reader(std::ifstream&);
-    void setFinalState(std::set<State> finalState) { finalState_ = finalState; }
+    void setStatesCount(std::string howManyStates);
+    void addStates(State state);
+    void setStartingState(std::string state);
+    
+    
     void addTransition(Transition transition) { transition_.insert(transition); }
     std::set<Transition> getTransition() { return transition_; }
 
+    bool isState(State);
+    bool alphabetOk(Symbol);
+    
+    void reader(std::ifstream&);
+    std::vector<std::string> getLines(std::ifstream&);
+    void readAlphabet(std::string, Alphabet&);
+    void readStatesCount(std::string);
+    void readStartingState(std::string);
+    void readTransition(std::string);
+   
 };

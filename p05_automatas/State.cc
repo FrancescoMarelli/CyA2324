@@ -57,3 +57,14 @@ std::istream &operator>>(std::istream &is, State &state) {
   state.setLabel(label);
   return is;
 }
+
+/**
+ * @brief 
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
+bool State::operator!=(const State& other) const {
+  return !(*this == other);
+}
