@@ -16,11 +16,11 @@
 class State {
  private:
     std::string label_;
-    bool isFinal_;
+    std::string isFinal_;
 
  public:
-    State(std::string&, const bool&);
-    State(std::string& label) : label_(label) {}
+    State(std::string&, const std::string&);
+    explicit State(std::string& label) : label_(label) {}
     State() {}
     ~State() {}
 
@@ -28,7 +28,7 @@ class State {
     void setIsFinal(bool isFinal) { isFinal_ = isFinal; }
 
     std::string getLabel() const { return label_; }
-    bool getIsFinal() const { return isFinal_; }
+    std::string getIsFinal() const { return isFinal_; }
     bool operator==(const State& other) const;
     bool operator<(const State& other) const;
     bool operator!=(const State& other) const;

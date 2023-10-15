@@ -10,13 +10,16 @@
 // Fecha: 12/10/2023
 #include "Alphabet.h"
 
+const std::string kEpsilon = "&";  // NOLINT
+
+
 void Alphabet::write(std::ostream &os) const {
     if (alphabet_.size() == 0) {
         os << "";
         return;
     }
-    os << "{";
     if (alphabet_.size() > 1) {
+    os << "{";
         for (auto it = alphabet_.begin(); it != alphabet_.end(); it++) {
             if (it != alphabet_.begin() && it != alphabet_.end()) {
                 os << ", ";
@@ -59,11 +62,11 @@ bool Alphabet::operator=(const Alphabet& other) const {
  * 
  * @param symbol 
  */
-void Alphabet::addSymbol(Symbol symbol) { 
-    if (symbol.getSymbol() != "&") {
+void Alphabet::addSymbol(Symbol symbol) {
+    if (symbol.getSymbol() != kEpsilon) {
         alphabet_.insert(symbol);
-    } else {
-        std::cout << "Error: el symbolo & no puede formar un alfabeto." << std::endl;
+    } else if (symbol.getSymbol() == kEpsilon) {
+        alphabet_.insert(Symbol(""));
     }
 }
 

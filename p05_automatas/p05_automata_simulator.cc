@@ -43,8 +43,8 @@ int main(int argc, char* argv[]) {
         std::cout << "Error al abrir el fichero de salida" << std::endl;
         return 1;
     }
-    Automaton automaton;
-    automaton.reader(fileFa);
+    Automaton automaton(fileFa);
+    automaton.checkString(fileStrings, fileout);
 
     fileFa.close();
     fileStrings.close();

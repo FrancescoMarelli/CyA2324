@@ -17,7 +17,7 @@
  * @param label 
  * @param isFinal 
  */
-State::State(std::string& label, const bool& isFinal) {
+State::State(std::string& label, const std::string& isFinal) {
   label_ = label;
   isFinal_ = isFinal;
 }

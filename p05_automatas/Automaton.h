@@ -12,6 +12,7 @@
 #include <vector>
 #include <set>
 #include <istream>
+#include <string>
 
 #include "Alphabet.h"
 #include "State.h"
@@ -29,26 +30,24 @@ class Automaton {
     std::set<Transition> transition_;
 
  public:
-    Automaton() {}
+    explicit Automaton(std::ifstream&);
     ~Automaton() {}
+
     void setAlphabet(Alphabet alphabet) { alphabet_ = alphabet; }
     Alphabet getAlphabet() { return alphabet_; }
     void setStatesCount(std::string howManyStates);
     void addStates(State state);
     void setStartingState(std::string state);
-    
-    
     void addTransition(Transition transition) { transition_.insert(transition); }
     std::set<Transition> getTransition() { return transition_; }
 
-    bool isState(State);
     bool alphabetOk(Symbol);
-    
-    void reader(std::ifstream&);
+
+    void buildAutomaton(std::ifstream&);
     std::vector<std::string> getLines(std::ifstream&);
-    void readAlphabet(std::string, Alphabet&);
+    void readAlphabet(std::string);
     void readStatesCount(std::string);
     void readStartingState(std::string);
     void readTransition(std::string);
-   
 };
+

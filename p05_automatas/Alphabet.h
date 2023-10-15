@@ -14,6 +14,8 @@
 #include <iostream>
 #include <set>
 #include <algorithm>
+#include <string>
+
 
 #include "Symbol.h"
 
