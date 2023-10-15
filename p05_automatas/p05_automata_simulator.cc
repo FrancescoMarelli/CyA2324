@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     Automaton automaton(fileFa);
-    automaton.checkString(fileStrings, fileout);
+   // automaton.checkString(fileStrings, fileout);
 
     fileFa.close();
     fileStrings.close();
