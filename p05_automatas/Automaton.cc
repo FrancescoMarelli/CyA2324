@@ -238,7 +238,8 @@ void Automaton::elaborateStrings(std::ifstream& fileStrings) {
  */
 void Automaton::checkStrings(std::vector<String>& string_vector) {
     for (int i = 0; i < string_vector.size(); i++) {
-        if (AutomatonCheck(string_vector[i])) {
+        bool stringValid = AutomatonCheckStrings(string_vector[i]);
+        if (stringValid) {
             for (auto string : string_vector[i].getSymbol()) {
                 std::cout << string;
             }
@@ -279,7 +280,7 @@ std::vector<String> Automaton::readStrings(std::vector<std::string>& lines) {
  * @return true 
  * @return false 
  */
-bool Automaton::AutomatonCheck(String& string) {
+bool Automaton::AutomatonCheckStrings(String& string) {
     if (!string.belongsToAlphabet(alphabet_)) {
         return false;
     }
