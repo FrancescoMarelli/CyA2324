@@ -32,7 +32,8 @@ class String {
     String(const String &string);
     String() {}
     ~String() {}
-
+    
+    void addSymbol(Symbol symbol) { string_.push_back(symbol); }
     std::vector<Symbol> getSymbol() { return string_; }
     const Symbol getSymbol(int i) const { return string_[i]; }
     void setSymbol(std::vector<Symbol> symbol);

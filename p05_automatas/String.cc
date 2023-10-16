@@ -87,12 +87,12 @@ std::ostream &operator<<(std::ostream &os, const String &string) {
 bool String::checkString(Alphabet alphabet) {
     // comprueba que string este en alphabet
     std::set<Symbol> alphabet_ = alphabet.getAlphabet();
-    for (int i = 0; i < size_; ++i) {
-        if (alphabet_.find(string_[i]) == alphabet_.end()) {
-            return false;
+    for (int i = 0; i < getSymbol().size(); ++i) {
+        if (alphabet_.find(string_[i]) == alphabet_.end() || string_[i] != Symbol(kEpsilon)) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 

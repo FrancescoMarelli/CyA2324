@@ -5,8 +5,8 @@ p05_automata_simulator.o: p05_automata_simulator.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p05_automata_simulator.cc
 
 Automaton.o: Automaton.h Automaton.cc
-	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Automaton.cc
-
+	g++ -std=c++14 -g -Wall -Wno-return-type -Wno-sign-compare -c Automaton.cc
+	
 Transition.o: Transition.h Transition.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Transition.cc
 

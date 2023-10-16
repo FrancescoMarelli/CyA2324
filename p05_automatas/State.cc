@@ -17,9 +17,9 @@
  * @param label 
  * @param isFinal 
  */
-State::State(std::string& label, const std::string& isFinal) {
+State::State(std::string& label, const std::string& type) {
   label_ = label;
-  isFinal_ = isFinal;
+  type_ = type;
 }
 
 /**
@@ -30,7 +30,7 @@ State::State(std::string& label, const std::string& isFinal) {
  * @return false 
  */
 bool State::operator==(const State& other) const {
-  return label_ == other.getLabel() && isFinal_ == other.getIsFinal();
+  return label_ == other.getLabel();
 }
 
 /**

@@ -14,9 +14,8 @@
 
 #include "Automaton.h"
 
-const std::string kFinal = "1";  // NOLINT
-const std::string kNotFinal = "0";  // NOLINT
-
+const std::string kFinal = "1";
+const std::string kNotFinal = "0";
 
 /**
  * @brief Construct a new Automaton:: Automaton object
@@ -54,15 +53,10 @@ void Automaton::buildAutomaton(std::ifstream& file) {
     readAlphabet(lines[0]);
     readStatesCount(lines[1]);
     readStartingState(lines[2]);
+    readStates(lines);
 
     for (int i = 3; i < lines.size(); i++)
         readTransition(lines[i]);
-
-    // check if the automaton transitions are correct
-    for (auto transition : transition_) {
-        std::cout << transition.getSymbol().getSymbol() << " " << transition.getStateOrigin().getLabel()
-        << " " << transition.getStateDestiny().getLabel() << std::endl;
-    }
 }
 
 
@@ -113,12 +107,22 @@ void Automaton::readStartingState(std::string line) {
     }
     // Remove any whitespace characters from the line
     line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
-    startingState_ = State(line,  kNotFinal);
+    startingState_ = State(line, kNotFinal);
 }
 
+void Automaton::readStates(std::vector<std::string> lines) {
+    for (int i = 3; i < lines.size(); ++i) {
+        if (lines[i] != "") {
+            State state;
+            state.setLabel(std::string(1, lines[i][0]));
+            state.setType(std::string(1, lines[i][2]));
+            stateSet_.insert(state);
+        }
+    }
+}
 
 /**
- * @brief Reads the transitions from the file
+ * @brief 
  * 
  * @param line 
  */
@@ -126,23 +130,38 @@ void Automaton::readTransition(std::string line) {
     line.erase(std::remove_if(line.end() - 1, line.end(), ::isspace), line.end());
     std::istringstream iss(line);
     std::string stateLabel;
-    std::string isFinal;
+    std::string type;
     int  numTransitions;
-    iss >> stateLabel >> isFinal >> numTransitions;
-    State state(stateLabel, isFinal);
+    iss >> stateLabel >> type >> numTransitions;
+    State state(stateLabel, type);
     addStates(state);
     for (int j = 0; j < numTransitions; j++) {
         std::string symbol;
         std::string destLabel;
         iss >> symbol >> destLabel;
+        State destState(getState(destLabel));
         if (alphabetOk(Symbol(symbol))) {
-            Transition transition(Symbol(symbol), state, State(destLabel, isFinal));
+            Transition transition(Symbol(symbol), state, destState);
             addTransition(transition);
         } else {
             std::cout << "TRANSITION_ERROR: el simbolo " << symbol << " o no pertenece al alfabeto "
                       << "o no hay transiciones suficiente  declaradas, comprueba input.fa" << std::endl;
             return;
         }
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param label 
+ * @return State 
+ */
+State Automaton::getState(std::string label) {
+    for (auto state : stateSet_) {
+        if (state.getLabel() == label)
+            return state;
     }
 }
 
@@ -188,4 +207,84 @@ void Automaton::setStartingState(std::string state) {
     }
     startingState_ = State(state, kNotFinal);
 }
+
+
+/**
+ * @brief 
+ * 
+ * @param lines 
+ */
+void Automaton::checkStrings(std::vector<String>& lines) {
+    for (int i = 0; i < lines.size(); i++) {
+        if (checkFA(lines[i])) {
+            for (auto string : lines[i].getSymbol()) {
+                std::cout << string;
+            }
+            std::cout << " --- Aceptada" << std::endl;
+        } else {
+            for (auto string : lines[i].getSymbol()) {
+                std::cout << string;
+            }
+            std::cout << " --- Rechazada" << std::endl;
+        }
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param lines 
+ * @return std::vector<String> 
+ */
+std::vector<String> Automaton::readStrings(std::vector<std::string>& lines) {
+    std::vector<String> strings;
+    const int kNumStrings = lines.size();
+    for (int i = 0; i < kNumStrings; i++) {
+        String str(lines[i]);
+        strings.push_back(str);
+    }
+    return strings;
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param string 
+ * @return true 
+ * @return false 
+ */
+bool Automaton::checkFA(String& string) {
+    if (!string.checkString(alphabet_)) {
+        return false;
+    }
+    currentState_ = startingState_;
+    std::set<State> current_set;
+    current_set.insert(currentState_);
+
+    for (auto symbol : string.getSymbol()) {
+        std::set<State> next_states;
+        for (auto state : current_set) {
+            for (auto transition : transition_) {
+                if (transition.getStateOrigin() == state && transition.getSymbol() == symbol) {
+                    next_states.insert(transition.getStateDestiny());
+                }
+            }
+        }
+        current_set = next_states;
+    }
+
+    bool accepted = false;
+    for (auto state : current_set) {
+        if (state.getType() == kFinal) {
+            accepted = true;
+        }
+    }
+
+    return accepted;
+}
+
+
+
 
