@@ -283,6 +283,14 @@ bool Automaton::AutomatonCheck(String& string) {
     return isAccepted(current_set);
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param current_set 
+ * @return true 
+ * @return false 
+ */
 bool Automaton::isAccepted(std::set<State> current_set) {
     for (auto state : current_set) {
         if (state.getType() == kFinal) {

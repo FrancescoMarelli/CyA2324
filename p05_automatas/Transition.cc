@@ -41,7 +41,7 @@ bool Transition::operator<(const Transition& other) const {
   }
 }
 
-void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDestiny) {
+void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDestiny) {  // NOLINT
   symbol_ = symbol;
   stateOrigin_ = stateOrigin;
   stateDestiny_ = stateDestiny;

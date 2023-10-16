@@ -14,21 +14,12 @@
 
 void Help();
 void usage();
+int checkArguments(int argc, char* argv[]);
 void App(std::ifstream&, std::ifstream&);
 
 int main(int argc, char* argv[]) {
-    if (argc == 1) {
-        usage();
+    if (checkArguments(argc, argv) == 1)
         return 1;
-    }
-    if (std::string(argv[1]) == "--help"  || std::string(argv[1]) == "--h") {
-        Help();
-        return 1;
-    } else if (argc != 3) {
-        usage();
-        return 1;
-    }
-
 
     //  Comprobación de los ficheros de entrada
     std::ifstream fileFa(argv[1]);
@@ -98,6 +89,30 @@ void usage() {
     std::cout << "Modo de empleo: ./p05_automata_simulation input.dfa input.txt" << std::endl;
     std::cout << "'./p05_automata_simulation --help' para más información" << std::endl;
 }
+
+
+/**
+ * @brief 
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+int checkArguments(int argc, char* argv[]) {
+    if (argc == 1) {
+        usage();
+        return 1;
+    }
+    if (std::string(argv[1]) == "--help"  || std::string(argv[1]) == "--h") {
+        Help();
+        return 1;
+    } else if (argc != 3) {
+        usage();
+        return 1;
+    }
+    return 0;
+}
+
 
 
 
