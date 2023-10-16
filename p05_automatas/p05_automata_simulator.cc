@@ -15,7 +15,7 @@
 void Help();
 void usage();
 int checkArguments(int argc, char* argv[]);
-void App(std::ifstream&, std::ifstream&);
+void simulateAutomaton(std::ifstream&, std::ifstream&);
 
 int main(int argc, char* argv[]) {
     if (checkArguments(argc, argv) == 1)
@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    App(fileFa, fileStrings);
+    simulateAutomaton(fileFa, fileStrings);
     fileFa.close();
     fileStrings.close();
     return 0;
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
  * @param fileFa 
  * @param fileStrings 
  */
-void App(std::ifstream& fileFa, std::ifstream& fileStrings) {
+void simulateAutomaton(std::ifstream& fileFa, std::ifstream& fileStrings) {
     Automaton automaton(fileFa);
     std::vector<std::string> strings = automaton.getLines(fileStrings);
     std::vector<String> string_vector = automaton.readStrings(strings);
@@ -61,22 +61,24 @@ void App(std::ifstream& fileFa, std::ifstream& fileStrings) {
  */
 void Help() {
     std::cout << "-----------------------------------------------------------------------------------------------------------------" << std::endl;  // NOLINT
-    std::cout << "Este programa es un programa que opera sobre automatas finitos." << std::endl;
-    std::cout << "Para compilar el programa ejecute el siguiente comando:" << std::endl;
-    std::cout << "make" << std::endl;
-    std::cout << "Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
-    std::cout << "Uso: './p05_automata_simulation input.nfa input.txt'." << std::endl;
+    std::cout << "      Práctica 5: Simulador de Automatas Finitos" << std::endl;
+    std::cout << "      Este programa es un programa que opera sobre automatas finitos." << std::endl;
+    std::cout << "      Para compilar el programa ejecute el siguiente comando:" << std::endl;
+    std::cout << "      make" << std::endl;
+    std::cout << "      Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
+    std::cout << "          Uso: './p05_automata_simulation input.nfa input.txt'." << std::endl;
+    std::cout << "          Uso 2: make clean -> make run" << std::endl;
+    std::cout << "          Uso 3: make execute" << std::endl;
     std::cout << std::endl;
-    std::cout << std::endl;
-    std::cout << "El formato de los ficheros de entrada va a ser: " << std::endl;
-    std::cout << "El fichero de configuración del automata es un fichero con extensión .fa con la siguiente estructura:" << std::endl;  // NOLINT
-    std::cout << "1. La primera línea contiene el alfabeto de entrada del autómata." << std::endl;
-    std::cout << "2. La segunda línea contiene el número de estados del autómata." << std::endl;
-    std::cout << "3. La tercera línea contiene el estado inicial del autómata." << std::endl;
-    std::cout << "4. Las siguientes líneas contienen los estados del autómata y el típo, respectivamente, primera y segunda columna." << std::endl;  // NOLINT
-    std::cout << "   A seguir el numero de transicciones y  las transiciones del autómata." << std::endl;
-    std::cout << "El fichero de entrada de las cadenas es un fichero con extensión .txt con la siguiente estructura:" << std::endl;  // NOLINT
-    std::cout << "Cadena a evaluar" << std::endl;
+    std::cout << "      El formato de los ficheros de entrada va a ser: " << std::endl;
+    std::cout << "      El fichero de configuración del automata es un fichero con extensión .fa con la siguiente estructura:" << std::endl;  // NOLINT
+    std::cout << "          1. La primera línea contiene el alfabeto de entrada del autómata." << std::endl;
+    std::cout << "          2. La segunda línea contiene el número de estados del autómata." << std::endl;
+    std::cout << "          3. La tercera línea contiene el estado inicial del autómata." << std::endl;
+    std::cout << "          4. Las siguientes líneas contienen los estados del autómata y el típo en la primera y segunda columna." << std::endl;  // NOLINT
+    std::cout << "             A seguir el numero de transicciones y  las transiciones del autómata." << std::endl;
+    std::cout << "      El fichero de entrada de las cadenas es un fichero con extensión .txt con la siguiente estructura:" << std::endl;  // NOLINT
+    std::cout << "          Cadena a evaluar" << std::endl;
     std::cout << "------------------------------------------------------------------------------------------------------------------" << std::endl;  // NOLINT
 }
 

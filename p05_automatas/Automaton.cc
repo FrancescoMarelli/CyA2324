@@ -128,7 +128,9 @@ void Automaton::readStates(std::vector<std::string> lines) {
 }
 
 /**
- * @brief 
+ * @brief Read the transitions from the file by line since column 3
+ *         - The first column is the symbol
+ *        - The second column is the destiny state
  * 
  * @param line 
  */
@@ -169,6 +171,7 @@ State Automaton::getState(std::string label) {
         if (state.getLabel() == label)
             return state;
     }
+    return State();
 }
 
 
@@ -187,7 +190,7 @@ void Automaton::addStates(State state) {
 
 
 /**
- * @brief 
+ * @brief Iterate over the alphabet and check if the symbol belongs to it
  * 
  * @param symbol 
  * @return true 
@@ -255,7 +258,9 @@ std::vector<String> Automaton::readStrings(std::vector<std::string>& lines) {
 
 
 /**
- * @brief 
+ * @brief Non-deterministic finite automaton
+ *        Checks if the string belongs to the language of the automaton
+ *         - The string belongs to the language if the automaton accepts it
  * 
  * @param string 
  * @return true 

@@ -46,10 +46,26 @@ bool Symbol::operator==(const Symbol& symbol) const {
     return this->getSymbol() == symbol.getSymbol();
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param symbol 
+ * @return true 
+ * @return false 
+ */
 bool Symbol::operator!=(const Symbol& symbol) const {
     return this->getSymbol() != symbol.getSymbol();
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
 bool Symbol::operator<(const Symbol& other) const {
     return getSymbol() < other.getSymbol();
 }

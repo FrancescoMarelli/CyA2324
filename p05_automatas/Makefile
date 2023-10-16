@@ -25,7 +25,16 @@ String.o: String.h String.cc
 Symbol.o: Symbol.h Symbol.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Symbol.cc
 
+.PHONY: clean
 clean:
 	rm -f *.o p05_automata_simulator
 
-.PHONY: all clean
+.PHONY: run 
+run: 
+	./p05_automata_simulator input.fa input.txt
+
+.PHONY: execute
+execute:
+	make clean
+	make
+	make run
