@@ -14,8 +14,8 @@
 
 #include "Automaton.h"
 
-const std::string kFinal = "1";
-const std::string kNotFinal = "0";
+const std::string kFinal = "1";  // NOLINT
+const std::string kNotFinal = "0";  // NOLINT
 
 /**
  * @brief Construct a new Automaton:: Automaton object
@@ -29,7 +29,7 @@ Automaton::Automaton(std::ifstream& file) {
 
 
 /**
- * @brief 
+ * @brief Read Lines from the file
  * 
  * @param file 
  * @return std::vector<std::string> 
@@ -110,6 +110,12 @@ void Automaton::readStartingState(std::string line) {
     startingState_ = State(line, kNotFinal);
 }
 
+
+/**
+ * @brief read the states from the file
+ * 
+ * @param lines 
+ */
 void Automaton::readStates(std::vector<std::string> lines) {
     for (int i = 3; i < lines.size(); ++i) {
         if (lines[i] != "") {
@@ -216,7 +222,7 @@ void Automaton::setStartingState(std::string state) {
  */
 void Automaton::checkStrings(std::vector<String>& lines) {
     for (int i = 0; i < lines.size(); i++) {
-        if (checkFA(lines[i])) {
+        if (AutomatonCheck(lines[i])) {
             for (auto string : lines[i].getSymbol()) {
                 std::cout << string;
             }
@@ -255,8 +261,8 @@ std::vector<String> Automaton::readStrings(std::vector<std::string>& lines) {
  * @return true 
  * @return false 
  */
-bool Automaton::checkFA(String& string) {
-    if (!string.checkString(alphabet_)) {
+bool Automaton::AutomatonCheck(String& string) {
+    if (!string.belongsToAlphabet(alphabet_)) {
         return false;
     }
     currentState_ = startingState_;
@@ -274,15 +280,16 @@ bool Automaton::checkFA(String& string) {
         }
         current_set = next_states;
     }
+    return isAccepted(current_set);
+}
 
-    bool accepted = false;
+bool Automaton::isAccepted(std::set<State> current_set) {
     for (auto state : current_set) {
         if (state.getType() == kFinal) {
-            accepted = true;
+            return true;
         }
     }
-
-    return accepted;
+    return false;
 }
 
 

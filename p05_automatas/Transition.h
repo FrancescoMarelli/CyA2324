@@ -27,13 +27,17 @@ class Transition {
     Transition(Symbol, State, State);
     ~Transition() {}
 
+    //  Setters and getters
     Symbol getSymbol() const { return symbol_;}
     State getStateOrigin() const { return stateOrigin_;}
     State getStateDestiny() const { return stateDestiny_;}
     void setSymbol(Symbol symbol) { symbol_ = symbol;}
     void setStateOrigin(State stateOrigin) { stateOrigin_ = stateOrigin;}
     void setStateDestiny(State stateDestiny) { stateDestiny_ = stateDestiny;}
-    bool operator<(const Transition& other) const;
     void setTransition(Symbol, State, State);
+
+
+    // Overloaders
+    bool operator<(const Transition& other) const;
 };
 

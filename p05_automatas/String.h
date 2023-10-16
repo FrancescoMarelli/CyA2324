@@ -18,7 +18,7 @@
 
 #pragma once
 
-const std::string kEpsilon = "&";
+const std::string kEpsilon = "&";  // NOLINT
 
 class Language;
 class String {
@@ -32,19 +32,19 @@ class String {
     String(const String &string);
     String() {}
     ~String() {}
-    
+
     void addSymbol(Symbol symbol) { string_.push_back(symbol); }
     std::vector<Symbol> getSymbol() { return string_; }
     const Symbol getSymbol(int i) const { return string_[i]; }
     void setSymbol(std::vector<Symbol> symbol);
     unsigned size() const { return string_.size(); }
 
-    Alphabet extractAlphabet();                //  opcode 1
-    unsigned extractLength() const;                    //  opcode 2
-    String inverse(String string, Alphabet alphabet);  //  opcode 3
-    Language extractPrefixes();                //  opcode 4
-    Language extractSuffixes();                //  opcode 5
-    bool checkString(Alphabet alphabet);
+    Alphabet extractAlphabet();
+    unsigned extractLength() const;
+    String inverse(String string, Alphabet alphabet);
+    Language extractPrefixes();
+    Language extractSuffixes();
+    bool belongsToAlphabet(Alphabet alphabet);
 
     friend std::ostream &operator<<(std::ostream &os, const String &string);
     void write(std::ostream& os) const;

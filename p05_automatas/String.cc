@@ -84,7 +84,7 @@ std::ostream &operator<<(std::ostream &os, const String &string) {
  * @return true 
  * @return false 
  */
-bool String::checkString(Alphabet alphabet) {
+bool String::belongsToAlphabet(Alphabet alphabet) {
     // comprueba que string este en alphabet
     std::set<Symbol> alphabet_ = alphabet.getAlphabet();
     for (int i = 0; i < getSymbol().size(); ++i) {
@@ -143,7 +143,7 @@ unsigned String::extractLength() const {
 String String::inverse(String string, Alphabet alphabet) {
   std::set<Symbol> alphabet_ = alphabet.getAlphabet();
   std::vector<Symbol> inverse;
-  if (checkString(alphabet)) {
+  if (belongsToAlphabet(alphabet)) {
     for (int i = 0; i < string.size_; ++i) {
     if (alphabet_.find(string.getSymbol(i)) != alphabet_.end()) {
       inverse.push_back(string.getSymbol(i));

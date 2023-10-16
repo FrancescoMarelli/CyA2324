@@ -24,16 +24,18 @@ class State {
     State() {}
     ~State() {}
 
+
+    // Setters and getters
     void setLabel(std::string label) { label_ = label; }
     void setType(std::string type) { type_ = type; }
-
     std::string getLabel() const { return label_; }
     std::string getType() { return type_; }
 
+
+    //  Overloaders
     bool operator==(const State& other) const;
     bool operator<(const State& other) const;
     bool operator!=(const State& other) const;
-
     friend std::istream &operator>>(std::istream &is, State &state);
 };
 
