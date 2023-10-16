@@ -53,6 +53,7 @@ class Automaton {
     bool alphabetOk(Symbol);
     bool isAccepted(std::set<State>);
     void buildAutomaton(std::ifstream&);
+    void elaborateStrings(std::ifstream&);
     void checkStrings(std::vector<String>&);
     bool AutomatonCheck(String&);
 

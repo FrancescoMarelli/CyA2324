@@ -49,13 +49,14 @@ std::vector<std::string> Automaton::getLines(std::ifstream& file) {
  * @param file 
  */
 void Automaton::buildAutomaton(std::ifstream& file) {
+    const int kTransitionStart = 3;  // NOLINT
     std::vector<std::string> lines = getLines(file);
     readAlphabet(lines[0]);
     readStatesCount(lines[1]);
     readStartingState(lines[2]);
     readStates(lines);
 
-    for (int i = 3; i < lines.size(); i++)
+    for (int i = kTransitionStart; i < lines.size(); i++)
         readTransition(lines[i]);
 }
 
@@ -221,17 +222,29 @@ void Automaton::setStartingState(std::string state) {
 /**
  * @brief 
  * 
- * @param lines 
+ * @param fileStrings 
  */
-void Automaton::checkStrings(std::vector<String>& lines) {
-    for (int i = 0; i < lines.size(); i++) {
-        if (AutomatonCheck(lines[i])) {
-            for (auto string : lines[i].getSymbol()) {
+void Automaton::elaborateStrings(std::ifstream& fileStrings) {
+    std::vector<std::string> strings_stl = getLines(fileStrings);
+    std::vector<String> string_vector = readStrings(strings_stl);
+    checkStrings(string_vector);
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param string_vector 
+ */
+void Automaton::checkStrings(std::vector<String>& string_vector) {
+    for (int i = 0; i < string_vector.size(); i++) {
+        if (AutomatonCheck(string_vector[i])) {
+            for (auto string : string_vector[i].getSymbol()) {
                 std::cout << string;
             }
             std::cout << " --- Aceptada" << std::endl;
         } else {
-            for (auto string : lines[i].getSymbol()) {
+            for (auto string : string_vector[i].getSymbol()) {
                 std::cout << string;
             }
             std::cout << " --- Rechazada" << std::endl;

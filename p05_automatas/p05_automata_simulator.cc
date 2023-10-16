@@ -48,10 +48,8 @@ int main(int argc, char* argv[]) {
  * @param fileStrings 
  */
 void simulateAutomaton(std::ifstream& fileFa, std::ifstream& fileStrings) {
-    Automaton automaton(fileFa);
-    std::vector<std::string> strings = automaton.getLines(fileStrings);
-    std::vector<String> string_vector = automaton.readStrings(strings);
-    automaton.checkStrings(string_vector);
+    Automaton automaton(fileFa);  // Build the automaton
+    automaton.elaborateStrings(fileStrings);  // Elaborate the strings
 }
 
 
