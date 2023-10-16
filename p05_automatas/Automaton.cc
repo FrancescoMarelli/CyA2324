@@ -304,7 +304,7 @@ bool Automaton::AutomatonCheckStrings(String& string) {
 
 
 /**
- * @brief 
+ * @brief If the current States set contains a final state, the string is accepted
  * 
  * @param current_set 
  * @return true 

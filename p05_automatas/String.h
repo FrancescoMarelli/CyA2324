@@ -47,6 +47,7 @@ class String {
     bool belongsToAlphabet(Alphabet alphabet);
 
     friend std::ostream &operator<<(std::ostream &os, const String &string);
+    friend std::istream &operator>>(std::istream &is, String &string);
     void write(std::ostream& os) const;
     bool operator==(const String &other);
     bool operator<(const String &other) const;

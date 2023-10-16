@@ -80,6 +80,21 @@ std::ostream &operator<<(std::ostream &os, const String &string) {
 /**
  * @brief 
  * 
+ * @param is 
+ * @param string 
+ * @return std::istream& 
+ */
+std::istream &operator>>(std::istream &is, String &string) {
+    std::string line;
+    is >> line;
+    string = String(line);
+    return is;
+}
+
+
+/**
+ * @brief 
+ * 
  * @param alphabet 
  * @return true 
  * @return false 

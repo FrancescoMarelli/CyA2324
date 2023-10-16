@@ -49,9 +49,11 @@ class Automaton {
     void addStates(State state);
 
 
-    // Automaton operations
+    //  Auxiliars
     bool alphabetOk(Symbol);
     bool isAccepted(std::set<State>);
+
+    // Automaton operations
     void buildAutomaton(std::ifstream&);
     void elaborateStrings(std::ifstream&);
     void checkStrings(std::vector<String>&);

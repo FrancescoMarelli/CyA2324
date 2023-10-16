@@ -61,6 +61,19 @@ std::istream &operator>>(std::istream &is, State &state) {
 /**
  * @brief 
  * 
+ * @param os 
+ * @param state 
+ * @return std::ostream& 
+ */
+std::ostream &operator<<(std::ostream &os, const State &state) {
+  os << state.getLabel();
+  return os;
+}
+
+
+/**
+ * @brief 
+ * 
  * @param other 
  * @return true 
  * @return false 

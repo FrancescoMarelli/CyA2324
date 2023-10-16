@@ -9,6 +9,8 @@
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
 
+#include <string>
+
 #include "Transition.h"
 
 /**
@@ -41,8 +43,30 @@ bool Transition::operator<(const Transition& other) const {
   }
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param symbol 
+ * @param stateOrigin 
+ * @param stateDestiny 
+ */
 void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDestiny) {  // NOLINT
   symbol_ = symbol;
   stateOrigin_ = stateOrigin;
   stateDestiny_ = stateDestiny;
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param os 
+ * @param transition 
+ * @return std::ostream& 
+ */
+std::ostream &operator<<(std::ostream &os, const Transition &transition) {
+  os << transition.getStateOrigin().getLabel() << " "
+     << transition.getSymbol().getSymbol() << " " << transition.getStateDestiny().getLabel();
+  return os;
 }

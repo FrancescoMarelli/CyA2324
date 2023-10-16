@@ -39,5 +39,8 @@ class Transition {
 
     // Overloaders
     bool operator<(const Transition& other) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Transition &transition);
 };
+
 

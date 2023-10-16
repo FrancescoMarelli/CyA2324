@@ -1,5 +1,5 @@
 abbbbb
 aab
 bbb
-ab
+a
 ababb
