@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -68,6 +68,18 @@ void Alphabet::addSymbol(Symbol symbol) {
     } else if (symbol.getSymbol() == kEpsilon) {
         alphabet_.insert(Symbol(""));
     }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param symbol 
+ * @return true 
+ * @return false 
+ */
+bool Alphabet::belongsToAlphabet(Symbol symbol) {
+    return alphabet_.find(symbol) != alphabet_.end() || symbol.getSymbol() == kEpsilon;
 }
 
 

@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -13,7 +13,7 @@
 #include "Language.h"
 
 void Help();
-void usage();
+void Usage();
 int checkArguments(int argc, char* argv[]);
 void simulateAutomaton(std::ifstream&, std::ifstream&);
 
@@ -34,7 +34,8 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    simulateAutomaton(fileFa, fileStrings);
+    simulateAutomaton(fileFa, fileStrings);  //  Program runner
+
     fileFa.close();
     fileStrings.close();
     return 0;
@@ -85,7 +86,7 @@ void Help() {
  * @brief 
  * 
  */
-void usage() {
+void Usage() {
     std::cout << "Modo de empleo: ./p05_automata_simulation input.dfa input.txt" << std::endl;
     std::cout << "'./p05_automata_simulation --help' para más información" << std::endl;
 }
@@ -100,14 +101,14 @@ void usage() {
  */
 int checkArguments(int argc, char* argv[]) {
     if (argc == 1) {
-        usage();
+        Usage();
         return 1;
     }
     if (std::string(argv[1]) == "--help"  || std::string(argv[1]) == "--h") {
         Help();
         return 1;
     } else if (argc != 3) {
-        usage();
+        Usage();
         return 1;
     }
     return 0;

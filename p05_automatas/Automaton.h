@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatons
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -46,11 +46,10 @@ class Automaton {
 
     //  Adders
     void addTransition(Transition transition) { transition_.insert(transition); }
-    void addStates(State state);
+    void addState(State state);
 
 
     //  Auxiliars
-    bool alphabetOk(Symbol);
     bool isAccepted(std::set<State>);
 
     // Automaton operations
@@ -60,13 +59,13 @@ class Automaton {
     bool AutomatonCheckStrings(String&);
 
     //  Readers
-    std::vector<std::string> getLines(std::ifstream&);
-    void readAlphabet(std::string);
-    void readStatesCount(std::string);
-    void readStartingState(std::string);
-    void readStates(std::vector<std::string>);
-    void readTransition(std::string);
-    std::vector<String> readStrings(std::vector<std::string>&);
+    std::vector<std::string> linesReader(std::ifstream&);
+    void alphabetReader(std::string);
+    void statesCounterReader(std::string);
+    void startingStateReader(std::string);
+    void statesReader(std::vector<std::string>);
+    void transitionsReader(std::string);
+    std::vector<String> stringsReader(std::vector<std::string>&);
 };
 
 
