@@ -282,6 +282,9 @@ bool Automaton::AutomatonCheckStrings(String& string) {
             for (auto transition : transition_) {
                 if (transition.getStateOrigin() == state && transition.getSymbol() == symbol) {
                     nextStatesSet.insert(transition.getStateDestiny());
+                } else if (transition.getStateOrigin() == state && transition.getSymbol().getSymbol() == kEpsilon) {
+                    nextStatesSet.insert(transition.getStateDestiny());
+                    currentStatesSet.insert(transition.getStateDestiny());
                 }
             }
         }

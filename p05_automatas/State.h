@@ -36,7 +36,7 @@ class State {
     bool operator==(const State& other) const;
     bool operator<(const State& other) const;
     bool operator!=(const State& other) const;
-    
+
     friend std::istream &operator>>(std::istream &is, State &state);
     friend std::ostream &operator<<(std::ostream &os, const State &state);
 };
