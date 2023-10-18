@@ -208,7 +208,7 @@ void Automaton::setStartingState(std::string state) {
 
 
 /**
- * @brief 
+ * @brief  Method that elaborates the strings on inputfile
  * 
  * @param fileStrings 
  */
@@ -220,13 +220,13 @@ void Automaton::elaborateStrings(std::ifstream& fileStrings) {
 
 
 /**
- * @brief 
+ * @brief Checks If Strings in Input are recognize or note from the FA
  * 
  * @param myStringsVector 
  */
 void Automaton::checkStrings(std::vector<String>& myStringsVector) {
     for (int i = 0; i < myStringsVector.size(); i++) {
-        bool stringValid = AutomatonCheckStrings(myStringsVector[i]);
+        bool stringValid = AutomatonStringsCheck(myStringsVector[i]);
         if (stringValid) {
             for (auto string : myStringsVector[i].getSymbol()) {
                 std::cout << string;
@@ -268,7 +268,7 @@ std::vector<String> Automaton::stringsReader(std::vector<std::string>& lines) {
  * @return true 
  * @return false 
  */
-bool Automaton::AutomatonCheckStrings(String& string) {
+bool Automaton::AutomatonStringsCheck(String& string) {
     if (!string.belongsToAlphabet(alphabet_)) {
         return false;
     }

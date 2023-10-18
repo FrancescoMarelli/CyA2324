@@ -56,7 +56,7 @@ class Automaton {
     void buildAutomaton(std::ifstream&);
     void elaborateStrings(std::ifstream&);
     void checkStrings(std::vector<String>&);
-    bool AutomatonCheckStrings(String&);
+    bool AutomatonStringsCheck(String&);
 
     //  Readers
     std::vector<std::string> linesReader(std::ifstream&);
