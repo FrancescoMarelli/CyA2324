@@ -12,7 +12,11 @@
 
 const std::string kEpsilon = "&";  // NOLINT
 
-
+/**
+ * @brief Write overloaded operator
+ * 
+ * @param os 
+ */
 void Alphabet::write(std::ostream &os) const {
     if (alphabet_.size() == 0) {
         os << "";
