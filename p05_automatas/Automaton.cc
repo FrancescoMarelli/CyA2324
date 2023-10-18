@@ -25,6 +25,9 @@ const std::string kNotFinal = "0";  // NOLINT
 Automaton::Automaton(std::ifstream& file) {
     howManyStates_ = 0;
     buildAutomaton(file);
+    if(!isDead()) {
+        std::cout << "No hay estado de muerte" << std::endl;
+    }
 }
 
 
@@ -310,6 +313,19 @@ bool Automaton::isAccepted(std::set<State> currentStatesSet) {
     return false;
 }
 
+
+bool Automaton::isDead() {
+    for (auto state : stateSet_) {
+        for (auto transition : transition_) {
+            if (state.getType() == kNotFinal && state.getLabel() == transition.getStateOrigin().getLabel()
+                                             && state.getLabel() == transition.getStateDestiny().getLabel()) {
+                std::cout << state.getLabel() << " Es de Muerte" << std::endl;
+                return true;
+            }
+        }
+    }
+    return false;
+}
 
 
 

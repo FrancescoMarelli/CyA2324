@@ -51,6 +51,7 @@ class Automaton {
 
     //  Auxiliars
     bool isAccepted(std::set<State>);
+    bool isDead();
 
     // Automaton operations
     void buildAutomaton(std::ifstream&);
