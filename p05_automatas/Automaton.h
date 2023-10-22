@@ -51,7 +51,6 @@ class Automaton {
 
     //  Auxiliars
     bool isAccepted(std::set<State>);
-    bool isDead();
 
     // Automaton operations
     void buildAutomaton(std::ifstream&);
@@ -67,6 +66,9 @@ class Automaton {
     void statesReader(std::vector<std::string>);
     void transitionsReader(std::string);
     std::vector<String> stringsReader(std::vector<std::string>&);
-};
 
+    // Convert to DFA
+    //void SubSetConstruction();
+    //std::set<State> eClosure(const State& state);
+};
 

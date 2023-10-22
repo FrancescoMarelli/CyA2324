@@ -10,6 +10,7 @@
 // Fecha: 12/10/2023
 
 #include <string>
+#include <utility>
 
 #include "Transition.h"
 
@@ -24,6 +25,8 @@ Transition::Transition(Symbol symbol, State stateOrigin, State stateDestiny) {
   setTransition(symbol, stateOrigin, stateDestiny);
 }
 
+
+
 /**
  * @brief 
  * 
@@ -32,15 +35,64 @@ Transition::Transition(Symbol symbol, State stateOrigin, State stateDestiny) {
  * @return false 
  */
 bool Transition::operator<(const Transition& other) const {
-  if (stateOrigin_ == other.getStateOrigin()) {
-    if (symbol_ == other.getSymbol()) {
-      return stateDestiny_ < other.getStateDestiny();
-    } else {
-      return symbol_ < other.getSymbol();
+  auto it1 = transition_.begin();
+  auto it2 = other.transition_.begin();
+
+  while (it1 != transition_.end() && it2 != other.transition_.end()) {
+    if (it1->first < it2->first) {
+      return true;
+    } else if (it2->first < it1->first) {
+      return false;
+    } else if (it1->second < it2->second) {
+      return true;
+    } else if (it2->second < it1->second) {
+      return false;
     }
-  } else {
-    return stateOrigin_ < other.getStateOrigin();
+
+    ++it1;
+    ++it2;
   }
+
+  return (it1 == transition_.end() && it2 != other.transition_.end());
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param origin 
+ * @param symbol 
+ * @return State 
+ */
+State Transition::getStateDestiny(const State& origin, const Symbol& symbol) const {
+  auto it = transition_.find(std::make_pair(origin, symbol));
+  if (it != transition_.end()) {
+    return it->second;
+  } else {
+    return State();
+  }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @return State 
+ */
+State Transition::getStateOrigin() const {
+  auto it = transition_.begin();
+  return it->first.first;
+}
+
+
+/**
+ * @brief 
+ * 
+ * @return Symbol 
+ */
+Symbol Transition::getSymbol() const {
+  auto it = transition_.begin();
+  return it->first.second;
 }
 
 
@@ -52,9 +104,7 @@ bool Transition::operator<(const Transition& other) const {
  * @param stateDestiny 
  */
 void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDestiny) {  // NOLINT
-  symbol_ = symbol;
-  stateOrigin_ = stateOrigin;
-  stateDestiny_ = stateDestiny;
+  transition_[std::make_pair(stateOrigin, symbol)] = stateDestiny;
 }
 
 
@@ -65,8 +115,9 @@ void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDest
  * @param transition 
  * @return std::ostream& 
  */
-std::ostream &operator<<(std::ostream &os, const Transition &transition) {
-  os << transition.getStateOrigin().getLabel() << " "
-     << transition.getSymbol().getSymbol() << " " << transition.getStateDestiny().getLabel();
+std::ostream& operator<<(std::ostream& os, const Transition& transition) {
+  for (auto it = transition.transition_.begin(); it != transition.transition_.end(); ++it) {
+    os << it->first.first << " -- " << it->first.second << " --> " << it->second << std::endl;
+  }
   return os;
 }
