@@ -4,10 +4,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 12/10/2023
+// Fecha: 22/10/2023
 #include <iostream>
 #include "Automaton.h"
 #include "Language.h"

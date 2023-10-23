@@ -4,10 +4,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 12/10/2023
+// Fecha: 22/10/2023
 #include "String.h"
 #include "Language.h"
 
@@ -172,37 +172,6 @@ String String::inverse(String string, Alphabet alphabet) {
     std::cout << "La cadena " << string << " no pertenece al alfabeto " << std::endl;
     return String("");
   }
-}
-
-/**
- * @brief 
- * 
- * @return Language
- */
-Language String::extractPrefixes() {
-    std::set<String> prefixes;
-    std::string prefix;
-    for (int i = 0; i < size_; ++i) {
-        prefix += string_[i].getSymbol();
-        prefixes.insert(String(prefix));
-    }
-    return Language(prefixes);
-}
-
-
-/**
- * @brief 
- * 
- * @return Language 
- */
-Language String::extractSuffixes() {
-    std::set<String> suffixes;
-    std::string suffix;
-    for (int i = size_ - 1; i >= 0; --i) {
-        suffix = string_[i].getSymbol() + suffix;
-        suffixes.insert(String(suffix));
-    }
-    return Language(suffixes);
 }
 
 
