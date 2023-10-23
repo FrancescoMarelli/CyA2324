@@ -68,7 +68,7 @@ class Automaton {
     std::vector<String> stringsReader(std::vector<std::string>&);
 
     // Convert to DFA
-    //void SubSetConstruction();
-    //std::set<State> eClosure(const State& state);
+    void SubSetConstruction();
+    std::set<State> eClosure(const State& state);
 };
 
