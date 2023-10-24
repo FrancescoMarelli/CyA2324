@@ -4,10 +4,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 12/10/2023
+// Fecha: 22/10/2023
 
 #include <string>
 #include <utility>
@@ -21,8 +21,8 @@
  * @param stateOrigin 
  * @param stateDestiny 
  */
-Transition::Transition(Symbol symbol, State stateOrigin, State stateDestiny) {
-  setTransition(symbol, stateOrigin, stateDestiny);
+Transition::Transition(State stateOrigin, Symbol symbol, State stateDestiny) {
+  setTransition(stateOrigin, symbol, stateDestiny);
 }
 
 
@@ -35,25 +35,18 @@ Transition::Transition(Symbol symbol, State stateOrigin, State stateDestiny) {
  * @return false 
  */
 bool Transition::operator<(const Transition& other) const {
-  auto it1 = transition_.begin();
-  auto it2 = other.transition_.begin();
-
-  while (it1 != transition_.end() && it2 != other.transition_.end()) {
-    if (it1->first < it2->first) {
+  if (origin_ < other.origin_) {
+    return true;
+  } else if (origin_ == other.origin_) {
+    if (symbol_ < other.symbol_) {
       return true;
-    } else if (it2->first < it1->first) {
-      return false;
-    } else if (it1->second < it2->second) {
-      return true;
-    } else if (it2->second < it1->second) {
-      return false;
+    } else if (symbol_ == other.symbol_) {
+      if (destiny_ < other.destiny_) {
+        return true;
+      }
     }
-
-    ++it1;
-    ++it2;
   }
-
-  return (it1 == transition_.end() && it2 != other.transition_.end());
+  return false;
 }
 
 
@@ -64,24 +57,8 @@ bool Transition::operator<(const Transition& other) const {
  * @param symbol 
  * @return State 
  */
-State Transition::getStateDestiny(const State& origin, const Symbol& symbol) const {
-  auto it = transition_.find(std::make_pair(origin, symbol));
-  if (it != transition_.end()) {
-    return it->second;
-  } else {
-    return State();
-  }
-}
-
-
-/**
- * @brief 
- * 
- * @return State 
- */
-State Transition::getStateOrigin() const {
-  auto it = transition_.begin();
-  return it->first.first;
+State Transition::getStateDestiny() const {
+  return destiny_;
 }
 
 
@@ -91,22 +68,18 @@ State Transition::getStateOrigin() const {
  * @return Symbol 
  */
 Symbol Transition::getSymbol() const {
-  auto it = transition_.begin();
-  return it->first.second;
+  return symbol_;
 }
 
 
 /**
  * @brief 
  * 
- * @param symbol 
- * @param stateOrigin 
- * @param stateDestiny 
+ * @return State 
  */
-void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDestiny) {  // NOLINT
-  transition_[std::make_pair(stateOrigin, symbol)] = stateDestiny;
+State Transition::getStateOrigin() const {
+  return origin_;
 }
-
 
 /**
  * @brief 
@@ -116,8 +89,19 @@ void Transition::setTransition(Symbol symbol, State stateOrigin, State stateDest
  * @return std::ostream& 
  */
 std::ostream& operator<<(std::ostream& os, const Transition& transition) {
-  for (auto it = transition.transition_.begin(); it != transition.transition_.end(); ++it) {
-    os << it->first.first << " -- " << it->first.second << " --> " << it->second << std::endl;
-  }
+  os << transition.getStateOrigin() << transition.getStateDestiny() << " " << transition.getSymbol();
   return os;
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param stateDestiny 
+ * @param symbol 
+ */
+void Transition::setTransition(State stateOrigin, Symbol symbol, State stateDestiny) {
+  origin_ = stateOrigin;
+  destiny_ = stateDestiny;
+  symbol_ = symbol;
 }

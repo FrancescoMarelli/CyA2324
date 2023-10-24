@@ -1,8 +1,8 @@
-p05_automata_simulator: Symbol.o String.o Alphabet.o Language.o Automaton.o State.o Transition.o p05_automata_simulator.o
-	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o String.o Alphabet.o Language.o Transition.o State.o Automaton.o p05_automata_simulator.o -o p05_automata_simulator
+NFA2DFA: Symbol.o String.o Alphabet.o Automaton.o State.o Transition.o NFA2DFA.o
+	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o String.o Alphabet.o Transition.o State.o Automaton.o NFA2DFA.o -o NFA2DFA
 
-p05_automata_simulator.o: p05_automata_simulator.cc
-	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p05_automata_simulator.cc
+NFA2DFA.o: p06_nfa2dfa.cc
+	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p06_nfa2dfa.cc
 
 Automaton.o: Automaton.h Automaton.cc
 	g++ -std=c++14 -g -Wall -Wno-return-type -Wno-sign-compare -c Automaton.cc
@@ -16,9 +16,6 @@ State.o: State.h State.cc
 Alphabet.o: Alphabet.h Alphabet.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Alphabet.cc
 
-Language.o: Language.h Language.cc
-	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Language.cc
-
 String.o: String.h String.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c String.cc
 
@@ -27,11 +24,11 @@ Symbol.o: Symbol.h Symbol.cc
 
 .PHONY: clean
 clean:
-	rm -f *.o p05_automata_simulator
+	rm -f *.o NFA2DFA
 
 .PHONY: run 
 run: 
-	./p05_automata_simulator input.fa input.txt
+	./NFA2DFA input.nfa output.dfa
 
 .PHONY: execute
 execute:

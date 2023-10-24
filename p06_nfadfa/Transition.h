@@ -4,10 +4,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 12/10/2023
+// Fecha: 22/10/2023
 
 #include <iostream>
 #include <map>
@@ -18,20 +18,21 @@
 
 class Transition {
  private:
-    std::map<std::pair<State, Symbol>, State> transition_;
+    State origin_;
+    State destiny_;
+    Symbol symbol_;
 
 
  public:
     Transition() {}
-    Transition(Symbol, State, State);
+    Transition(State, Symbol, State);
     ~Transition() {}
 
     //  Setters and getters
-    State getStateDestiny(const State& origin, const Symbol& symbol) const;
-    State getStateOrigin() const;
+    State getStateDestiny() const;
     Symbol getSymbol() const;
-    std::map<std::pair<State, Symbol>, State> getTransition() const { return transition_; }  //  NOLINT
-    void setTransition(Symbol, State, State);
+    State getStateOrigin() const;
+    void setTransition(State, Symbol, State);
 
 
     // Overloaders

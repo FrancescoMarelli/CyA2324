@@ -4,10 +4,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 12/10/2023
+// Fecha: 22/10/2023
 #include "Alphabet.h"
 
 const std::string kEpsilon = "&";  // NOLINT
@@ -23,15 +23,13 @@ void Alphabet::write(std::ostream &os) const {
         return;
     }
     if (alphabet_.size() > 1) {
-    os << "{";
         for (auto it = alphabet_.begin(); it != alphabet_.end(); it++) {
             if (it != alphabet_.begin() && it != alphabet_.end()) {
-                os << ", ";
+                os << " ";
             }
            os << *it;
         }
     }
-    os << "}" << std::endl;
 }
 
 

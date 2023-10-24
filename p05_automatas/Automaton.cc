@@ -159,6 +159,9 @@ void Automaton::transitionsReader(std::string line) {
             std::cout << "TRANSITION_ERROR: el estado destino no puede ser mayor que el numero de estados, comprueba input.fa" << std::endl;  // NOLINT
             exit(1);
         }
+
+
+        //  Aqui se añaden las transiciones si es que el simbolo pertenece al alfabeto
         State destState(getState(destLabel));
         if (getAlphabet().belongsToAlphabet(Symbol(symbol))) {
             Transition transition(Symbol(symbol), state, destState);

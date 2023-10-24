@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -12,7 +12,6 @@
 #include <sstream>
 #include <iterator>
 #include <stack>
-#include <queue>
 
 #include "Automaton.h"
 
@@ -27,6 +26,11 @@ const std::string kNotFinal = "0";  // NOLINT
 Automaton::Automaton(std::ifstream& file) {
     howManyStates_ = 0;
     buildAutomaton(file);
+}
+
+Automaton::Automaton() {
+    howManyStates_ = 0;
+    alphabet_ = Alphabet();
 }
 
 
@@ -110,7 +114,7 @@ void Automaton::startingStateReader(std::string line) {
     }
     // Remove any whitespace characters from the line
     line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
-    startingState_ = State(line, kNotFinal);
+    startingState_ = State(line);
 }
 
 
@@ -120,6 +124,7 @@ void Automaton::startingStateReader(std::string line) {
  * @param lines 
  */
 void Automaton::statesReader(std::vector<std::string> lines) {
+    startingState_.setType(std::string(1, lines[3][2]));
     for (int i = 3; i < lines.size(); ++i) {
         if (lines[i] != "") {
             State state;
@@ -161,7 +166,7 @@ void Automaton::transitionsReader(std::string line) {
         }
         State destState(getState(destLabel));
         if (getAlphabet().belongsToAlphabet(Symbol(symbol))) {
-            Transition transition(Symbol(symbol), state, destState);
+            Transition transition(state, Symbol(symbol), destState);
             addTransition(transition);
         } else {
             std::cout << "TRANSITION_ERROR: el simbolo " << symbol << " o no pertenece al alfabeto "
@@ -171,6 +176,15 @@ void Automaton::transitionsReader(std::string line) {
     }
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param transition 
+ */
+void Automaton::addTransition(Transition transition) {
+    transition_.insert(transition);
+}
 
 /**
  * @brief 
@@ -193,13 +207,13 @@ State Automaton::getState(std::string label) {
  * @param state 
  */
 void Automaton::addState(State state) {
-    if ((stateSet_.size() > howManyStates_)) {
+    if (stateSet_.size() != getSize()) {
         std::cout << "STATE_ERROR: el numero de estados definidos no coincide, comprueba input.fa" << std::endl;
         exit(1);
     }
     stateSet_.insert(state);
+    howManyStates_ = getSize();
 }
-
 
 
 /**
@@ -292,10 +306,8 @@ bool Automaton::AutomatonStringsCheck(String& string) {
         for (auto state : currentStatesSet) {
             for (auto transition : transition_) {
                 if (transition.getStateOrigin() == state && transition.getSymbol() == symbol) {
-                    nextStatesSet.insert(transition.getStateDestiny(state, symbol));
-                } else if (transition.getStateOrigin() == state && transition.getSymbol().getSymbol() == kEpsilon) {
-                    nextStatesSet.insert(transition.getStateDestiny(state, symbol));
-                    currentStatesSet.insert(transition.getStateDestiny(state, symbol));
+                    nextStatesSet.insert(transition.getStateDestiny());
+                    std::set<State> transitionStates = eClosure(transition.getStateDestiny());
                 }
             }
         }
@@ -322,92 +334,204 @@ bool Automaton::isAccepted(std::set<State> currentStatesSet) {
 }
 
 
-/**void Automaton::SubSetConstruction() {
-    // Create a new initial state for the DFA that is the epsilon closure of the initial state of the NFA.
-    std::set<State> initialStates = eClosure(startingState_);
-
-    // Create a new set of states for the DFA that contains the initial state.
-    std::set<std::set<State>> dfaStates;
-    dfaStates.insert(initialStates);
-
-    // Create a map to keep track of the transitions in the DFA.
-    std::map<std::pair<std::set<State>, Symbol>, std::set<State>> dfaTransitions;
-
-    // Create a queue to keep track of the sets of states that need to be processed.
-    std::queue<std::set<State>> unprocessedStates;
-    unprocessedStates.push(initialStates);
-
-    // Process each set of states in the DFA.
-    while (!unprocessedStates.empty()) {
-        std::set<State> currentStates = unprocessedStates.front();
-        unprocessedStates.pop();
-
-        // For each symbol in the alphabet, compute the set of states that can be reached from the current set of states via that symbol and the epsilon closure of those states.
-        for (auto symbol : alphabet_.getAlphabet()) {
-            std::set<State> nextStates;
-            for (auto state : currentStates) {
-                for (auto transition : transition_) {
-                    if (transition.getStateOrigin() == state && transition.getSymbol() == symbol) {
-                        std::set<State> transitionStates = eClosure(transition.getStateDestiny());
-                        nextStates.insert(transitionStates.begin(), transitionStates.end());
-                    }
-                }
-            }
-
-            // If the set of states computed above is not already in the set of states for the DFA, add it to the set of states and mark it as unprocessed.
-            if (nextStates.size() > 0 && dfaStates.count(nextStates) == 0) {
-                dfaStates.insert(nextStates);
-                unprocessedStates.push(nextStates);
-            }
-
-            // Add a transition from the current set of states to the set of states computed above for the current symbol.
-            if (nextStates.size() > 0) {
-                dfaTransitions[std::make_pair(currentStates, symbol)] = nextStates;
-            }
+/**
+ * @brief Creates a newState searching in the DFA map if already is in the dfa state
+ * 
+ * @param states 
+ * @param dfaStates 
+ * @param unprocessedStates 
+ * @return State 
+ */
+State Automaton::createDFAState(const std::set<State>& states, std::map<std::set<State>, State>& dfaStates, std::queue<std::set<State>>& unprocessedStates) {  // NOLINT
+    State newState;
+    bool stateExists = false;
+    for (const auto& dfaState : dfaStates) {
+        if (dfaState.first == states) {
+            newState = dfaState.second;
+            stateExists = true;
+            break;
         }
     }
-
-    // Create a new set of states for the DFA that contains all accepting states in the NFA.
-    std::set<std::set<State>> dfaAcceptingStates;
-    for (auto state : stateSet_) {
-        if (state.getType() == kFinal) {
-            std::set<State> closure = eClosure(state);
-            if (dfaStates.count(closure) > 0) {
-                dfaAcceptingStates.insert(closure);
-            }
-        }
+    if (!stateExists) {
+        std::string label;
+        char letter = 'A' + dfaStates.size()-1;
+        label = std::string(1, letter);
+        newState = State(label);
+        dfaStates[states] = newState;
+        unprocessedStates.push(states);
     }
-
-    // Create a new DFA using the computed states and transitions.
-    //Automaton dfa(alphabet, dfaStates, initialStates, dfaAcceptingStates, dfaTransitions);
-    // *this = dfa;
+    return newState;
 }
 
+
+/**
+ * @brief SubSet Construction method conevrt a NFA a DFA
+ * 
+ * @return Automaton 
+ */
+Automaton Automaton::SubSetConstruction() {
+    Automaton dfa;
+    std::set<State> initialStates = eClosure(startingState_);
+    std::queue<std::set<State>> unprocessedStates;
+    std::map<std::set<State>, State> dfaStates;  //  map to relate NFAStatesSet to DFAStates
+    dfaStates[initialStates] = State(startingState_);
+    unprocessedStates.push(initialStates);
+
+    while (!unprocessedStates.empty()) {  // Loop until unprocessed states aint over
+        std::set<State> currentStates = unprocessedStates.front();
+        unprocessedStates.pop();
+        State currentState = createDFAState(currentStates, dfaStates, unprocessedStates);  //  Creatint DFA States with condition  // NOLINT
+
+        for (auto symbol : alphabet_.getAlphabet()) {
+            std::set<State> nextStates;
+            for (auto state : currentStates) {  //  For each State find where can go
+                std::set<State> transitionStates = move(state, symbol);
+                nextStates.insert(transitionStates.begin(), transitionStates.end());
+            }
+
+            if (!nextStates.empty()) {  //  if can go
+                std::set<State> eClosureStates;
+                for (auto nextState : nextStates) {
+                    std::set<State> nextStateClosure = eClosure(nextState);  //  find eClosure
+                    eClosureStates.insert(nextStateClosure.begin(), nextStateClosure.end());
+                }
+                State nextState = createDFAState(eClosureStates, dfaStates, unprocessedStates);  //  and create state
+                Transition newTransition(currentState, symbol, nextState);
+                dfa.addTransition(newTransition);  // and trans
+            } else {  // if not do  -> deathstate
+                std::string strD = "D";
+                State deadState(strD);
+                State nextState = createDFAState({deadState}, dfaStates, unprocessedStates);
+                Transition newTransition(currentState, symbol, nextState);
+                dfa.addTransition(newTransition);
+            }
+        }
+    }
+
+    // Seteo DFA
+    dfa.setDFAProperties(dfaStates, initialStates, getAlphabet());
+    return dfa;
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param dfaStates 
+ * @param initialStates 
+ * @param alphabet 
+ */
+void Automaton::setDFAProperties(std::map<std::set<State>, State>& dfaStates, const std::set<State>& initialStates, Alphabet alpha) {
+    setDFAFinals(dfaStates);
+    startingState_ = dfaStates[initialStates];
+    this->setAlphabet(alpha);
+    howManyStates_ = getSize();
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param dfaStates 
+ */
+void Automaton::setDFAFinals(const std::map<std::set<State>, State>& dfaStates) {
+    for (const auto& dfaState : dfaStates) {
+        State state = dfaState.second;
+        bool isFinal = false;
+        for (auto nfaState : dfaState.first) {
+            if (nfaState.getType() == kFinal) {
+                isFinal = true;
+                break;
+            }
+        }
+        if (isFinal) {
+            state.setType(kFinal);
+        } else {
+            state.setType(kNotFinal);
+        }
+        addState(state);
+    }
+}
+
+
+/**
+ * @brief output method in default format 
+ * 
+ * @param file 
+ */
+void Automaton::outputDFA(std::ofstream& file) {
+    file << alphabet_ << std::endl;
+    file << howManyStates_ << std::endl;
+    file << startingState_.getLabel() << std::endl;
+    for (auto state : stateSet_) {
+        file << state.getLabel() << " " << state.getType() << " ";
+        int numTransitions = 0;
+        for (auto transition : transition_) {
+            if (transition.getStateOrigin() == state) {
+                numTransitions++;
+            }
+        }
+        file << numTransitions << " ";
+        for (auto transition : transition_) {
+            if (transition.getStateOrigin() == state) {
+                file << transition.getSymbol().getSymbol() << " " << transition.getStateDestiny().getLabel() << " ";
+            }
+        }
+        file << std::endl;
+    }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param state 
+ * @return std::set<State> 
+ */
 std::set<State> Automaton::eClosure(const State& state) {
     std::set<State> closure;
     std::stack<State> stack;
     stack.push(state);
-
     while (!stack.empty()) {
         State current = stack.top();
         stack.pop();
-
-        if (closure.count(current) > 0) {
+        if (closure.count(current) > 0) {  // If the state is already in the closure, skip it.
             continue;
         }
-
-        closure.insert(current);
-
+        closure.insert(current);  // Add the state to the closure.
         for (auto transition : transition_) {
-            if (transition.getStateOrigin() == current && transition.getSymbol().getSymbol() == kEpsilon) {
+            State origin = transition.getStateOrigin();
+            Symbol symb = transition.getSymbol();
+            if (origin == current && symb.getSymbol() == kEpsilon) {
                 stack.push(transition.getStateDestiny());
             }
         }
     }
-
     return closure;
 }
-**/
+
+
+/**
+ * @brief 
+ * 
+ * @param state 
+ * @param symbol 
+ * @return std::set<State> 
+ */
+std::set<State> Automaton::move(const State& state, const Symbol& symbol) {
+    std::set<State> nextStates;
+    for (auto transition : transition_) {
+        State origin = transition.getStateOrigin();
+        Symbol symb = transition.getSymbol();
+        State destiny = transition.getStateDestiny();
+        if (origin.getLabel() == state.getLabel() && symb == symbol) {
+            nextStates.insert(destiny);
+        }
+    }
+    return nextStates;
+}
+
+
 
 
 

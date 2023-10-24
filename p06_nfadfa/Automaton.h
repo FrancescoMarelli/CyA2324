@@ -4,19 +4,22 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 5: Implementación de un Automata finito
+// Práctica 6: Algoritmo de Construcción de Subconjuntos
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 12/10/2023
+// Fecha: 22/10/2023
 #include <iostream>
 #include <vector>
 #include <set>
 #include <istream>
 #include <string>
+#include <map>
+#include <utility>
+#include <queue>
 
 #include "Alphabet.h"
 #include "State.h"
-#include "Language.h"
+#include "String.h"
 #include "Transition.h"
 
 #pragma once
@@ -32,22 +35,23 @@ class Automaton {
 
  public:
     explicit Automaton(std::ifstream&);
+    Automaton();
     ~Automaton() {}
 
 
     //  Setters and getters
-    void setAlphabet(Alphabet alphabet) { alphabet_ = alphabet; }
+    void setAlphabet(const Alphabet& alphabet) { alphabet_.setAlphabet(alphabet.getAlphabet()); }
     Alphabet getAlphabet() { return alphabet_; }
     void setStatesCount(std::string howManyStates);
     State getState(std::string);
     void setStartingState(std::string state);
     std::set<Transition> getTransition() { return transition_; }
+    int getSize() { return stateSet_.size(); }
 
 
     //  Adders
-    void addTransition(Transition transition) { transition_.insert(transition); }
+    void addTransition(Transition transition);
     void addState(State state);
-
 
     //  Auxiliars
     bool isAccepted(std::set<State>);
@@ -68,7 +72,14 @@ class Automaton {
     std::vector<String> stringsReader(std::vector<std::string>&);
 
     // Convert to DFA
-    void SubSetConstruction();
+    Automaton SubSetConstruction();
+    State createDFAState(const std::set<State>&, std::map<std::set<State>, State>&, std::queue<std::set<State>>&);
     std::set<State> eClosure(const State& state);
+    std::set<State> move(const State&, const Symbol&);
+    void setDFAFinals(const std::map<std::set<State>, State>&);
+    void setDFAProperties(std::map<std::set<State>, State>& , const std::set<State>&, Alphabet);
+
+    //  Printers
+    void outputDFA(std::ofstream&);
 };
 
