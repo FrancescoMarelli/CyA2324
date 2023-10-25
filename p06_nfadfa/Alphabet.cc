@@ -46,6 +46,13 @@ std::ostream &operator<<(std::ostream &os, const Alphabet &alphabet) {
 }
 
 
+/**
+ * @brief 
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
 bool Alphabet::operator=(const Alphabet& other) const {
     if (alphabet_.size() != other.getAlphabet().size()) {
         return false;

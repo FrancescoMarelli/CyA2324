@@ -1,0 +1,4 @@
+sonar.projectKey=CyAP6
+sonar.login=sqp_4c521671032c591074bea82d5abdc12e39d13177
+
+sonar.java.binaries=.

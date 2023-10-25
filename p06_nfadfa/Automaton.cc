@@ -442,7 +442,7 @@ Automaton Automaton::SubSetConstruction() {
 
 
 /**
- * @brief 
+ * @brief Setters the DFA properties
  * 
  * @param dfaStates 
  * @param initialStates 
