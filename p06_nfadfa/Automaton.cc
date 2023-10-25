@@ -151,6 +151,7 @@ void Automaton::transitionsReader(std::string line) {
     iss >> stateLabel >> type >> numTransitions;
     State state(stateLabel, type);
     addState(state);
+    int numReadTransitions = 0;
     for (int j = 0; j < numTransitions; j++) {
         std::string symbol;
         std::string destLabel;
@@ -168,6 +169,7 @@ void Automaton::transitionsReader(std::string line) {
         if (getAlphabet().belongsToAlphabet(Symbol(symbol))) {
             Transition transition(state, Symbol(symbol), destState);
             addTransition(transition);
+            numReadTransitions++;
         } else {
             std::cout << "TRANSITION_ERROR: el simbolo " << symbol << " o no pertenece al alfabeto "
                       << "o no hay transiciones suficiente  declaradas, comprueba input.fa" << std::endl;
@@ -335,6 +337,27 @@ bool Automaton::isAccepted(std::set<State> currentStatesSet) {
 
 
 /**
+ * @brief Iterates over the states and checks if the automaton is deterministic
+ *        - The automaton is deterministic if for each state and symbol there is only one transition
+ * 
+ * @return true 
+ * @return false 
+ */
+bool Automaton::isDFA() {
+    for (auto state : stateSet_) {
+        std::set<Symbol> symbols = alphabet_.getAlphabet();
+        for (auto symbol : symbols) {
+            std::set<State> nextStates = move(state, symbol);
+            if (nextStates.size() != 1) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+/**
  * @brief Creates a newState searching in the DFA map if already is in the dfa state
  * 
  * @param states 
@@ -370,47 +393,51 @@ State Automaton::createDFAState(const std::set<State>& states, std::map<std::set
  * @return Automaton 
  */
 Automaton Automaton::SubSetConstruction() {
-    Automaton dfa;
-    std::set<State> initialStates = eClosure(startingState_);
-    std::queue<std::set<State>> unprocessedStates;
-    std::map<std::set<State>, State> dfaStates;  //  map to relate NFAStatesSet to DFAStates
-    dfaStates[initialStates] = State(startingState_);
-    unprocessedStates.push(initialStates);
+    if (isDFA()) {
+        std::cout << "El automata ya es determinista" << std::endl;
+        return *this;
+    } else {
+        Automaton dfa;
+        std::set<State> initialStates = eClosure(startingState_);
+        std::queue<std::set<State>> unprocessedStates;
+        std::map<std::set<State>, State> dfaStates;  //  map to relate NFAStatesSet to DFAStates
+        dfaStates[initialStates] = State(startingState_);
+        unprocessedStates.push(initialStates);
+        while (!unprocessedStates.empty()) {  // Loop until unprocessed states aint over
+            std::set<State> currentStates = unprocessedStates.front();
+            unprocessedStates.pop();
+            State currentState = createDFAState(currentStates, dfaStates, unprocessedStates);  //  Creatint DFA States with condition  // NOLINT
 
-    while (!unprocessedStates.empty()) {  // Loop until unprocessed states aint over
-        std::set<State> currentStates = unprocessedStates.front();
-        unprocessedStates.pop();
-        State currentState = createDFAState(currentStates, dfaStates, unprocessedStates);  //  Creatint DFA States with condition  // NOLINT
-
-        for (auto symbol : alphabet_.getAlphabet()) {
-            std::set<State> nextStates;
-            for (auto state : currentStates) {  //  For each State find where can go
-                std::set<State> transitionStates = move(state, symbol);
-                nextStates.insert(transitionStates.begin(), transitionStates.end());
-            }
-
-            if (!nextStates.empty()) {  //  if can go
-                std::set<State> eClosureStates;
-                for (auto nextState : nextStates) {
-                    std::set<State> nextStateClosure = eClosure(nextState);  //  find eClosure
-                    eClosureStates.insert(nextStateClosure.begin(), nextStateClosure.end());
+            for (auto symbol : alphabet_.getAlphabet()) {
+                std::set<State> nextStates;
+                for (auto state : currentStates) {  //  For each State find where can go
+                    std::set<State> transitionStates = move(state, symbol);
+                    nextStates.insert(transitionStates.begin(), transitionStates.end());
                 }
-                State nextState = createDFAState(eClosureStates, dfaStates, unprocessedStates);  //  and create state
-                Transition newTransition(currentState, symbol, nextState);
-                dfa.addTransition(newTransition);  // and trans
-            } else {  // if not do  -> deathstate
-                std::string strD = "D";
-                State deadState(strD);
-                State nextState = createDFAState({deadState}, dfaStates, unprocessedStates);
-                Transition newTransition(currentState, symbol, nextState);
-                dfa.addTransition(newTransition);
+
+                if (!nextStates.empty()) {  //  if can go
+                    std::set<State> eClosureStates;
+                    for (auto nextState : nextStates) {
+                        std::set<State> nextStateClosure = eClosure(nextState);  //  find eClosure
+                        eClosureStates.insert(nextStateClosure.begin(), nextStateClosure.end());
+                    }
+                    State nextState = createDFAState(eClosureStates, dfaStates, unprocessedStates);  //  and create state
+                    Transition newTransition(currentState, symbol, nextState);
+                    dfa.addTransition(newTransition);  // and trans
+                } else {  // if not do  -> deathstate
+                    std::string strD = "D";
+                    State deadState(strD);
+                    State nextState = createDFAState({deadState}, dfaStates, unprocessedStates);
+                    Transition newTransition(currentState, symbol, nextState);
+                    dfa.addTransition(newTransition);
+                }
             }
         }
-    }
 
-    // Seteo DFA
-    dfa.setDFAProperties(dfaStates, initialStates, getAlphabet());
-    return dfa;
+        // Seteo DFA
+        dfa.setDFAProperties(dfaStates, initialStates, getAlphabet());
+        return dfa;
+    }
 }
 
 

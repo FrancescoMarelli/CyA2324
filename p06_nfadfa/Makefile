@@ -1,5 +1,5 @@
-NFA2DFA: Symbol.o String.o Alphabet.o Automaton.o State.o Transition.o NFA2DFA.o
-	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o String.o Alphabet.o Transition.o State.o Automaton.o NFA2DFA.o -o NFA2DFA
+NFA2DFA: Symbol.o String.o Alphabet.o Automaton.o State.o Transition.o p06_nfa2dfa.o
+	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o String.o Alphabet.o Transition.o State.o Automaton.o p06_nfa2dfa.o -o NFA2DFA
 
 NFA2DFA.o: p06_nfa2dfa.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p06_nfa2dfa.cc

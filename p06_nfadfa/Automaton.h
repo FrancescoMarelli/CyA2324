@@ -78,6 +78,7 @@ class Automaton {
     std::set<State> move(const State&, const Symbol&);
     void setDFAFinals(const std::map<std::set<State>, State>&);
     void setDFAProperties(std::map<std::set<State>, State>& , const std::set<State>&, Alphabet);
+    bool isDFA();
 
     //  Printers
     void outputDFA(std::ofstream&);

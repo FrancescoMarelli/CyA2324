@@ -14,7 +14,7 @@
 void Help();
 void Usage();
 int checkArguments(int argc, char* argv[]);
-void simulateAutomaton(std::ifstream&, std::ofstream&);
+void convertNFA(std::ifstream&, std::ofstream&);
 
 int main(int argc, char* argv[]) {
     if (checkArguments(argc, argv) == 1)
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    simulateAutomaton(fileFa, fileOutput);  //  Program runner
+    convertNFA(fileFa, fileOutput);  //  Program runner
 
     fileFa.close();
     fileOutput.close();
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
  * @param fileFa 
  * @param fileStrings 
  */
-void simulateAutomaton(std::ifstream& fileFa, std::ofstream& dfaOutput) {
+void convertNFA(std::ifstream& fileFa, std::ofstream& dfaOutput) {
     Automaton automaton(fileFa);  // Build the automaton
     Automaton dfa = automaton.SubSetConstruction();  //  Build the automaton with the subset construction
     dfa.outputDFA(dfaOutput);
