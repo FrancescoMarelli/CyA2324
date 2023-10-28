@@ -51,6 +51,8 @@ void convertNFA(std::ifstream& fileFa, std::ofstream& dfaOutput) {
     Automaton automaton(fileFa);  // Build the automaton
     Automaton dfa = automaton.SubSetConstruction();  //  Build the automaton with the subset construction
     dfa.outputDFA(dfaOutput);
+    Alphabet alphabet(dfa.getAlphabet());
+    std::cout << alphabet << std::endl;
 }
 
 
