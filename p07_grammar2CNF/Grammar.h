@@ -14,21 +14,26 @@
 #include <string>
 #include <set>
 #include <map>
+#include <vector>
 
 #include "Alphabet.h"
 #include "Symbol.h"
+#include "String.h"
 
 class Grammar {
  private:
     Alphabet alphabet_;
-    std::set<Symbol> nonTerminals_;
+    Alphabet nonTerminals_;
     Symbol startSymbol_;
-    std::map<Symbol, std::set<std::string>> productions_;
+    std::multimap<Symbol, String> productions_;
 
  public:
-    Grammar() {}
+    Grammar() : alphabet_(), nonTerminals_() {}
     ~Grammar() {}
     void fileReader(std::ifstream&);
     void setAlphabet(Alphabet alphabet) { alphabet_ = alphabet ; }
     Alphabet getAlphabet() const { return alphabet_; }
+
+    std::vector<std::string> linesReader(std::ifstream&);
+    void printGrammar(std::ofstream&) const;
 };

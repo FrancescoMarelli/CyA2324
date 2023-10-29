@@ -38,7 +38,10 @@ int main(int argc, char* argv[]) {
 
     // Programa principal
     Grammar grammar;
+    std::cout.setf(std::ios::unitbuf);
     grammar.fileReader(fileCFG);
+    grammar.printGrammar(fileOutput);
+
 
 
     fileCFG.close();

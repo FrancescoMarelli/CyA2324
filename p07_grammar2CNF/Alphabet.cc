@@ -23,13 +23,9 @@ void Alphabet::write(std::ostream &os) const {
         os << "";
         return;
     }
-    if (alphabet_.size() > 0) {
-        for (auto it = alphabet_.begin(); it != alphabet_.end(); it++) {
-            if (it != alphabet_.begin() && it != alphabet_.end()) {
-                os << " ";
-            }
-           os << *it;
-        }
+
+    for (auto symbol : alphabet_) {
+        os << symbol;
     }
 }
 
