@@ -6,10 +6,12 @@ S
 A
 B
 C
-6
-S aA
-A aB
+8
+S a
+S &
+A B
+A C
 A bB
 B b
 B &
-B aa
+B a

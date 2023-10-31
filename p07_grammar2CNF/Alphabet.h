@@ -15,6 +15,7 @@
 #include <set>
 #include <algorithm>
 #include <string>
+#include <vector>
 
 
 #include "Symbol.h"
@@ -34,6 +35,7 @@ class Alphabet {
     std::set<Symbol> getAlphabet() const { return alphabet_; }
     void addSymbol(Symbol symbol);
     bool belongsToAlphabet(Symbol);
+    std::vector<Symbol> getAlphabetVector() const;
 
     bool operator=(const Alphabet& other) const;
     void write(std::ostream &os) const;

@@ -33,7 +33,17 @@ class Grammar {
     void fileReader(std::ifstream&);
     void setAlphabet(Alphabet alphabet) { alphabet_ = alphabet ; }
     Alphabet getAlphabet() const { return alphabet_; }
+    Alphabet getNonTerminals() const { return nonTerminals_; }
 
     std::vector<std::string> linesReader(std::ifstream&);
-    void printGrammar(std::ofstream&) const;
+    void alphabetReader(std::vector<std::string>&);
+    void nonTerminalReader(std::vector<std::string>&);
+    void startNonTerminalReader(std::vector<std::string>&);
+    void productionsReader(std::vector<std::string>&);
+    void printGrammar(std::ofstream&);
+
+    void deleteEpsilonProductions();
+    void deleteUnitProductions();
+    void convertCNF();
+    bool isNonTerminal(Symbol);
 };

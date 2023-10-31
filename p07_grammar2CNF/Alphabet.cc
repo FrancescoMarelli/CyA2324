@@ -89,6 +89,20 @@ bool Alphabet::belongsToAlphabet(Symbol symbol) {
 }
 
 
+/**
+ * @brief 
+ * 
+ * @return std::vector<Symbol> 
+ */
+std::vector<Symbol> Alphabet::getAlphabetVector() const {
+    std::vector<Symbol> alphabetVector;
+    for (auto it = alphabet_.begin(); it != alphabet_.end(); it++) {
+        alphabetVector.push_back(*it);
+    }
+    return alphabetVector;
+}
+
+
 
 
 

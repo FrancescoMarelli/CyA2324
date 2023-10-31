@@ -40,8 +40,8 @@ int main(int argc, char* argv[]) {
     Grammar grammar;
     std::cout.setf(std::ios::unitbuf);
     grammar.fileReader(fileCFG);
+    grammar.convertCNF();
     grammar.printGrammar(fileOutput);
-
 
 
     fileCFG.close();
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
 void Help() {
     std::cout << "-----------------------------------------------------------------------------------------------------------------" << std::endl;  // NOLINT
     std::cout << "      Práctica 7: Gramaticas en forma normal de Chomsky" << std::endl;
-    std::cout << "      Este programa es un programa que opera sobre Gramatica Independientes del contexto." << std::endl;
+    std::cout << "      Este programa es un programa que opera sobre Gramatica Independientes del contexto." << std::endl;  // NOLINT
     std::cout << "      Para compilar el programa ejecute el siguiente comando:" << std::endl;
     std::cout << "      make" << std::endl;
     std::cout << "      Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
@@ -66,6 +66,20 @@ void Help() {
     std::cout << "          Uso 3: make execute" << std::endl;
     std::cout << std::endl;
     std::cout << "      El formato de los ficheros de entrada va a ser: " << std::endl;
+    std::cout << "          - La primera linea va a ser el tamaño N del alphabeto de la gramatica." << std::endl;  // NOLINT
+    std::cout << "          - La siguientes N lineas van a ser el alphabeto de la gramatica." << std::endl;  // NOLINT
+    std::cout << "          - La siguiente linea va a ser el tamaño M del conjunto de no terminales." << std::endl;  // NOLINT
+    std::cout << "          - Las siguientes M lineas van a ser el conjunto de no terminales." << std::endl;  // NOLINT
+    std::cout << "          - La siguiente linea va a ser el simbolo inicial de la gramatica." << std::endl;  // NOLINT
+    std::cout << "          - La siguiente linea va a ser el tamaño P del conjunto de producciones." << std::endl;  // NOLINT
+    std::cout << "          - Las siguientes P lineas van a ser las producciones de la gramatica." << std::endl;  // NOLINT
+    std::cout << "          - El formato de las producciones podrá ser: " << std::endl;
+    std::cout << "             S A" << std::endl;  // NOLINT
+    std::cout << "             S a" << std::endl;  // NOLINT
+    std::cout << "             S AB" << std::endl;  // NOLINT
+    std::cout << "             S aB" << std::endl;  // NOLINT
+    std::cout << "            Se tendrá que especificar una produccion por linea." << std::endl;  // NOLINT
+    std::cout << "      El formato de los ficheros de salida va a ser igual. " << std::endl;
     std::cout << "------------------------------------------------------------------------------------------------------------------" << std::endl;  // NOLINT
 }
 
