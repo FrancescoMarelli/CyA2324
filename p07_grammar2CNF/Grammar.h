@@ -41,7 +41,7 @@ class Grammar {
     void startNonTerminalReader(std::vector<std::string>&);
     void productionsReader(std::vector<std::string>&);
     void printGrammar(std::ofstream&);
-
+    friend std::ostream &operator<<(std::ostream &os, const Grammar& grammar);
     void deleteEpsilonProductions();
     void deleteUnitProductions();
     void convertCNF();

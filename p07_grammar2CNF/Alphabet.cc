@@ -25,7 +25,7 @@ void Alphabet::write(std::ostream &os) const {
     }
 
     for (auto symbol : alphabet_) {
-        os << symbol;
+        os << symbol << "\n";
     }
 }
 
