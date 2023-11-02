@@ -111,70 +111,6 @@ bool String::belongsToAlphabet(Alphabet alphabet) {
 /**
  * @brief 
  * 
- * @return Alphabet 
- */
-Alphabet String::extractAlphabet() {
-    std::set<Symbol> alphabet;
-    if (size() == 0) {
-        return Alphabet(alphabet);
-    }
-    if (string_[0] == Symbol(kEpsilon)) {
-        return Alphabet(alphabet);
-    }
-    for (const Symbol& symbol : string_) {
-        if (symbol != Symbol(kEpsilon)) {
-            alphabet.insert(symbol);
-        }
-    }
-    return Alphabet(alphabet);
-}
-
-
-/**
- * @brief 
- * 
- * @return unsigned 
- */
-unsigned String::extractLength() const {
-    // Si contiene la cadena vacia es 0
-    if (string_[0] == Symbol(kEpsilon)) {
-        return 0;
-    } else {
-        return size_  - (string_[size_ - 1] == Symbol("\0"));
-    }
-}
-
-
-/**
- * @brief 
- * 
- * @param string 
- * @param alphabet 
- * @return String 
- */
-String String::inverse(String string, Alphabet alphabet) {
-  std::set<Symbol> alphabet_ = alphabet.getAlphabet();
-  std::vector<Symbol> inverse;
-  if (belongsToAlphabet(alphabet)) {
-    for (int i = 0; i < string.size_; ++i) {
-    if (alphabet_.find(string.getSymbol(i)) != alphabet_.end()) {
-      inverse.push_back(string.getSymbol(i));
-    }
-  }
-
-  // Invierte el vector 'inverse' sin los simbolos vacios
-  std::reverse(inverse.begin(), inverse.end());
-    return String(inverse);
-  } else {
-    std::cout << "La cadena " << string << " no pertenece al alfabeto " << std::endl;
-    return String("");
-  }
-}
-
-
-/**
- * @brief 
- * 
  * @param other 
  * @return true 
  * @return false 
@@ -196,3 +132,37 @@ bool String::operator<(const String& other) const {
     return false;
 }
 
+
+/**
+ * @brief 
+ * 
+ * @param pos 
+ * @param newSymbol 
+ */
+void String::replaceSymbol(int pos, Symbol newSymbol) {
+  for (int i = 0; i < string_.size(); i++) {
+    if (i == pos) {
+      string_[i] = newSymbol;
+    }
+  }
+}
+
+
+/**
+ * @brief 
+ * 
+ * @param other 
+ * @return true 
+ * @return false 
+ */
+bool String::operator==(const String& other) const {
+    if (size_ != other.size_) {
+        return false;
+    }
+    for (int i = 0; i < size_; ++i) {
+        if (string_[i] != other.string_[i]) {
+            return false;
+        }
+    }
+    return true;
+}

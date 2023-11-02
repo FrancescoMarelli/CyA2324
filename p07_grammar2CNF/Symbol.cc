@@ -69,3 +69,4 @@ bool Symbol::operator!=(const Symbol& symbol) const {
 bool Symbol::operator<(const Symbol& other) const {
     return getSymbol() < other.getSymbol();
 }
+

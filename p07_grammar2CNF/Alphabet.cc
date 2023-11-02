@@ -85,7 +85,7 @@ void Alphabet::addSymbol(Symbol symbol) {
  * @return false 
  */
 bool Alphabet::belongsToAlphabet(Symbol symbol) {
-    return alphabet_.find(symbol) != alphabet_.end() || symbol.getSymbol() == kEpsilon;
+    return (alphabet_.find(symbol) != alphabet_.end() || symbol.getSymbol() == kEpsilon);
 }
 
 

@@ -29,6 +29,7 @@ class String {
  public:
     explicit String(std::vector<Symbol> &string) : string_(string) { size_ = string.size(); }
     explicit String(const std::string &line);
+    explicit String(const Symbol& symbol) : string_({symbol}) { size_ = 1; }
     String(const String &string);
     String() {}
     ~String() {}
@@ -39,9 +40,6 @@ class String {
     void setSymbol(std::vector<Symbol> symbol);
     unsigned size() const { return string_.size(); }
 
-    Alphabet extractAlphabet();
-    unsigned extractLength() const;
-    String inverse(String string, Alphabet alphabet);
     bool belongsToAlphabet(Alphabet alphabet);
 
     friend std::ostream &operator<<(std::ostream &os, const String &string);
@@ -49,4 +47,6 @@ class String {
     void write(std::ostream& os) const;
     bool operator==(const String &other) const;
     bool operator<(const String &other) const;
+    void replaceSymbol(int, Symbol);
+    void eraseSymbol(int pos) { string_.erase(string_.begin() + pos); }
 };

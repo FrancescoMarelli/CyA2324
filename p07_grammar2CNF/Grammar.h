@@ -46,4 +46,6 @@ class Grammar {
     void deleteUnitProductions();
     void convertCNF();
     bool isNonTerminal(Symbol);
+    Symbol generateNewNonTerminal();
+    bool belongsToProductions(std::multimap<Symbol, String>, Symbol, String);
 };

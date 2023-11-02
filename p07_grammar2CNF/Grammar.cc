@@ -73,6 +73,11 @@ void Grammar::alphabetReader(std::vector<std::string>& lines) {
  */
 void Grammar::nonTerminalReader(std::vector<std::string>& lines) {
     std::string line = lines[alphabet_.getAlphabet().size() + 1];
+    if (!isdigit(line[0])) {
+        std::cout << "NON_TERMINAL_DIGIT_ERROR: El conjunto de no terminales tiene que tener un tamaño numerico superior a 0,"
+                        " puede que tengas demasiados simbolos en el comprueba input.gra" << std::endl;  // NOLINT  // Check if the line is a digit
+        exit(1);
+    }
     line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
     int nonTerminalSize = std::stoi(line);
     int nonTerminalStart = alphabet_.getAlphabet().size() + 2;
@@ -124,7 +129,10 @@ void Grammar::productionsReader(std::vector<std::string>& lines) {
     line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());  // Delete spaces
     int alphabetSize = std::stoi(lines[0]);  // Get alphabet , already checked
     int nonTerminalSize = std::stoi(lines[alphabetSize + 1]);  // Get non-terminals, already checked
-
+    if (!isdigit(line[0])) {
+        std::cout << "PRODUCTION_DIGIT_ERROR: El conjunto de producciones tiene que tener un tamaño numerico superior a 0, comprueba input.gra" << std::endl;  // NOLINT  // Check if the line is a digit
+        exit(1);
+    }
     // Set Productions
     int productionsSize = std::stoi(lines[alphabetSize + nonTerminalSize + 2]);
     int productionsStart = alphabetSize + nonTerminalSize + 3;
@@ -132,8 +140,7 @@ void Grammar::productionsReader(std::vector<std::string>& lines) {
     for (int i = productionsStart; i < productionsEnd; i++) {
         std::string left = lines[i].substr(0, 1);
         if (!isNonTerminal(Symbol(left))) {
-            std::cout << "PRODUCTION_LEFT_ERROR: El simbolo de la izquierda de la produccion no es un simbolo no terminal. " // NOLINT  // Check if the left symbol is a non-terminal
-                        "Tienen que ser letras mayusculas, comprueba input.gra" << std::endl;  // NOLINT
+            std::cout << "PRODUCTION_LEFT_ERROR: Error en la producción,  comprueba input.gra" << std::endl;  // NOLINT
             exit(1);
         }
         left.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());  // Delete spaces
@@ -147,7 +154,7 @@ void Grammar::productionsReader(std::vector<std::string>& lines) {
         right.erase(std::remove(right.begin(), right.end(), '\r'), right.end());  // Delete carriage return
         right.erase(std::remove(right.begin(), right.end(), '\n'), right.end());  // Delete new line
         String stringRight(right);
-        // Falta Comprobar si simbolo de alfabeto o de no terminales
+        // Falta Comprobar si simbolo de alfabeto o de no terminales  VERY IMPORTANT
         productions_.insert(std::pair<Symbol, String>(symbolLeft, stringRight));
     }
 }
@@ -178,12 +185,108 @@ std::ostream &operator<<(std::ostream &os, const Grammar& grammar) {
  * 
  */
 void Grammar::convertCNF() {
+    // Elimina producciones epsilon y unitarias
     deleteEpsilonProductions();
     deleteUnitProductions();
-    // Convertir todos simbolos terminales de las producciones a no terminales
-    // Convertir cuando derecha es > que dos noTerminales por un noTerminal
-    // Parar cuando todas producciones son como mucho con 2 noterminales o no unitaria.
+
+    // Recopila todas las producciones
+    std::multimap<Symbol, String> CNFProductions;
+
+    // Copia las producciones originales en CNFProductions
+    CNFProductions = productions_;
+
+    for (auto originalProduction : productions_) {
+        Symbol leftSymbol = originalProduction.first;
+        String rightSide = originalProduction.second;
+
+        for (int i = 0; i < rightSide.size(); ++i) {
+            Symbol symbol = rightSide.getSymbol(i);
+
+            // Si es un símbolo terminal, reemplázalo por un símbolo no terminal
+            if (alphabet_.belongsToAlphabet(symbol)) {
+                Symbol newSymbol = generateNewNonTerminal();
+                nonTerminals_.addSymbol(newSymbol);
+
+                // Agrega una nueva producción solo si no existe aun
+                if (!belongsToProductions(CNFProductions, newSymbol, String(symbol))) {
+                    // La producción no existe
+                    CNFProductions.emplace(newSymbol, String(symbol));
+                }
+                // Reemplaza el símbolo terminal por el nuevo símbolo en el lado derecho
+                rightSide.replaceSymbol(i, newSymbol);
+            }
+        }
+
+        // Reemplaza la producción original con la producción modificada
+        CNFProductions.erase(leftSymbol);
+        CNFProductions.emplace(leftSymbol, rightSide);
+    }
+
+    // Reemplaza las producciones originales con las producciones CNF en productions_
+    productions_ = CNFProductions;
+
+std::multimap<Symbol, String> CNFProductions2 = productions_;
+
+for (auto originalProduction : productions_) {
+    Symbol leftSymbol = originalProduction.first;
+    String rightSide = originalProduction.second;
+    String updatedRightSide = rightSide;
+
+    if (rightSide.size() > 2) {
+        const int SIZE_RIGHT_SIDE = rightSide.size();
+
+        for (int j = SIZE_RIGHT_SIDE - 1; j > 1; j--) {
+            if (alphabet_.belongsToAlphabet(rightSide.getSymbol(j))) {
+                // Generar un nuevo símbolo no terminal
+                Symbol newSymbol = generateNewNonTerminal();
+                nonTerminals_.addSymbol(newSymbol);
+
+                // Crear una nueva producción con el nuevo símbolo no terminal y los dos últimos símbolos del lado derecho
+                String newRightSide;
+                newRightSide.addSymbol(rightSide.getSymbol(j - 1));
+                newRightSide.addSymbol(rightSide.getSymbol(j));
+                CNFProductions2.emplace(newSymbol, newRightSide);
+
+                updatedRightSide.replaceSymbol(j-1, newSymbol);
+                updatedRightSide.eraseSymbol(j);
+                // Agregar la nueva producción solo si no existe aún
+                if (!belongsToProductions(CNFProductions2, newSymbol, updatedRightSide)) {
+                    CNFProductions2.emplace(newSymbol, updatedRightSide);
+                }
+
+            }
+        }
+
+        // Reemplazar la producción original con la producción modificada
+        CNFProductions2.erase(leftSymbol);
+        CNFProductions2.emplace(leftSymbol, rightSide);
+    }
 }
+
+productions_ = CNFProductions2;
+
+}
+
+
+
+/**
+ * @brief 
+ * 
+ * @param productions 
+ * @param symbol 
+ * @param rightSide 
+ * @return true 
+ * @return false 
+ */
+bool Grammar::belongsToProductions(std::multimap<Symbol, String> productions, Symbol symbol, String rightSide) {
+    for (auto it = productions.begin(); it != productions.end(); ++it) {
+        if ((it->second == rightSide)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 
 /**
@@ -214,10 +317,16 @@ void Grammar::deleteUnitProductions() {
     while (changed) {
         changed = false;
         for (auto it = productions.begin(); it != productions.end();) {
+            const Symbol& nonTerminal = it->first;
             const String& rightSide = it->second;
 
             // Check for unit productions that produce another non-terminal.
             if ((rightSide.size() == 1) && (isNonTerminal(rightSide.getSymbol(0)))) {
+                // We found a unit production. Replace it.
+                auto range = productions_.equal_range(rightSide.getSymbol(0));
+                for (auto rangeIt = range.first; rangeIt != range.second; ++rangeIt) {
+                    productions.emplace(nonTerminal, rangeIt->second);
+                }
                 it = productions.erase(it);
                 changed = true;
             } else {
@@ -246,4 +355,19 @@ bool Grammar::isNonTerminal(Symbol symbol) {
 }
 
 
+/**
+ * @brief 
+ * 
+ * @return Symbol 
+ */
+Symbol Grammar::generateNewNonTerminal() {
+    Symbol newNonTerminal;
+    for (int i = 0; i < 26; i++) {
+        newNonTerminal = Symbol(std::string(1, 'A' + i));
+        if (nonTerminals_.belongsToAlphabet(newNonTerminal) == false) {
+            return newNonTerminal;
+        }
+    }
+    return newNonTerminal;
+}
 
