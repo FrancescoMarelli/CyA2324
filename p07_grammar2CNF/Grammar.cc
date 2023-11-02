@@ -222,49 +222,49 @@ void Grammar::convertCNF() {
         CNFProductions.emplace(leftSymbol, rightSide);
     }
 
-    // Reemplaza las producciones originales con las producciones CNF en productions_
-    productions_ = CNFProductions;
+    for (auto originalProduction : CNFProductions) {
+        Symbol leftSymbol = originalProduction.first;
+        String rightSide = originalProduction.second;
+        String updatedRightSide = rightSide;
+        
+        if (rightSide.size() > 2) {
+            const int SIZE_RIGHT_SIDE = rightSide.size();
+            for (int j = SIZE_RIGHT_SIDE - 1; j > 1; j--) {
+                if (alphabet_.belongsToAlphabet(rightSide.getSymbol(j))) {
+                    // Generar un nuevo símbolo no terminal
+                    Symbol newSymbol(generateNewNonTerminal());
 
-std::multimap<Symbol, String> CNFProductions2 = productions_;
 
-for (auto originalProduction : productions_) {
-    Symbol leftSymbol = originalProduction.first;
-    String rightSide = originalProduction.second;
-    String updatedRightSide = rightSide;
+                    // Crear una nueva producción con el nuevo símbolo no terminal y los dos últimos símbolos del lado derecho
+                    String newRightSide;
+                    newRightSide.addSymbol(rightSide.getSymbol(j - 1));
+                    newRightSide.addSymbol(rightSide.getSymbol(j));
+                    CNFProductions.emplace(newSymbol, newRightSide);
 
-    if (rightSide.size() > 2) {
-        const int SIZE_RIGHT_SIDE = rightSide.size();
+                    // Actualizar updatedRightSide
+                    updatedRightSide.eraseSymbol(j - 1);
+                    updatedRightSide.eraseSymbol(j);
 
-        for (int j = SIZE_RIGHT_SIDE - 1; j > 1; j--) {
-            if (alphabet_.belongsToAlphabet(rightSide.getSymbol(j))) {
-                // Generar un nuevo símbolo no terminal
-                Symbol newSymbol = generateNewNonTerminal();
-                nonTerminals_.addSymbol(newSymbol);
+                    // Reemplazar los dos últimos símbolos en updatedRightSide con el nuevo símbolo
+                    updatedRightSide = newRightSide;
 
-                // Crear una nueva producción con el nuevo símbolo no terminal y los dos últimos símbolos del lado derecho
-                String newRightSide;
-                newRightSide.addSymbol(rightSide.getSymbol(j - 1));
-                newRightSide.addSymbol(rightSide.getSymbol(j));
-                CNFProductions2.emplace(newSymbol, newRightSide);
-
-                updatedRightSide.replaceSymbol(j-1, newSymbol);
-                updatedRightSide.eraseSymbol(j);
-                // Agregar la nueva producción solo si no existe aún
-                if (!belongsToProductions(CNFProductions2, newSymbol, updatedRightSide)) {
-                    CNFProductions2.emplace(newSymbol, updatedRightSide);
+                    // Agregar la nueva producción solo si no existe aún
+                    if (!belongsToProductions(CNFProductions, newSymbol, newRightSide)) {
+                        nonTerminals_.addSymbol(newSymbol);
+                        CNFProductions.emplace(newSymbol, newRightSide);
+                    }
                 }
-
             }
-        }
-
         // Reemplazar la producción original con la producción modificada
-        CNFProductions2.erase(leftSymbol);
-        CNFProductions2.emplace(leftSymbol, rightSide);
+        CNFProductions.erase(leftSymbol);
+        CNFProductions.emplace(leftSymbol, updatedRightSide);
+        }
     }
-}
-
-productions_ = CNFProductions2;
-
+    // Si S genera epsilon, agrega una nueva producción S -> epsilon
+    if (CNFProductions.find(startSymbol_) != CNFProductions.end()) {
+        CNFProductions.emplace(startSymbol_, String(Symbol(kEpsilon)));
+    }
+    productions_ = CNFProductions;
 }
 
 
@@ -280,7 +280,7 @@ productions_ = CNFProductions2;
  */
 bool Grammar::belongsToProductions(std::multimap<Symbol, String> productions, Symbol symbol, String rightSide) {
     for (auto it = productions.begin(); it != productions.end(); ++it) {
-        if ((it->second == rightSide)) {
+        if ((it->second == rightSide) && (it->first == symbol)) {
             return true;
         }
     }
@@ -361,13 +361,14 @@ bool Grammar::isNonTerminal(Symbol symbol) {
  * @return Symbol 
  */
 Symbol Grammar::generateNewNonTerminal() {
-    Symbol newNonTerminal;
     for (int i = 0; i < 26; i++) {
-        newNonTerminal = Symbol(std::string(1, 'A' + i));
-        if (nonTerminals_.belongsToAlphabet(newNonTerminal) == false) {
+        Symbol newNonTerminal = Symbol(std::string(1, 'A' + i));
+        if (!nonTerminals_.belongsToAlphabet(newNonTerminal)) {
             return newNonTerminal;
         }
     }
-    return newNonTerminal;
+    // Handle the case where all symbols are already used (unlikely for an alphabet of size 26)
+    // You can add error handling or return a default symbol here.
+    return Symbol("");
 }
 
