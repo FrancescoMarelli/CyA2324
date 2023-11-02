@@ -186,8 +186,24 @@ std::ostream &operator<<(std::ostream &os, const Grammar& grammar) {
  */
 void Grammar::convertCNF() {
     // Elimina producciones epsilon y unitarias
-    deleteEpsilonProductions();
-    deleteUnitProductions();
+    //  deleteEpsilonProductions();
+    //  deleteUnitProductions();
+
+
+    
+    for (auto production : productions_) {
+        if (production.first != startSymbol_ && production.second.getSymbol()[0] == Symbol(kEpsilon)) {
+            std::cout << "CNF_ERROR: La gramatica contiene producciones epsilon, no se puede convertir a CNF" << std::endl;  // NOLINT
+            exit(1);
+        }
+    }
+
+    for (auto production : productions_) {
+        if (production.second.size() == 1 && production.second.getSymbol(0).getSymbol() >= "A" && production.second.getSymbol(0).getSymbol() <= "Z") {
+            std::cout << "CNF_ERROR: La gramatica contiene producciones unitarias, no se puede convertir a CNF" << std::endl;  // NOLINT
+            exit(1);
+        }
+    }
 
     // Recopila todas las producciones
     std::multimap<Symbol, String> CNFProductions;
@@ -260,10 +276,7 @@ void Grammar::convertCNF() {
         CNFProductions.emplace(leftSymbol, updatedRightSide);
         }
     }
-    // Si S genera epsilon, agrega una nueva producción S -> epsilon
-    if (CNFProductions.find(startSymbol_) != CNFProductions.end()) {
-        CNFProductions.emplace(startSymbol_, String(Symbol(kEpsilon)));
-    }
+
     productions_ = CNFProductions;
 }
 
