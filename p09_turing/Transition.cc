@@ -135,5 +135,6 @@ void Transition::setTransition(State stateOrigin, Symbol symbol, State stateDest
     direction_ = "S";
   } else {
     std::cout << "Error: Invalid direction" << std::endl;
+    exit(EXIT_FAILURE);
   }
 }

@@ -42,6 +42,8 @@ class Turing {
     Turing() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank) {}
     ~Turing() {}
 
+    std::set<State> getFinalStates() { return finalStates_; }
+
     void fileReader(std::ifstream&);
     std::vector<std::string> linesReader(std::ifstream&);
     void setStates(std::vector<std::string>&);

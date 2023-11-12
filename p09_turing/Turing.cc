@@ -10,7 +10,7 @@
 // Fecha: 11/11/2023
 #include "Turing.h"
 #include "State.h"
-
+#include <cctype>
 #include <sstream>
 
 /**
@@ -48,7 +48,7 @@ std::vector<std::string> Turing::linesReader(std::ifstream& file) {
 void Turing::setStates(std::vector<std::string>& lines) {
     lines[0].erase(std::remove_if(lines[0].begin(), lines[0].end(), ::isspace), lines[0].end());
     if (lines[0].empty()) {
-        std::cout << "LINE 0 EMPTY: Check the .tm file" << std::endl;
+        std::cout << "LINE 1 EMPTY: Check the .tm file" << std::endl;
         exit(EXIT_FAILURE);
     }
     if (!isdigit(lines[0][0])) {
@@ -61,7 +61,7 @@ void Turing::setStates(std::vector<std::string>& lines) {
     // Set start State
     lines[1].erase(std::remove_if(lines[1].begin(), lines[1].end(), ::isspace), lines[1].end());
     if (lines[1].empty()) {
-        std::cout << "LINE 1 EMPTY: Check the .tm file" << std::endl;
+        std::cout << "LINE 2 EMPTY: Check the .tm file" << std::endl;
         exit(EXIT_FAILURE);
     }
     if (!isdigit(lines[1][0])) {
@@ -75,7 +75,7 @@ void Turing::setStates(std::vector<std::string>& lines) {
     std::istringstream iss(lines[2]);
     std::string finalState;
     if (lines[2].empty()) {
-        std::cout << "LINE 2 EMPTY: Check the .tm file" << std::endl;
+        std::cout << "LINE 3 EMPTY: Check the .tm file" << std::endl;
         exit(EXIT_FAILURE);
     }
     if (!isdigit(lines[2][0])) {
@@ -94,6 +94,15 @@ void Turing::setStates(std::vector<std::string>& lines) {
  * 
  */
 void Turing::setTransitions(std::vector<std::string>& lines) {
+    if (lines[3].empty()) {
+        std::cout << "LINE 4 EMPTY: Check the .tm file" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    if (!isdigit(lines[3][0])) {
+        std::cout << "NONDIGIT: Check the .tm file in Line 3 number of transitions must be a digit" << std::endl;  // NOLINT Check if the line is a digit
+        exit(EXIT_FAILURE);
+    }
+
     std::string auxTrans = lines[3];
     // Set nStates
     auxTrans.erase(std::remove_if(auxTrans.begin(), auxTrans.end(), ::isspace), auxTrans.end());
@@ -109,15 +118,33 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
 
         // Leer cada campo de la transición
         iss >> originState >> toReadSymbol >> toWriteSymbol >> direction >> destinyState;
+        if (transitionStr.size() > 5) {
+            std::cout << "EXTRA FIELD: Check the .tm file in Line " << 5+i << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        if (originState.empty() || toReadSymbol.empty() || toWriteSymbol.empty() || direction.empty() || destinyState.empty()) {
+            std::cout << "EMPTY FIELD: Check the .tm file in Line " << 5+i << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        if (!isdigit(originState[0]) || !isdigit(destinyState[0])) {
+            std::cout << "NONDIGIT: Check the .tm file in Line " << 5+i << " origin and destiny states must be a digit" << std::endl;  // NOLINT Check if the line is a digit
+            exit(EXIT_FAILURE);
+        }
+
+        if (toReadSymbol != kBlank && toWriteSymbol != kBlank) {
+            // Asumiendo que kBlank es de tipo Symbol o std::string
+            if (!std::all_of(toReadSymbol.begin(), toReadSymbol.end(), ::isalnum) ||
+                !std::all_of(toWriteSymbol.begin(), toWriteSymbol.end(), ::isalnum)) {
+                std::cout << "NONALNUM: Check the .tm file in Line " << 5+i << " to read and to write symbols must be alphanumeric" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+        }
 
         // Crear objetos State, Symbol y Transition
         State origin(originState);
         Symbol toRead(toReadSymbol);
         State destiny(destinyState);
         Symbol toWrite(toWriteSymbol);
-
-        // Configurar la dirección como un string (izquierda, derecha, quieto)
-        // Puedes usar enums si lo prefieres
         std::string directionString(direction);
 
         // Crear la transición y agregarla a tu mapa o vector de transiciones en la clase Turing
@@ -156,6 +183,7 @@ std::ostream& operator<<(std::ostream& os, const Turing& turing) {
  */
 void Turing::setTape(std::ifstream& tapeFile) {
     std::string line;
+    bool firstLineRead = false;
     if (std::getline(tapeFile, line)) {
         // Add a blank symbol at the beginning
         tape_.push_back(blankSymbol_);
@@ -167,10 +195,17 @@ void Turing::setTape(std::ifstream& tapeFile) {
         }
         // Add a blank symbol at the end
         tape_.push_back(blankSymbol_);
+        firstLineRead = true;
     } else {
         // If the line is empty, add a blank symbol
         tape_.push_back(blankSymbol_);
         tape_.push_back(blankSymbol_);
+    }
+    // Check if more than one line has been read
+    if (std::getline(tapeFile, line) && firstLineRead) {
+        // Error: More than one line in the input file
+        std::cerr << "TAPE_FILE_ERROR: More than one line in the .tape file." << std::endl;
+        exit(EXIT_FAILURE);
     }
 }
 

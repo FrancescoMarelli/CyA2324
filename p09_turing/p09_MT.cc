@@ -45,6 +45,7 @@ int main(int argc, char* argv[]) {
     else
         std::cout << "Cadena RECHAZADA" << std::endl;
 
+    fileTape.close();
     fileTM.close();
     return 0;
 }
