@@ -313,10 +313,11 @@ void Turing::processString() {
     std::cout << "\033[1;39m " << lineTitle << title << lineTitle << "\033[0m\n";  // NOLINT
     if (acceptString(getTape())) {
         std::cout << "\033[1;39m " << line << "\033[0m\n";  // NOLINT
-        std::cout << "\033[1;32m ACCEPTED string \033[0m\n";
+        std::cout << "  RESULT -----> "<< "\033[1;37;42m ACCEPTED string \033[0m\n";  // White text on green background
     } else {
         std::cout << "\033[1;39m " << line << "\033[0m\n";  // NOLINT
-        std::cout << "\033[1;31m REJECTED string \033[0m\n";
+        std::cout << "  RESULT -----> " << "\033[1;37;41m REJECTED string \033[0m\n";  // White text on red background
     }
+    std::cout << "\n";
 }
 
