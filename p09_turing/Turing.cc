@@ -18,7 +18,7 @@
  * 
  * @param file 
  */
-void Turing::fileReader(std::ifstream& file) {
+void Turing::tmFileReader(std::ifstream& file) {
     std::vector<std::string> lines = linesReader(file);
     setStates(lines);
     setTransitions(lines);
@@ -60,6 +60,8 @@ void Turing::setStates(std::vector<std::string>& lines) {
     nStates_ = std::stoi(nStates);
     // Set start State
     lines[1].erase(std::remove_if(lines[1].begin(), lines[1].end(), ::isspace), lines[1].end());
+
+    // Format checks
     if (lines[1].empty()) {
         std::cout << "LINE 2 EMPTY: Check the .tm file" << std::endl;
         exit(EXIT_FAILURE);
@@ -90,7 +92,7 @@ void Turing::setStates(std::vector<std::string>& lines) {
 }
 
 /**
- * @brief 
+ * @brief  Reading Transitions from file
  * 
  */
 void Turing::setTransitions(std::vector<std::string>& lines) {
@@ -113,16 +115,16 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
         std::string transitionStr =  lines[4+i];
         std::istringstream iss(transitionStr);
         std::string originState, toReadSymbol, destinyState, toWriteSymbol, direction;
-
         transitionStr.erase(std::remove_if(transitionStr.begin(), transitionStr.end(), ::isspace), transitionStr.end());
 
-        // Leer cada campo de la transición
         iss >> originState >> toReadSymbol >> toWriteSymbol >> direction >> destinyState;
+
+        // Format checks
         if (transitionStr.size() > 5) {
             std::cout << "EXTRA FIELD: Check the .tm file in Line " << 5+i << std::endl;
             exit(EXIT_FAILURE);
         }
-        if (originState.empty() || toReadSymbol.empty() || toWriteSymbol.empty() || direction.empty() || destinyState.empty()) {
+        if (originState.empty() || toReadSymbol.empty() || toWriteSymbol.empty() || direction.empty() || destinyState.empty()) {  // NOLINT
             std::cout << "EMPTY FIELD: Check the .tm file in Line " << 5+i << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -130,24 +132,20 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
             std::cout << "NONDIGIT: Check the .tm file in Line " << 5+i << " origin and destiny states must be a digit" << std::endl;  // NOLINT Check if the line is a digit
             exit(EXIT_FAILURE);
         }
-
         if (toReadSymbol != kBlank && toWriteSymbol != kBlank) {
-            // Asumiendo que kBlank es de tipo Symbol o std::string
             if (!std::all_of(toReadSymbol.begin(), toReadSymbol.end(), ::isalnum) ||
                 !std::all_of(toWriteSymbol.begin(), toWriteSymbol.end(), ::isalnum)) {
-                std::cout << "NONALNUM: Check the .tm file in Line " << 5+i << " to read and to write symbols must be alphanumeric" << std::endl;
+                std::cout << "NONALNUM: Check the .tm file in Line " << 5+i << " to read and to write symbols must be alphanumeric" << std::endl;  //  NOLINT
                 exit(EXIT_FAILURE);
             }
         }
 
-        // Crear objetos State, Symbol y Transition
         State origin(originState);
         Symbol toRead(toReadSymbol);
         State destiny(destinyState);
         Symbol toWrite(toWriteSymbol);
         std::string directionString(direction);
 
-        // Crear la transición y agregarla a tu mapa o vector de transiciones en la clase Turing
         Transition transition(origin, toRead, destiny, toWrite, directionString);
         transitions_.insert(transition);
     }
@@ -177,11 +175,11 @@ std::ostream& operator<<(std::ostream& os, const Turing& turing) {
 
 
 /**
- * @brief 
+ * @brief Initializing tape
  * 
  * @param string 
  */
-void Turing::setTape(std::ifstream& tapeFile) {
+void Turing::tapeReader(std::ifstream& tapeFile) {
     std::string line;
     bool firstLineRead = false;
     if (std::getline(tapeFile, line)) {
@@ -220,15 +218,16 @@ void Turing::setTape(std::ifstream& tapeFile) {
 bool Turing::acceptString(std::vector<Symbol> const &inputString) {
     State currentState = initialState_;
     int head = 1;
+
+    // Print initial tape
     printTape(currentState, head);
 
     while (true) {
         bool transitionFound = false;
-
         for (auto &transition : transitions_) {
-            if (head >= 0 && head < tape_.size() &&
+            if (head >= 0 && head < tape_.size() &&  // Check if the head is in the tape and the transition is valid
                              transition.getStateOrigin() == currentState && transition.getToRead() == tape_[head]) {
-                tape_[head] = transition.getToWrite();
+                tape_[head] = transition.getToWrite();  // Overwrite the tape and move or stay
                 if (transition.getDirection() == "R") {
                     head++;
                     if (head == tape_.size()) {
@@ -241,17 +240,19 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
                         head--;
                     }
                 }
-                currentState = transition.getStateDestiny();
-                printTape(currentState, head);
+                currentState = transition.getStateDestiny();  // Update the state
+                printTape(currentState, head);  // Print the tape
                 transitionFound = true;
                 break;
             }
         }
 
+        // If no transition is found or the current state is final, stop
         if (!transitionFound || finalStates_.find(currentState) != finalStates_.end()) {
             break;
         }
     }
+    // Check if the final state is in the set of final states
     return finalStates_.find(currentState) != finalStates_.end();
 }
 
@@ -271,6 +272,19 @@ void Turing::printTape(State& currentState, int head) {
         }
     }
     std::cout << std::endl;
+}
+
+
+/**
+ * @brief 
+ * 
+ */
+void Turing::processString() {
+    std::cout << "Turing Machine Trace" << std::endl;
+    if (acceptString(getTape()))
+        std::cout << "ACCEPTED string" << std::endl;
+    else
+        std::cout << "REJECTED string" << std::endl;
 }
 
 

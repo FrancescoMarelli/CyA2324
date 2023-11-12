@@ -44,14 +44,15 @@ class Turing {
 
     std::set<State> getFinalStates() { return finalStates_; }
 
-    void fileReader(std::ifstream&);
+    void tmFileReader(std::ifstream&);
     std::vector<std::string> linesReader(std::ifstream&);
     void setStates(std::vector<std::string>&);
     void setTransitions(std::vector<std::string>&);
-    void setTape(std::ifstream&);
+    void tapeReader(std::ifstream&);
     std::vector<Symbol> getTape() { return tape_;}
     friend std::ostream& operator<<(std::ostream&, const Turing&);
     void printTape(State&, int);
 
     bool acceptString(std::vector<Symbol> const&);
+    void processString();
 };

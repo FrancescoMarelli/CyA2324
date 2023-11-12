@@ -1,8 +1,8 @@
-MT: Symbol.o String.o Alphabet.o State.o Transition.o Turing.o p09_MT.o
-	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o Transition.o State.o String.o Turing.o Alphabet.o p09_MT.o -o MT
+TM: Symbol.o String.o Alphabet.o State.o Transition.o Turing.o p09_TM.o
+	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o Transition.o State.o String.o Turing.o Alphabet.o p09_TM.o -o TM
 
-MT.o: p09_MT.cc
-	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p09_MT.cc
+TM.o: p09_TM.cc
+	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p09_TM.cc
 
 Turing.o: Turing.h Turing.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Turing.cc
@@ -24,14 +24,26 @@ Symbol.o: Symbol.h Symbol.cc
 
 .PHONY: clean
 clean:
-	rm -f *.o MT
+	rm -f *.o TM
 
 .PHONY: run 
 run: 
-	./MT anbn.tm cinta.tape
+	./TM anbn.tm cinta.tape
+run2:
+	./TM abcc.tm cinta.tape
+run_pal:
+	./TM palindroma.tm cinta.tape
 
 .PHONY: execute
 execute:
+	make clean
+	make
+	make run
+exe:
+	make clean
+	make
+	make run
+e:
 	make clean
 	make
 	make run
