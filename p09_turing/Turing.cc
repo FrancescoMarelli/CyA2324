@@ -271,38 +271,46 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
 /**
  * @brief 
  * 
+ * @param symbol 
+ * @param color 
+ */
+void Turing::printSymbol(const Symbol& symbol, const std::string& color) {
+    std::cout << color << symbol << "\033[0m";
+}
+
+
+/**
+ * @brief 
+ * 
  * @param currentState 
  * @param head 
  */
 void Turing::printTape(State& currentState, int head) {
+    std::string lightGray = "\033[2;37m";
+    std::string boldWhite = "\033[1;37;40m";
+    std::string blue = "\033[1;34m";
+
     // Fill the tape with blank symbols
     std::cout << "|";
     for (int i = 0; i < kNBlanks; i++)
-        std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
+        printSymbol(blankSymbol_, lightGray);
+
     for (int i = 0; i < tape_.size(); i++) {
+        std::string color = (tape_[i] == blankSymbol_) ? lightGray : boldWhite;
         if (i == head) {
-            if (printMode == kState) {
-                    std::cout << "\033[1;34m q" << currentState << "\033[0m" << " ";
-                if (tape_[i] == blankSymbol_)
-                    std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray
-                else
-                    std::cout << "\033[1;37;40m" << tape_[i] << "\033[0m";  // Bold white
-            } else {
-                if (tape_[i] == blankSymbol_)
-                    std::cout << "\033[1;34m" << tape_[i] << "\033[0m";  // Light gray
-                else
-                    std::cout << "\033[1;34m" << tape_[i] << "\033[0m";  // Bold white
+            if (printMode == kState) {  // printing state before head
+                std::cout << blue << " q" << currentState << " ";
+            } else {  // head position is blue
+                color = blue;
             }
-        } else {
-            if (tape_[i] == blankSymbol_)
-                std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray
-            else
-                std::cout << "\033[1;37;40m" << tape_[i] << "\033[0m";  // Bold white
         }
+        printSymbol(tape_[i], color);
     }
+
     // Fill the tape with blank symbols
     for (int i = 0; i < kNBlanks; i++)
-        std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
+        printSymbol(blankSymbol_, lightGray);
+
     std::cout << "|";
     std::cout << std::endl;
 }
@@ -314,10 +322,19 @@ void Turing::printTape(State& currentState, int head) {
  * 
  */
 void Turing::processString() {
-    std::string line(getTape().size()+kprinters, '-');
     std::string title = "Turing Machine Trace";
     int titleLength = title.length();
-    std::string lineTitle((getTape().size()+kprinters-titleLength) / 2, '-');  //  NOLINT
+    std::string lineTitle;
+    std::string line;
+    // Adjust table size depending on execution mode
+    if (printMode == kState) {
+        lineTitle = std::string((getTape().size()+kprinters-titleLength) / 2, '-');
+        line = std::string(getTape().size()+kprinters, '-');
+    } else {
+        lineTitle = std::string((getTape().size()+kprinters-4-titleLength) / 2, '-');
+        line = std::string(getTape().size()+kprinters-4, '-');
+    }
+
 
     std::cout << "\033[1;39m " << lineTitle << title << lineTitle << "\033[0m\n";  // NOLINT
     if (acceptString(getTape())) {

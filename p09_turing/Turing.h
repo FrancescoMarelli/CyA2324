@@ -65,6 +65,7 @@ class Turing {
     // Printers
     friend std::ostream& operator<<(std::ostream&, const Turing&);
     void printTape(State&, int);
+    void printSymbol(const Symbol&, const std::string&);
 
     // Processing
     bool acceptString(std::vector<Symbol> const&);
