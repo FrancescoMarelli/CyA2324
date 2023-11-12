@@ -271,26 +271,24 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
 void Turing::printTape(State& currentState, int head) {
     // Fill the tape with blank symbols
     for (int i = 0; i < 10; i++)
-        std::cout << "\033[2m" << blankSymbol_ << "\033[0m";
+        std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
     for (int i = 0; i < tape_.size(); i++) {
         if (i == head) {
             std::cout << "\033[1;34m q" << currentState << "\033[0m" << " ";
-            if (tape_[i] != blankSymbol_) {
-                std::cout << tape_[i];
-            } else {
-                std::cout << "\033[2m" << tape_[i] << "\033[0m";
-            }
+            if (tape_[i] == blankSymbol_)
+                std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray
+            else
+                std::cout << "\033[1;37;40m" << tape_[i] << "\033[0m";  // Bold white
         } else {
-            if (tape_[i] != blankSymbol_) {
-                std::cout << tape_[i];
-            } else {
-                std::cout << "\033[2m" << tape_[i] << "\033[0m";
-            }
+            if (tape_[i] == blankSymbol_)
+                std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray
+            else
+                std::cout << "\033[1;37;40m" << tape_[i] << "\033[0m";  // Bold white
         }
     }
     // Fill the tape with blank symbols
     for (int i = 0; i < 10; i++)
-        std::cout << "\033[2m" << blankSymbol_ << "\033[0m";
+        std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
     std::cout << std::endl;
 }
 
