@@ -35,13 +35,11 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-
     // Intance of Turing machine
     Turing turingMachine;
     turingMachine.tmFileReader(fileTM);  //  Reading the configuration file
     turingMachine.tapeReader(fileTape);  // Reading the string on the tape
     turingMachine.processString();   // starting the machine and processing
-
 
     fileTape.close();
     fileTM.close();

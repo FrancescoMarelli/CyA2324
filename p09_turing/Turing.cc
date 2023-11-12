@@ -37,7 +37,12 @@ std::vector<std::string> Turing::linesReader(std::ifstream& file) {
     while (std::getline(file, line)) {
         lines.push_back(line);
     }
-    return lines;
+    if (lines.empty()) {
+        std::cerr << "EMPTY_FILE: The configuration turing machine file is empty" << std::endl;
+        exit(EXIT_FAILURE);
+    } else {
+        return lines;
+    }
 }
 
 /**
@@ -264,15 +269,34 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
  * @param head 
  */
 void Turing::printTape(State& currentState, int head) {
+    // Fill the tape with blank symbols
+    for (int i = 0; i < 10; i++)
+        std::cout << "\033[2m" << blankSymbol_ << "\033[0m";
     for (int i = 0; i < tape_.size(); i++) {
         if (i == head) {
-            std::cout << " q" << currentState << " " << tape_[i];
+            std::cout << "\033[1;32m q" << currentState << "\033[0m" << " ";
+            if (tape_[i] != blankSymbol_) {
+                std::cout << tape_[i];
+            } else {
+                std::cout << "\033[2m" << tape_[i] << "\033[0m";
+            }
         } else {
-            std::cout << tape_[i];
+            if (tape_[i] != blankSymbol_) {
+                std::cout << tape_[i];
+            } else {
+                std::cout << "\033[2m" << tape_[i] << "\033[0m";
+            }
         }
     }
+    // Fill the tape with blank symbols
+    for (int i = 0; i < 10; i++)
+        std::cout << "\033[2m" << blankSymbol_ << "\033[0m";
     std::cout << std::endl;
 }
+
+
+
+
 
 
 /**
@@ -282,9 +306,9 @@ void Turing::printTape(State& currentState, int head) {
 void Turing::processString() {
     std::cout << "Turing Machine Trace" << std::endl;
     if (acceptString(getTape()))
-        std::cout << "ACCEPTED string" << std::endl;
+        std::cout << "\033[1;32m ACCEPTED string\033[0m\n";
     else
-        std::cout << "REJECTED string" << std::endl;
+        std::cout << "\033[1;31m REJECTED string\033[0m\n";
 }
 
 
