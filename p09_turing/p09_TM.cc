@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     std::string mode = (argc > 3 && argv[3]) ? argv[3] : "0";
 
 
-    // Check Execution mode
+    // Choose Execution mode
     if (mode == kHead) {
         mode = kHead;
     } else {
@@ -63,28 +63,29 @@ int main(int argc, char* argv[]) {
 void Help() {
         // Formato de texto consistente
     std::cout << std::endl;
-    std::cout << "\033[1;34m-----------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT
-    std::cout << "\033[1;34m      Práctica 9: Simulador de máquinas de Turing\033[0m\n";
-    std::cout << "\033[1;34m-----------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT
+    std::cout << "\033[1;34m--------------------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT
+    std::cout << "\033[1;34m                            Práctica 9: Simulador de máquinas de Turing\033[0m\n";
+    std::cout << "\033[1;34m--------------------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT
     std::cout << "          Este programa simula máquinas de Turing de una cinta y una pista ." << std::endl;
     std::cout << "          Se lee una cinta desde un fichero y se procesa con una máquina de Turing." << std::endl;  // NOLINT
     std::cout << "          La máquina de Turing se lee desde un fichero también." << std::endl;
-    std::cout << "-----------------------------------------------------------------------------------------------------------------\n";  // NOLINT
+    std::cout << "--------------------------------------------------------------------------------------------------------------------------\n";  // NOLINT
     std::cout << "**Compilar:**\n"
               << "      Para compilar el programa ejecute el siguiente comando:" << std::endl;
     std::cout << "\033[1;32m      make\033[0m\n";
     std::cout << "**Ejecutar:**\n"
               << "      Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
     std::cout << "\033[1;32m          Uso: './p09_MT [fichero.tm] cinta.tape modo'.\033[0m\n";
-    std::cout << "\033[1;32m             El modo puede ser 1 o 0o nada:\n"
-              << "                       * se ejecuta por defecto como predefinido por el profeor\n"
+    std::cout << "                    El modo puede ser 1 o 0 o nada:\n"
+              << "                       * al no tecleear nada se ejecuta por defecto como predefinido por el profeor\n"
               << "                       * 1 se resaltará la cabeza de la máquina\n"
-              << "                       * 0 el modo predefinido del profesor.\033[0m\n";
-    std::cout << "\033[1;32m          Uso 2: make clean -> make run (ejecutará abnb.tm)\033[0m\n";
-    std::cout << "\033[1;32m          Uso 3: make run2 (ejecutará abcc.tm)\033[0m\n";  // NOLINT
-    std::cout << "\033[1;32m          Uso 4: make execute o make exe\033[0m\n";
+              << "                       * 0 el modo predefinido del profesor.\n";
+    std::cout << "\033[1;32m          Uso 2: make clean -> make run (ejecutará abnb.tm en modo predefinido)\033[0m\n";
+    std::cout << "\033[1;32m          Uso 3: make run2 (ejecutará abcc.tm en modo predefinido )\033[0m\n";  // NOLINT
+    std::cout << "\033[1;32m          Uso 4: make execute o make exe en modo predefinido\033[0m\n";
+    std::cout << "\033[1;32m          Uso 5: make run_head / run2_head / run_pal_head para modo alternativo de ejecución\033[0m\n";
     std::cout << "\n";
-    std::cout << "-----------------------------------------------------------------------------------------------------------------\n";  // NOLINT
+    std::cout << "--------------------------------------------------------------------------------------------------------------------------\n";  // NOLINT
     std::cout << "**Formato archivos:**\n";
     std::cout << "          1. **Fichero de la máquina de Turing:**\n"
               << "              * La primera línea contendrá el número de estados de la máquina de Turing." << std::endl;  // NOLINT
@@ -95,7 +96,7 @@ void Help() {
     std::cout << "              * estado entrada escribe movimiento siguientestado." << std::endl;
     std::cout << "          2. **Fichero de la cinta va a ser:**\n"
               << "              * Una unica linea que contiene la cadena a analizar." << std::endl;
-    std::cout << "\033[1;31m-----------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT
+    std::cout << "\033[1;31m--------------------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT
     // Información adicional
   std::cout << "\033[1;31m**Información adicional:**\n"
             << "  * El estado inicial de la máquina de Turing debe ser uno solo.\n"
@@ -104,7 +105,7 @@ void Help() {
             << "  * La máquina de Turing puede leer, escribir y mover la cabeza de lectura en una dirección.\n"
             << "  * La máquina de Turing termina cuando llega a un estado de aceptación o la cadena se termina de comprobar y no se acepta.\n"  // NOLINT
             << std::endl;
-  std::cout << "\033[1;31m------------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT  
+  std::cout << "\033[1;31m--------------------------------------------------------------------------------------------------------------------------\033[0m\n";  // NOLINT  
 }
 
 
@@ -113,8 +114,8 @@ void Help() {
  * 
  */
 void Usage() {
-    std::cout << "Modo de empleo: ./TM maquina.tm cinta.tape mode" << std::endl;
-    std::cout << "'Pruebe 'TM --help' para más información." << std::endl;
+    std::cout << "Usage: ./TM maquina.tm cinta.tape mode" << std::endl;
+    std::cout << "'Try 'TM --help' for more info." << std::endl;
 }
 
 
@@ -141,7 +142,7 @@ int checkArguments(int argc, char* argv[]) {
     std::string arg2(argv[2]);
 
     if (arg1.substr(arg1.find_last_of(".") + 1) != "tm" || arg2.substr(arg2.find_last_of(".") + 1) != "tape") {
-        std::cerr << "EXTENSTION ERROR: First file MUST have .tm extension and Second must have .tape extension." << std::endl;  // NOLINT
+        std::cerr << "EXTENSION ERROR: First file MUST have .tm extension and Second must have .tape extension." << std::endl;  // NOLINT
         return 1;
     }
     int mode = 0;
