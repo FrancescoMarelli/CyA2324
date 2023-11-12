@@ -13,6 +13,10 @@
 #include <cctype>
 #include <sstream>
 
+const int kNBlanks = 20;  // blanks on each side to print
+const int kprinters = 44;  // blanks + spaces
+
+
 /**
  * @brief 
  * 
@@ -270,7 +274,8 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
  */
 void Turing::printTape(State& currentState, int head) {
     // Fill the tape with blank symbols
-    for (int i = 0; i < 10; i++)
+    std::cout << "|";
+    for (int i = 0; i < kNBlanks; i++)
         std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
     for (int i = 0; i < tape_.size(); i++) {
         if (i == head) {
@@ -287,14 +292,12 @@ void Turing::printTape(State& currentState, int head) {
         }
     }
     // Fill the tape with blank symbols
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < kNBlanks; i++)
         std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
+    std::cout << "|";
     std::cout << std::endl;
+
 }
-
-
-
-
 
 
 /**
@@ -302,11 +305,18 @@ void Turing::printTape(State& currentState, int head) {
  * 
  */
 void Turing::processString() {
-    std::cout << "Turing Machine Trace" << std::endl;
-    if (acceptString(getTape()))
-        std::cout << "\033[1;32m ACCEPTED string\033[0m\n";
-    else
-        std::cout << "\033[1;31m REJECTED string\033[0m\n";
-}
+    std::string line(getTape().size()+kprinters, '-');
+    std::string title = "Turing Machine Trace";
+    int titleLength = title.length();
+    std::string lineTitle((getTape().size()+kprinters-titleLength) / 2, '-');  //  NOLINT
 
+    std::cout << "\033[1;39m " << lineTitle << title << lineTitle << "\033[0m\n";  // NOLINT
+    if (acceptString(getTape())) {
+        std::cout << "\033[1;39m " << line << "\033[0m\n";  // NOLINT
+        std::cout << "\033[1;32m ACCEPTED string \033[0m\n";
+    } else {
+        std::cout << "\033[1;39m " << line << "\033[0m\n";  // NOLINT
+        std::cout << "\033[1;31m REJECTED string \033[0m\n";
+    }
+}
 
