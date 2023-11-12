@@ -220,7 +220,9 @@ void Turing::tapeReader(std::ifstream& tapeFile) {
 /**
  * @brief 
  * 
- * @param string 
+ * @param inputString 
+ * @param mode If mode is 0 then the printout will show the state
+ *              If mode is 1 then the printout will show the head
  * @return true 
  * @return false 
  */
@@ -240,11 +242,11 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
                 if (transition.getDirection() == "R") {
                     head++;
                     if (head == tape_.size()) {
-                        tape_.push_back(blankSymbol_);
+                        tape_.push_back(blankSymbol_);  // If the head is at the end of the tape, add a blank symbol
                     }
                 } else if (transition.getDirection() == "L") {
                     if (head == 0) {
-                        tape_.insert(tape_.begin(), blankSymbol_);
+                        tape_.push_back(blankSymbol_);  // if head is at the beginning of the tape, add a blank symbol
                     } else {
                         head--;
                     }
@@ -279,11 +281,18 @@ void Turing::printTape(State& currentState, int head) {
         std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
     for (int i = 0; i < tape_.size(); i++) {
         if (i == head) {
-            std::cout << "\033[1;34m q" << currentState << "\033[0m" << " ";
-            if (tape_[i] == blankSymbol_)
-                std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray
-            else
-                std::cout << "\033[1;37;40m" << tape_[i] << "\033[0m";  // Bold white
+            if (printMode == kState) {
+                    std::cout << "\033[1;34m q" << currentState << "\033[0m" << " ";
+                if (tape_[i] == blankSymbol_)
+                    std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray
+                else
+                    std::cout << "\033[1;37;40m" << tape_[i] << "\033[0m";  // Bold white
+            } else {
+                if (tape_[i] == blankSymbol_)
+                    std::cout << "\033[1;34m" << tape_[i] << "\033[0m";  // Light gray
+                else
+                    std::cout << "\033[1;34m" << tape_[i] << "\033[0m";  // Bold white
+            }
         } else {
             if (tape_[i] == blankSymbol_)
                 std::cout << "\033[2;37m" << tape_[i] << "\033[0m";  // Light gray

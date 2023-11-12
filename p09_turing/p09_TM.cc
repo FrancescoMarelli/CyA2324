@@ -14,6 +14,7 @@
 
 #include "Turing.h"
 
+
 void Help();
 void Usage();
 int checkArguments(int argc, char* argv[]);
@@ -22,21 +23,29 @@ int main(int argc, char* argv[]) {
     if (checkArguments(argc, argv) == 1)
         return 1;
 
-    //  Comprobación de los ficheros de entrada
+    //  Check input Files
     std::ifstream fileTM(argv[1]);
     std::ifstream fileTape(argv[2]);
+    std::string mode = (argc > 3 && argv[3]) ? argv[3] : "0";
+
+
+    // Check Execution mode
+    if (mode == kHead) {
+        mode = kHead;
+    } else {
+        mode = kState;
+    }
 
     if (!fileTM.is_open()) {
-        std::cout << "Error al abrir el fichero de entrada de la Máquina de Turing " << std::endl;
+        std::cout << "Turing Machine File Error opening file" << std::endl;
         return 1;
     }
     if (!fileTape.is_open()) {
-        std::cout << "Error al abrir el fichero de entrada de la cinta " << std::endl;
+        std::cout << "TapeFile Error opening file " << std::endl;
         return 1;
     }
-
     // Intance of Turing machine
-    Turing turingMachine;
+    Turing turingMachine(mode);
     turingMachine.tmFileReader(fileTM);  //  Reading the configuration file
     turingMachine.tapeReader(fileTape);  // Reading the string on the tape
     turingMachine.processString();   // starting the machine and processing
@@ -66,7 +75,11 @@ void Help() {
     std::cout << "\033[1;32m      make\033[0m\n";
     std::cout << "**Ejecutar:**\n"
               << "      Para ejecutar correctamente el programa pruebe el siguiente comando:" << std::endl;
-    std::cout << "\033[1;32m          Uso: './p09_MT [fichero.tm] cinta.tape'.\033[0m\n";
+    std::cout << "\033[1;32m          Uso: './p09_MT [fichero.tm] cinta.tape modo'.\033[0m\n";
+    std::cout << "\033[1;32m             El modo puede ser 1 o 0o nada:\n"
+              << "                       * se ejecuta por defecto como predefinido por el profeor\n"
+              << "                       * 1 se resaltará la cabeza de la máquina\n"
+              << "                       * 0 el modo predefinido del profesor.\033[0m\n";
     std::cout << "\033[1;32m          Uso 2: make clean -> make run (ejecutará abnb.tm)\033[0m\n";
     std::cout << "\033[1;32m          Uso 3: make run2 (ejecutará abcc.tm)\033[0m\n";  // NOLINT
     std::cout << "\033[1;32m          Uso 4: make execute o make exe\033[0m\n";
@@ -100,7 +113,7 @@ void Help() {
  * 
  */
 void Usage() {
-    std::cout << "Modo de empleo: ./TM maquina.tm cinta.tape" << std::endl;
+    std::cout << "Modo de empleo: ./TM maquina.tm cinta.tape mode" << std::endl;
     std::cout << "'Pruebe 'TM --help' para más información." << std::endl;
 }
 
@@ -120,7 +133,7 @@ int checkArguments(int argc, char* argv[]) {
     if (std::string(argv[1]) == "--help"  || std::string(argv[1]) == "--h") {
         Help();
         return 1;
-    } else if (argc != 3) {
+    } else if (argc > 4 || argc < 3) {
         Usage();
         return 1;
     }
@@ -130,6 +143,14 @@ int checkArguments(int argc, char* argv[]) {
     if (arg1.substr(arg1.find_last_of(".") + 1) != "tm" || arg2.substr(arg2.find_last_of(".") + 1) != "tape") {
         std::cerr << "EXTENSTION ERROR: First file MUST have .tm extension and Second must have .tape extension." << std::endl;  // NOLINT
         return 1;
+    }
+    int mode = 0;
+    if (argc == 4) {
+        mode = std::stoi(argv[3]);
+        if (mode != 0 && mode != 1) {
+            std::cout << "MODE must be a 0 or a 1" << std::endl;
+            return 1;
+        }
     }
     return 0;
 }

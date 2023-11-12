@@ -28,11 +28,17 @@ clean:
 
 .PHONY: run 
 run: 
-	./TM anbn.tm cinta.tape
+	./TM anbn.tm cinta.tape 0
 run2:
-	./TM abcc.tm cinta.tape
+	./TM abcc.tm cinta.tape 0
 run_pal:
-	./TM palindroma.tm cinta.tape
+	./TM palindroma.tm cinta.tape 0
+run_head:
+	./TM anbn.tm cinta.tape 1
+run2_head:
+	./TM abcc.tm cinta.tape 1
+run_pal_head:
+	./TM palindroma.tm cinta.tape 1
 
 .PHONY: execute
 execute:

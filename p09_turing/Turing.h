@@ -24,6 +24,9 @@
 
 const std::string kFinal = "1";  // NOLINT
 const std::string kBlank = "$";  // NOLINT
+const std::string kHead = "1";  //  highlights the head  of the Turing Machine
+const std::string kState = "0";  // highlights the state before the head
+
 
 #pragma once
 
@@ -37,9 +40,15 @@ class Turing {
     std::set<Transition> transitions_;
     Symbol blankSymbol_;
     std::vector<Symbol> tape_;
+    std::string printMode;  // 0: highlights the state before the transition, 1: highlights the head
 
  public:
-    Turing() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank) {}
+    // make explicitly choose the mode of printing
+    Turing(std::string mode) : nStates_(0), nTransitions_(0), blankSymbol_(kBlank), printMode(mode) {}  // NOLINT
+
+    // Default prints -> state head(symbol)
+    Turing() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank), printMode(kState) {}  // NOLINT
+
     ~Turing() {}
 
     //  Readers
