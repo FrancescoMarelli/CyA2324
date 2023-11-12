@@ -170,6 +170,7 @@ void Turing::setTape(std::ifstream& tapeFile) {
     } else {
         // If the line is empty, add a blank symbol
         tape_.push_back(blankSymbol_);
+        tape_.push_back(blankSymbol_);
     }
 }
 
@@ -183,7 +184,7 @@ void Turing::setTape(std::ifstream& tapeFile) {
  */
 bool Turing::acceptString(std::vector<Symbol> const &inputString) {
     State currentState = initialState_;
-    int head = 0;
+    int head = 1;
     printTape(currentState, head);
 
     while (true) {
