@@ -42,7 +42,7 @@ class Turing {
     Turing() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank) {}
     ~Turing() {}
 
-    // Readers
+    //  Readers
     void tmFileReader(std::ifstream&);
     void tapeReader(std::ifstream&);
     std::vector<std::string> linesReader(std::ifstream&);
