@@ -296,12 +296,12 @@ void Turing::printTape(State& currentState, int head) {
         std::cout << "\033[2;37m" << blankSymbol_ << "\033[0m";  // Light gray
     std::cout << "|";
     std::cout << std::endl;
-
 }
 
 
 /**
- * @brief 
+ * @brief  Output Result method for the Turing machine
+ *         that calls acceptString() and prints the result
  * 
  */
 void Turing::processString() {
