@@ -120,8 +120,9 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
         std::string transitionStr =  lines[4+i];
         std::istringstream iss(transitionStr);
         std::string originState, toReadSymbol, destinyState, toWriteSymbol, direction;
+        // Remove spaces
         transitionStr.erase(std::remove_if(transitionStr.begin(), transitionStr.end(), ::isspace), transitionStr.end());
-
+        // Read the transition
         iss >> originState >> toReadSymbol >> toWriteSymbol >> direction >> destinyState;
 
         // Format checks
@@ -144,7 +145,7 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
                 exit(EXIT_FAILURE);
             }
         }
-
+        // Set the transition
         State origin(originState);
         Symbol toRead(toReadSymbol);
         State destiny(destinyState);
@@ -165,14 +166,14 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
  * @return std::ostream& 
  */
 std::ostream& operator<<(std::ostream& os, const Turing& turing) {
-    os << turing.nStates_ << std::endl;
-    os << turing.initialState_ << std::endl;
-    for (auto& state : turing.finalStates_) {
+    os << turing.nStates_ << std::endl;  // 1 Line
+    os << turing.initialState_ << std::endl;  // 2 Line
+    for (auto& state : turing.finalStates_) {  // 3 Line
         os << state << " ";
     }
     os << std::endl;
-    os << turing.nTransitions_ << std::endl;
-    for (auto& transition : turing.transitions_) {
+    os << turing.nTransitions_ << std::endl;  // 4 Line
+    for (auto& transition : turing.transitions_) {  // 5 to N lines
         os << transition << std::endl;
     }
     return os;
@@ -192,8 +193,7 @@ void Turing::tapeReader(std::ifstream& tapeFile) {
         tape_.push_back(blankSymbol_);
         // Add symbols from the line
         for (auto& symbol : line) {
-            std::string auxStr(1, symbol);
-            Symbol auxSym(auxStr);
+            Symbol auxSym(std::string(1, symbol));
             tape_.push_back(auxSym);
         }
         // Add a blank symbol at the end

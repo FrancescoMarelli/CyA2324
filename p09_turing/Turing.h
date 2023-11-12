@@ -42,17 +42,22 @@ class Turing {
     Turing() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank) {}
     ~Turing() {}
 
-    std::set<State> getFinalStates() { return finalStates_; }
-
+    // Readers
     void tmFileReader(std::ifstream&);
+    void tapeReader(std::ifstream&);
     std::vector<std::string> linesReader(std::ifstream&);
+
+    // Setters and getters
     void setStates(std::vector<std::string>&);
     void setTransitions(std::vector<std::string>&);
-    void tapeReader(std::ifstream&);
     std::vector<Symbol> getTape() { return tape_;}
+    std::set<State> getFinalStates() { return finalStates_; }
+
+    // Printers
     friend std::ostream& operator<<(std::ostream&, const Turing&);
     void printTape(State&, int);
 
+    // Processing
     bool acceptString(std::vector<Symbol> const&);
     void processString();
 };

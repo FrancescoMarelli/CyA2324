@@ -124,5 +124,12 @@ int checkArguments(int argc, char* argv[]) {
         Usage();
         return 1;
     }
+    std::string arg1(argv[1]);
+    std::string arg2(argv[2]);
+
+    if (arg1.substr(arg1.find_last_of(".") + 1) != "tm" || arg2.substr(arg2.find_last_of(".") + 1) != "tape") {
+        std::cerr << "EXTENSTION ERROR: First file MUST have .tm extension and Second must have .tape extension." << std::endl;  // NOLINT
+        return 1;
+    }
     return 0;
 }
