@@ -83,7 +83,7 @@ void Help() {
     std::cout << "\033[1;32m          Uso 2: make clean -> make run (ejecutará abnb.tm en modo predefinido)\033[0m\n";
     std::cout << "\033[1;32m          Uso 3: make run2 (ejecutará abcc.tm en modo predefinido )\033[0m\n";  // NOLINT
     std::cout << "\033[1;32m          Uso 4: make execute o make exe en modo predefinido\033[0m\n";
-    std::cout << "\033[1;32m          Uso 5: make run_head / run2_head / run_pal_head para modo alternativo de ejecución\033[0m\n";
+    std::cout << "\033[1;32m          Uso 5: make run_head / run2_head / pal_head para modo alternativo de ejecución\033[0m\n";  //  NOLINT
     std::cout << "\n";
     std::cout << "--------------------------------------------------------------------------------------------------------------------------\n";  // NOLINT
     std::cout << "**Formato archivos:**\n";

@@ -334,8 +334,6 @@ void Turing::processString() {
         lineTitle = std::string((getTape().size()+kprinters-4-titleLength) / 2, '-');
         line = std::string(getTape().size()+kprinters-4, '-');
     }
-
-
     std::cout << "\033[1;39m " << lineTitle << title << lineTitle << "\033[0m\n";  // NOLINT
     if (acceptString(getTape())) {
         std::cout << "\033[1;39m " << line << "\033[0m\n";  // NOLINT

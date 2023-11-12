@@ -31,13 +31,13 @@ run:
 	./TM anbn.tm cinta.tape 0
 run2:
 	./TM abcc.tm cinta.tape 0
-run_pal:
+pal:
 	./TM palindroma.tm cinta.tape 0
 run_head:
 	./TM anbn.tm cinta.tape 1
 run2_head:
 	./TM abcc.tm cinta.tape 1
-run_pal_head:
+pal_head:
 	./TM palindroma.tm cinta.tape 1
 
 .PHONY: execute

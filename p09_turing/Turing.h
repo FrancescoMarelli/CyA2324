@@ -24,8 +24,8 @@
 
 const std::string kFinal = "1";  // NOLINT
 const std::string kBlank = "$";  // NOLINT
-const std::string kHead = "1";  //  highlights the head  of the Turing Machine
-const std::string kState = "0";  // highlights the state before the head
+const std::string kHead = "1";  //  Blue Head Highlight  // NOLINT
+const std::string kState = "0";  // State before Head  // NOLINT
 
 
 #pragma once
