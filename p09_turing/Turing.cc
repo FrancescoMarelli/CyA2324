@@ -226,7 +226,7 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
 
     // Print initial tape
     printTape(currentState, head);
-
+    //  Iterate over the transitions until a final state is reached or no transition is found
     while (true) {
         bool transitionFound = false;
         for (auto &transition : transitions_) {
@@ -274,7 +274,7 @@ void Turing::printTape(State& currentState, int head) {
         std::cout << "\033[2m" << blankSymbol_ << "\033[0m";
     for (int i = 0; i < tape_.size(); i++) {
         if (i == head) {
-            std::cout << "\033[1;32m q" << currentState << "\033[0m" << " ";
+            std::cout << "\033[1;34m q" << currentState << "\033[0m" << " ";
             if (tape_[i] != blankSymbol_) {
                 std::cout << tape_[i];
             } else {
