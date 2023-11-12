@@ -4,10 +4,10 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 6: Algoritmo de Construcción de Subconjuntos
+// Práctica 9: Simulador de máquina de Turing
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
-// Fecha: 22/10/2023
+// Fecha: 11/11/2023
 #include "String.h"
 /**
  * @brief Construct a new String:: String object
