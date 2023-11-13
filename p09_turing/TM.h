@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 9: Simulador de máquina de Turing
+// Práctica 9: Simulador de máquina de TM
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 11/11/2023
@@ -30,7 +30,7 @@ const std::string kState = "0";  // State before Head  // NOLINT
 
 #pragma once
 
-class Turing {
+class TM {
  private:
     std::set<State> states_;  //  Enteros
     State initialState_;
@@ -44,12 +44,12 @@ class Turing {
 
  public:
     // make explicitly choose the mode of printing
-    Turing(std::string mode) : nStates_(0), nTransitions_(0), blankSymbol_(kBlank), printMode(mode) {}  // NOLINT
+    TM(std::string mode) : nStates_(0), nTransitions_(0), blankSymbol_(kBlank), printMode(mode) {}  // NOLINT
 
     // Default prints -> state head(symbol)
-    Turing() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank), printMode(kState) {}  // NOLINT
+    TM() : nStates_(0), nTransitions_(0), blankSymbol_(kBlank), printMode(kState) {}  // NOLINT
 
-    ~Turing() {}
+    ~TM() {}
 
     //  Readers
     void tmFileReader(std::ifstream&);
@@ -63,7 +63,7 @@ class Turing {
     std::set<State> getFinalStates() { return finalStates_; }
 
     // Printers
-    friend std::ostream& operator<<(std::ostream&, const Turing&);
+    friend std::ostream& operator<<(std::ostream&, const TM&);
     void printTape(State&, int);
     void printSymbol(const Symbol&, const std::string&);
 

@@ -1,11 +1,11 @@
-TM: Symbol.o String.o Alphabet.o State.o Transition.o Turing.o p09_TM.o
-	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o Transition.o State.o String.o Turing.o Alphabet.o p09_TM.o -o TM
+TM: Symbol.o String.o Alphabet.o State.o Transition.o TM.o p09_TM.o
+	g++ -std=c++14 -g -Wall -Wno-sign-compare Symbol.o Transition.o State.o String.o TM.o Alphabet.o p09_TM.o -o TM
 
 TM.o: p09_TM.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c p09_TM.cc
 
-Turing.o: Turing.h Turing.cc
-	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Turing.cc
+TM.o: TM.h TM.cc
+	g++ -std=c++14 -g -Wall -Wno-sign-compare -c TM.cc
 
 Transition.o: Transition.h Transition.cc
 	g++ -std=c++14 -g -Wall -Wno-sign-compare -c Transition.cc

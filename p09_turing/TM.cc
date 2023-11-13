@@ -4,11 +4,11 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 9: Simulador de máquina de Turing
+// Práctica 9: Simulador de máquina de TM
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 11/11/2023
-#include "Turing.h"
+#include "TM.h"
 #include "State.h"
 #include <cctype>
 #include <sstream>
@@ -22,7 +22,7 @@ const int kprinters = 44;  // blanks + spaces
  * 
  * @param file 
  */
-void Turing::tmFileReader(std::ifstream& file) {
+void TM::tmFileReader(std::ifstream& file) {
     std::vector<std::string> lines = linesReader(file);
     setStates(lines);
     setTransitions(lines);
@@ -35,26 +35,27 @@ void Turing::tmFileReader(std::ifstream& file) {
  * @param file 
  * @return std::vector<std::string> 
  */
-std::vector<std::string> Turing::linesReader(std::ifstream& file) {
+std::vector<std::string> TM::linesReader(std::ifstream& file) {
     std::vector<std::string> lines;
     std::string line;
     while (std::getline(file, line)) {
         lines.push_back(line);
     }
     if (lines.empty()) {
-        std::cerr << "EMPTY_FILE: The configuration turing machine file is empty" << std::endl;
+        std::cerr << "EMPTY_FILE: The configuration TM machine file is empty" << std::endl;
         exit(EXIT_FAILURE);
     } else {
         return lines;
     }
 }
 
+
 /**
  * @brief 
  * 
  * @param line 
  */
-void Turing::setStates(std::vector<std::string>& lines) {
+void TM::setStates(std::vector<std::string>& lines) {
     lines[0].erase(std::remove_if(lines[0].begin(), lines[0].end(), ::isspace), lines[0].end());
     if (lines[0].empty()) {
         std::cout << "LINE 1 EMPTY: Check the .tm file" << std::endl;
@@ -104,7 +105,7 @@ void Turing::setStates(std::vector<std::string>& lines) {
  * @brief  Reading Transitions from file
  * 
  */
-void Turing::setTransitions(std::vector<std::string>& lines) {
+void TM::setTransitions(std::vector<std::string>& lines) {
     if (lines[3].empty()) {
         std::cout << "LINE 4 EMPTY: Check the .tm file" << std::endl;
         exit(EXIT_FAILURE);
@@ -166,18 +167,18 @@ void Turing::setTransitions(std::vector<std::string>& lines) {
  * @brief 
  * 
  * @param os 
- * @param turing 
+ * @param TM 
  * @return std::ostream& 
  */
-std::ostream& operator<<(std::ostream& os, const Turing& turing) {
-    os << turing.nStates_ << std::endl;  // 1 Line
-    os << turing.initialState_ << std::endl;  // 2 Line
-    for (auto& state : turing.finalStates_) {  // 3 Line
+std::ostream& operator<<(std::ostream& os, const TM& TM) {
+    os << TM.nStates_ << std::endl;  // 1 Line
+    os << TM.initialState_ << std::endl;  // 2 Line
+    for (auto& state : TM.finalStates_) {  // 3 Line
         os << state << " ";
     }
     os << std::endl;
-    os << turing.nTransitions_ << std::endl;  // 4 Line
-    for (auto& transition : turing.transitions_) {  // 5 to N lines
+    os << TM.nTransitions_ << std::endl;  // 4 Line
+    for (auto& transition : TM.transitions_) {  // 5 to N lines
         os << transition << std::endl;
     }
     return os;
@@ -189,7 +190,7 @@ std::ostream& operator<<(std::ostream& os, const Turing& turing) {
  * 
  * @param string 
  */
-void Turing::tapeReader(std::ifstream& tapeFile) {
+void TM::tapeReader(std::ifstream& tapeFile) {
     std::string line;
     bool firstLineRead = false;
     if (std::getline(tapeFile, line)) {
@@ -226,7 +227,7 @@ void Turing::tapeReader(std::ifstream& tapeFile) {
  * @return true 
  * @return false 
  */
-bool Turing::acceptString(std::vector<Symbol> const &inputString) {
+bool TM::acceptString(std::vector<Symbol> const &inputString) {
     State currentState = initialState_;
     int head = 1;
 
@@ -274,7 +275,7 @@ bool Turing::acceptString(std::vector<Symbol> const &inputString) {
  * @param symbol 
  * @param color 
  */
-void Turing::printSymbol(const Symbol& symbol, const std::string& color) {
+void TM::printSymbol(const Symbol& symbol, const std::string& color) {
     std::cout << color << symbol << "\033[0m";
 }
 
@@ -285,7 +286,7 @@ void Turing::printSymbol(const Symbol& symbol, const std::string& color) {
  * @param currentState 
  * @param head 
  */
-void Turing::printTape(State& currentState, int head) {
+void TM::printTape(State& currentState, int head) {
     std::string lightGray = "\033[2;37m";
     std::string boldWhite = "\033[1;37;40m";
     std::string blue = "\033[1;34m";
@@ -317,12 +318,12 @@ void Turing::printTape(State& currentState, int head) {
 
 
 /**
- * @brief  Output Result method for the Turing machine
+ * @brief  Output Result method for the TM machine
  *         that calls acceptString() and prints the result
  * 
  */
-void Turing::processString() {
-    std::string title = "Turing Machine Trace";
+void TM::processString() {
+    std::string title = "TM Machine Trace";
     int titleLength = title.length();
     std::string lineTitle;
     std::string line;

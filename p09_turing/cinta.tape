@@ -1,1 +1,1 @@
-aaabbbaaa
+aaaa
