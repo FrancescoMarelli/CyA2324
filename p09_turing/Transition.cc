@@ -26,7 +26,6 @@ Transition::Transition(State stateOrigin, Symbol symbol, State stateDestiny, Sym
 }
 
 
-
 /**
  * @brief 
  * 

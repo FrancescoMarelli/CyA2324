@@ -24,7 +24,6 @@ class Transition {
     Symbol toWrite_;
     std::string direction_;
 
-
  public:
     Transition() {}
     Transition(State, Symbol, State, Symbol, std::string);  // NOLINT
@@ -35,13 +34,12 @@ class Transition {
     Symbol getToRead() const;
     State getStateOrigin() const;
     Symbol getToWrite() const;
-   std::string getDirection() const;
+    std::string getDirection() const;
     void setTransition(State, Symbol, State, Symbol, std::string); // NOLINT
 
 
     // Overloaders
     bool operator<(const Transition& other) const;
-
     friend std::ostream &operator<<(std::ostream &os, const Transition &transition);
 };
 

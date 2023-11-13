@@ -80,9 +80,9 @@ void Help() {
               << "              * al no tecleear nada se ejecuta por defecto como predefinido por el profeor\n"
               << "              * 1 se resaltará la cabeza de la máquina\n"
               << "              * 0 el modo predefinido del profesor.\n";
-    std::cout << "              Uso 2: \033[1;32m 'make clean' -> 'make run' \033[0m (ejecutará abnb.tm en modo predefinido)\n";
+    std::cout << "              Uso 2: \033[1;32m 'make clean' -> 'make run' \033[0m (ejecutará abnb.tm en modo predefinido)\n";  // NOLINT
     std::cout << "              Uso 3: \033[1;32m 'make run2' \033[0m(ejecutará abcc.tm en modo predefinido )\n";  // NOLINT
-    std::cout << "              Uso 4: \033[1;32m 'make execute' o 'make exe' compilará y ejecutará\033[0m en modo predefinido\n";
+    std::cout << "              Uso 4: \033[1;32m 'make execute' o 'make exe' compilará y ejecutará\033[0m en modo predefinido\n";  // NOLINT
     std::cout << "              Uso 5: \033[1;32m 'make run_head' | 'run2_head' | 'pal_head' \033[0m para modo alternativo de ejecución\n";  //  NOLINT
     std::cout << "\n";
     std::cout << "---------------------------------------------------------------------------------------------------------------------------------\n";  // NOLINT
@@ -100,7 +100,7 @@ void Help() {
     // Información adicional
   std::cout << "        \033[1;31m**Información adicional:**\n"
             << "         * El estado inicial de la máquina de Turing debe ser uno solo.\n"
-            << "         * Los estados de aceptación son los estados en los que la máquina de Turing acepta la cadena.\n"
+            << "         * Los estados de aceptación son los estados en los que la máquina de Turing acepta la cadena.\n"  // NOLINT
             << "         * Los estados de rechazo son los estados en los que la máquina de Turing rechaza la cadena.\n"
             << "         * La máquina de Turing puede leer, escribir y mover la cabeza de lectura en una dirección.\n"
             << "         * La máquina de Turing termina cuando llega a un estado de aceptación o la cadena se termina de comprobar y no se acepta.\n"  // NOLINT
