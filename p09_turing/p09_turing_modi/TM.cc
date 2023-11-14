@@ -84,8 +84,6 @@ void TM::setStates(std::vector<std::string>& lines) {
     initialState_.setLabel(startState);
 
     // Set final States
-    std::istringstream iss(lines[2]);
-    std::string finalState;
     if (lines[2].empty()) {
         std::cout << "LINE 3 EMPTY: Check the .tm file" << std::endl;
         exit(EXIT_FAILURE);
@@ -94,11 +92,13 @@ void TM::setStates(std::vector<std::string>& lines) {
         std::cout << "NONDIGIT: Check the .tm file in Line 2 final states must be a digit" << std::endl;  // NOLINT Check if the line is a digit
         exit(EXIT_FAILURE);
     }
-
-    while (iss >> finalState) {
-        State state(finalState, kFinal);
-        finalStates_.insert(state);
+    if (lines[2].size() > 1) {
+        std::cout << "FINAL_STATE: Final state must be unique, Check the .tm file in Line 2" << std::endl;
+        exit(EXIT_FAILURE);
     }
+    std::string finalStateStr = lines[2].substr(0, lines[2].find(" "));
+    State state(finalStateStr);
+    finalState_ = state;
 }
 
 /**
@@ -150,6 +150,10 @@ void TM::setTransitions(std::vector<std::string>& lines) {
                 exit(EXIT_FAILURE);
             }
         }
+        if (originState == finalState_.getLabel()) {
+            std::cout << "FINAL_STATE: Cannot have outgoing transitions" << std::endl;
+            exit(EXIT_FAILURE);
+        }
         // Set the transition
         State origin(originState);
         Symbol toRead(toReadSymbol);
@@ -173,9 +177,7 @@ void TM::setTransitions(std::vector<std::string>& lines) {
 std::ostream& operator<<(std::ostream& os, const TM& TM) {
     os << TM.nStates_ << std::endl;  // 1 Line
     os << TM.initialState_ << std::endl;  // 2 Line
-    for (auto& state : TM.finalStates_) {  // 3 Line
-        os << state << " ";
-    }
+    os << TM.finalState_ << std::endl;
     os << std::endl;
     os << TM.nTransitions_ << std::endl;  // 4 Line
     for (auto& transition : TM.transitions_) {  // 5 to N lines
@@ -206,7 +208,7 @@ void TM::tapeReader(std::ifstream& tapeFile) {
         firstLineRead = true;
     } else {
         // If the line is empty, add a blank symbol
-        tape_.push_back(blankSymbol_);
+        tape_.insert(tape_.begin(), blankSymbol_);
         tape_.push_back(blankSymbol_);
     }
     // Check if more than one line has been read
@@ -238,7 +240,7 @@ bool TM::acceptString(std::vector<Symbol> const &inputString) {
         bool transitionFound = false;
         for (auto &transition : transitions_) {
             if (head >= 0 && head < tape_.size() &&  // Check if the head is in the tape and the transition is valid
-                             transition.getStateOrigin() == currentState && transition.getToRead() == tape_[head]) {
+                             transition.getStateOrigin() == currentState && transition.getToRead() == tape_[head]) {  // If the transition is valid
                 tape_[head] = transition.getToWrite();  // Overwrite the tape and move or stay
                 if (transition.getDirection() == "R") {
                     head++;
@@ -247,7 +249,7 @@ bool TM::acceptString(std::vector<Symbol> const &inputString) {
                     }
                 } else if (transition.getDirection() == "L") {
                     if (head == 0) {
-                        tape_.push_back(blankSymbol_);  // if head is at the beginning of the tape, add a blank symbol
+                        tape_.insert(tape_.begin(), blankSymbol_);  // if head is at the beginning of the tape, add a blank symbol
                     } else {
                         head--;
                     }
@@ -260,12 +262,12 @@ bool TM::acceptString(std::vector<Symbol> const &inputString) {
         }
 
         // If no transition is found or the current state is final, stop
-        if (!transitionFound || finalStates_.find(currentState) != finalStates_.end()) {
+        if (!transitionFound || currentState == finalState_) {
             break;
         }
     }
     // Check if the final state is in the set of final states
-    return finalStates_.find(currentState) != finalStates_.end();
+    return finalState_ == currentState;
 }
 
 
