@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -80,19 +80,34 @@ std::ostream &operator<<(std::ostream &os, const String &string) {
 /**
  * @brief 
  * 
+ * @param is 
+ * @param string 
+ * @return std::istream& 
+ */
+std::istream &operator>>(std::istream &is, String &string) {
+    std::string line;
+    is >> line;
+    string = String(line);
+    return is;
+}
+
+
+/**
+ * @brief 
+ * 
  * @param alphabet 
  * @return true 
  * @return false 
  */
-bool String::checkString(Alphabet alphabet) {
+bool String::belongsToAlphabet(Alphabet alphabet) {
     // comprueba que string este en alphabet
     std::set<Symbol> alphabet_ = alphabet.getAlphabet();
-    for (int i = 0; i < size_; ++i) {
-        if (alphabet_.find(string_[i]) == alphabet_.end()) {
-            return false;
+    for (int i = 0; i < getSymbol().size(); ++i) {
+        if (alphabet_.find(string_[i]) == alphabet_.end() || string_[i] != Symbol(kEpsilon)) {
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 
@@ -143,7 +158,7 @@ unsigned String::extractLength() const {
 String String::inverse(String string, Alphabet alphabet) {
   std::set<Symbol> alphabet_ = alphabet.getAlphabet();
   std::vector<Symbol> inverse;
-  if (checkString(alphabet)) {
+  if (belongsToAlphabet(alphabet)) {
     for (int i = 0; i < string.size_; ++i) {
     if (alphabet_.find(string.getSymbol(i)) != alphabet_.end()) {
       inverse.push_back(string.getSymbol(i));

@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -16,7 +16,7 @@
 class State {
  private:
     std::string label_;
-    std::string isFinal_;
+    std::string type_;  // final or notfinal
 
  public:
     State(std::string&, const std::string&);
@@ -24,15 +24,20 @@ class State {
     State() {}
     ~State() {}
 
-    void setLabel(std::string label) { label_ = label; }
-    void setIsFinal(bool isFinal) { isFinal_ = isFinal; }
 
+    // Setters and getters
+    void setLabel(std::string label) { label_ = label; }
+    void setType(std::string type) { type_ = type; }
     std::string getLabel() const { return label_; }
-    std::string getIsFinal() const { return isFinal_; }
+    std::string getType() { return type_; }
+
+
+    //  Overloaders
     bool operator==(const State& other) const;
     bool operator<(const State& other) const;
     bool operator!=(const State& other) const;
 
     friend std::istream &operator>>(std::istream &is, State &state);
+    friend std::ostream &operator<<(std::ostream &os, const State &state);
 };
 

@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -17,9 +17,9 @@
  * @param label 
  * @param isFinal 
  */
-State::State(std::string& label, const std::string& isFinal) {
+State::State(std::string& label, const std::string& type) {
   label_ = label;
-  isFinal_ = isFinal;
+  type_ = type;
 }
 
 /**
@@ -30,7 +30,7 @@ State::State(std::string& label, const std::string& isFinal) {
  * @return false 
  */
 bool State::operator==(const State& other) const {
-  return label_ == other.getLabel() && isFinal_ == other.getIsFinal();
+  return label_ == other.getLabel();
 }
 
 /**
@@ -57,6 +57,19 @@ std::istream &operator>>(std::istream &is, State &state) {
   state.setLabel(label);
   return is;
 }
+
+/**
+ * @brief 
+ * 
+ * @param os 
+ * @param state 
+ * @return std::ostream& 
+ */
+std::ostream &operator<<(std::ostream &os, const State &state) {
+  os << state.getLabel();
+  return os;
+}
+
 
 /**
  * @brief 

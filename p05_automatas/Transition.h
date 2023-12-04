@@ -4,12 +4,13 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
 
 #include <iostream>
+#include <map>
 #include "Symbol.h"
 #include "State.h"
 
@@ -17,9 +18,7 @@
 
 class Transition {
  private:
-    Symbol symbol_;
-    State stateOrigin_;
-    State stateDestiny_;
+    std::map<std::pair<State, Symbol>, State> transition_;
 
 
  public:
@@ -27,13 +26,18 @@ class Transition {
     Transition(Symbol, State, State);
     ~Transition() {}
 
-    Symbol getSymbol() const { return symbol_;}
-    State getStateOrigin() const { return stateOrigin_;}
-    State getStateDestiny() const { return stateDestiny_;}
-    void setSymbol(Symbol symbol) { symbol_ = symbol;}
-    void setStateOrigin(State stateOrigin) { stateOrigin_ = stateOrigin;}
-    void setStateDestiny(State stateDestiny) { stateDestiny_ = stateDestiny;}
-    bool operator<(const Transition& other) const;
+    //  Setters and getters
+    State getStateDestiny(const State& origin, const Symbol& symbol) const;
+    State getStateOrigin() const;
+    Symbol getSymbol() const;
+    std::map<std::pair<State, Symbol>, State> getTransition() const { return transition_; }  //  NOLINT
     void setTransition(Symbol, State, State);
+
+
+    // Overloaders
+    bool operator<(const Transition& other) const;
+
+    friend std::ostream &operator<<(std::ostream &os, const Transition &transition);
 };
+
 

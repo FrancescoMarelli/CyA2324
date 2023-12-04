@@ -4,7 +4,7 @@
 // Grado en Ingeniería Informática
 // Asignatura: Computabilidad y Algoritmia
 // Curso: 2º
-// Práctica 3: Automatas
+// Práctica 5: Implementación de un Automata finito
 // Autor: Francesco Marelli
 // Correo: alu0101161730@ull.edu.es
 // Fecha: 12/10/2023
@@ -32,6 +32,7 @@ class Alphabet {
     void setAlphabet(std::set<Symbol> alphabet) { alphabet_ = alphabet; }
     std::set<Symbol> getAlphabet() const { return alphabet_; }
     void addSymbol(Symbol symbol);
+    bool belongsToAlphabet(Symbol);
 
     bool operator=(const Alphabet& other) const;
 
